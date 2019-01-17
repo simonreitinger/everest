@@ -1,0 +1,6 @@
+<div class="website-add">
+    <a routerLink="/websites/add">Add new website</a>
+</div>
+<app-website-add *ngIf="router.url == '/websites/add'"></app-website-add>
+<app-website-list *ngIf="router.url.match('/websites')"></app-website-list>
+<app-website-detail *ngIf="router.url.match('/websites/website')"></app-website-detail>
