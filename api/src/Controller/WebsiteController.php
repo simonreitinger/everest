@@ -9,39 +9,45 @@
 namespace App\Controller;
 
 use App\Entity\Website;
+use App\HttpKernel\ApiProblemResponse;
+use Cocur\Slugify\SlugifyInterface;
+use Crell\ApiProblem\ApiProblem;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Util\Json;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class WebsiteController
  * @package App\Controller
  *
- * @Route("/api/websites")
+ * @Route("/website")
  */
 class WebsiteController extends ApiController
 {
     private $entityManager;
 
+    private $slugify;
+
     /**
      * WebsiteController constructor.
      * @param EntityManagerInterface $entityManager
+     * @param SlugifyInterface $slugify
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, SlugifyInterface $slugify)
     {
         $this->entityManager = $entityManager;
+        $this->slugify = $slugify;
     }
 
     /**
-     * @Route("/", methods={"GET"})
+     * @Route("/all", methods={"GET"})
      *
      * @param Request $request
      * @return JsonResponse
      */
-    public function getList(Request $request)
+    public function getAll(Request $request)
     {
         $websites = $this->entityManager->getRepository('App:Website')->findAll();
 
@@ -52,22 +58,37 @@ class WebsiteController extends ApiController
      * @Route("/add", methods={"POST"})
      *
      * @param Request $request
-     * @return JsonResponse
+     * @return JsonResponse|ApiProblemResponse
      */
     public function add(Request $request)
     {
         $json = $this->getJsonContent($request);
 
-        $website = new Website();
-        $website->setName($json['name']);
-        $website->setDescription($json['description']);
-        $website->setRepo($json['repo']);
+        $website = $this->entityManager->getRepository('App:Website')->findOneBy(['url' => $json['url']]);
 
-        $this->entityManager->persist($website);
-        $this->entityManager->flush();
+        if ($this->jsonIsValid($json))
+        {
+            if (!$website)
+            {
+                $website = new Website();
+                $website->setUrl($json['url']);
+            }
 
-        $json['success'] = true;
+            $website->setToken($json['token']);
+            $this->entityManager->persist($website);
+            $this->entityManager->flush();
 
-        return new JsonResponse($json);
+            $json = ['success' => true];
+            return new JsonResponse($json);
+        }
+
+        return new ApiProblemResponse((new ApiProblem())->setStatus(Response::HTTP_BAD_REQUEST));
+    }
+
+    private function jsonIsValid(array $json) {
+        return (
+            $json['url'] &&
+            $json['token']
+        );
     }
 }

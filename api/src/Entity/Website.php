@@ -19,91 +19,51 @@ class Website implements \JsonSerializable
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
-
-    /**
-     * @ORM\Column(type="string", length=1000)
-     */
-    private $description;
+    private $url;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $repo;
+    private $token;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @return mixed
      */
-    private $managerUsername;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $managerPassword;
-
-    public function getId(): ?int
+    public function getId()
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    /**
+     * @return mixed
+     */
+    public function getUrl()
     {
-        return $this->name;
+        return $this->url;
     }
 
-    public function setName(string $name): self
+    /**
+     * @param mixed $url
+     */
+    public function setUrl($url): void
     {
-        $this->name = $name;
-
-        return $this;
+        $this->url = $url;
     }
 
-    public function getDescription(): ?string
+    /**
+     * @return mixed
+     */
+    public function getToken()
     {
-        return $this->description;
+        return $this->token;
     }
 
-    public function setDescription(string $description): self
+    /**
+     * @param mixed $token
+     */
+    public function setToken($token): void
     {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    public function getRepo(): ?string
-    {
-        return $this->repo;
-    }
-
-    public function setRepo(string $repo): self
-    {
-        $this->repo = $repo;
-
-        return $this;
-    }
-
-    public function getManagerUsername(): ?string
-    {
-        return $this->managerUsername;
-    }
-
-    public function setManagerUsername(string $managerUsername): self
-    {
-        $this->managerUsername = $managerUsername;
-
-        return $this;
-    }
-
-    public function getManagerPassword(): ?string
-    {
-        return $this->managerPassword;
-    }
-
-    public function setManagerPassword(string $managerPassword): self
-    {
-        $this->managerPassword = $managerPassword;
-
-        return $this;
+        $this->token = $token;
     }
 
     /**
@@ -116,11 +76,9 @@ class Website implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'name' => $this->name,
-            'description' => $this->description,
-            'repo' => $this->repo,
-            'managerUsername' => $this->managerUsername,
-            'managerPassword' => $this->managerPassword,
+            'url' => $this->url,
+            'token' => $this->token
         ];
     }
+
 }

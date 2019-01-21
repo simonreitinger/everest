@@ -1,0 +1,21 @@
+$font: 400 16px/1.6 -apple-system,system-ui,Segoe UI,Helvetica Neue,sans-serif;
+$max-width: 1400px;
+
+$colors: (
+  red: #D86E73,
+  blue: #445e93,
+  pink: #fbc0b3,
+  yellow: #fcecc9
+);
+
+@mixin bg-color-mod {
+  @each $name, $hex in $colors {
+    &-#{$name} {
+      background-color: $hex;
+    }
+  }
+}
+
+.bg {
+  @include bg-color-mod;
+}

@@ -7,8 +7,6 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { LoginComponent } from './login/login.component';
 import { WebsiteComponent } from './website/website.component';
-import { WebsiteDetailComponent } from './website/website-detail/website-detail.component';
-import { WebsiteListComponent } from './website/website-list/website-list.component';
 import { HomeComponent } from './home/home.component';
 import { WebsiteAddComponent } from './website/website-add/website-add.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -16,14 +14,10 @@ import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent,
-    LoginComponent,
-    WebsiteComponent,
-    WebsiteListComponent,
-    WebsiteDetailComponent,
-    WebsiteDetailComponent,
-    WebsiteListComponent,
     HomeComponent,
+    LoginComponent,
+    NavbarComponent,
+    WebsiteComponent,
     WebsiteAddComponent
   ],
   imports: [

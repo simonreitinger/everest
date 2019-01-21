@@ -3,7 +3,6 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 10px;
 
   ul {
     display: flex;
@@ -18,7 +17,15 @@ nav {
     }
 
     li {
-      padding: 10px;
+      padding-right: 10px;
+
+      > * {
+        color: #fff;
+      }
+
+      a {
+        text-decoration: none;
+      }
     }
   }
 

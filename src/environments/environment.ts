@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  everestApi: 'http://localhost:8000/api/'
+  everestApi: 'http://localhost:8001'
 };
 
 /*

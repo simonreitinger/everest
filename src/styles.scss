@@ -1,4 +1,22 @@
+@import "default";
+
 * {
   margin: 0;
   padding: 0;
 }
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font: $font;
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+.center {
+  margin: 0 auto;
+  max-width: $max-width;
+}
+

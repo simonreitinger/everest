@@ -7,16 +7,14 @@ import { environment } from '../../environments/environment';
 })
 export class WebsiteService {
 
-  private list: [];
-
   constructor(private http: HttpClient) {
   }
 
-  get() {
-    return this.http.get(environment.everestApi + 'websites');
+  getAll() {
+    return this.http.get(environment.everestApi + '/website/all');
   }
 
-  add(data) {
-    return this.http.post(environment.everestApi + 'websites/add', data);
+  add(data: { url: string, token: string }) {
+    return this.http.post(environment.everestApi + '/website/add', data);
   }
 }

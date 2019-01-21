@@ -1,19 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { WebsiteService } from '../../services/website.service';
-import { NgForm } from '@angular/forms';
+import { ContaoManagerService } from '../../services/contao-manager.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-website-add',
   templateUrl: './website-add.component.html',
   styleUrls: ['./website-add.component.scss']
 })
-export class WebsiteAddComponent {
+export class WebsiteAddComponent implements OnInit {
 
-  constructor(private ws: WebsiteService) { }
+  url: string;
 
-  add(form: NgForm) {
-    this.ws.add(form.value).subscribe(res => {
-      console.log(res);
+  constructor(private cms: ContaoManagerService, private route: ActivatedRoute, private router: Router) { }
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(values => {
+      if (values.token && values.origin) {
+        this.cms.saveUrlAndToken(values.origin, values.token).subscribe((res: any) => {
+          console.log(res);
+          if (res.success) {
+            this.router.navigateByUrl('/websites');
+          }
+        });
+      }
     });
+  }
+
+  openManager() {
+    window.open(this.cms.getRegisterUrl(this.url));
   }
 }

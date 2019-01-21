@@ -1,6 +1,11 @@
 <div class="website-add">
-    <a routerLink="/websites/add">Add new website</a>
+    <a routerLink="/website/add">Add new website</a>
 </div>
-<app-website-add *ngIf="router.url == '/websites/add'"></app-website-add>
-<app-website-list *ngIf="router.url.match('/websites')"></app-website-list>
-<app-website-detail *ngIf="router.url.match('/websites/website')"></app-website-detail>
+<div id="websites">
+    <div class="website bg-pink" *ngFor="let website of websites">
+        <div class="header">
+            <h3>{{ website.url }}</h3>
+        </div>
+        <button class="button bg-yellow" (click)="updateTask(website)">composer update</button>
+    </div>
+</div>
