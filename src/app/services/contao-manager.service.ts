@@ -25,10 +25,10 @@ export class ContaoManagerService {
   getRegisterUrl(url: string) {
     if (url.includes('localhost')) {
       return url
-        + '/#/oauth?scope=admin&client_id=everest&return_url=https://localhost:4200/website/add%3Forigin=' + url;
+        + '/#/oauth?scope=admin&client_id=everest&return_url=http://localhost:4200/website/add%3Forigin=' + url;
     }
     return this.getManagerUrl(url)
-      + '/#/oauth?scope=admin&client_id=everest&return_url=https://localhost:4200/website/add%3Forigin=' + url;
+      + '/#/oauth?scope=admin&client_id=everest&return_url=http://localhost:4200/website/add%3Forigin=' + url;
   }
 
   getManagerUrl(url: string) {

@@ -28,3 +28,9 @@ services:
     jwt_authenticator:
         class: App\Security\JwtAuthenticator
         autowire: true
+
+    guzzle.http_client:
+        class: GuzzleHttp\Client
+        autowire: true
+
+    GuzzleHttp\ClientInterface: '@guzzle.http_client'

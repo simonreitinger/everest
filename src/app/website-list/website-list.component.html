@@ -1,0 +1,6 @@
+<div class="website-add">
+    <a routerLink="/website/add">Add new website</a>
+</div>
+<div id="websites">
+    <app-website *ngFor="let website of websites" [website]="website"></app-website>
+</div>

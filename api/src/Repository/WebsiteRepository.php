@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Website;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -19,32 +20,24 @@ class WebsiteRepository extends ServiceEntityRepository
         parent::__construct($registry, Website::class);
     }
 
-    // /**
-    //  * @return Website[] Returns an array of Website objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param $url
+     * @return Website|null
+     */
+    public function findOneByUrl($url): ?Website
     {
-        return $this->createQueryBuilder('w')
-            ->andWhere('w.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('w.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        try
+        {
+            return $this->createQueryBuilder('w')
+                ->where('w.url = :url')
+                ->setParameter('url', $url)
+                ->getQuery()
+                ->getOneOrNullResult();
+        }
+        catch (NonUniqueResultException $e)
+        {
+            return null;
+        }
 
-    /*
-    public function findOneBySomeField($value): ?Website
-    {
-        return $this->createQueryBuilder('w')
-            ->andWhere('w.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
     }
-    */
 }

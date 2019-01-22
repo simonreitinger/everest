@@ -22,7 +22,7 @@ final class Version20190121091103 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE website DROP manager_username, DROP manager_password');
+        $this->addSql('ALTER TABLE website-list DROP manager_username, DROP manager_password');
     }
 
     public function down(Schema $schema) : void
@@ -30,6 +30,6 @@ final class Version20190121091103 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE website ADD manager_username VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci, ADD manager_password VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci');
+        $this->addSql('ALTER TABLE website-list ADD manager_username VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci, ADD manager_password VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

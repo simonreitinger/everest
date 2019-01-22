@@ -27,6 +27,23 @@ class Website implements \JsonSerializable
     private $token;
 
     /**
+     * Contao version
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $version;
+
+    /**
+     * API version
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $api;
+
+    /*
+     * @ORM\Column(type="boolean", options={"default":"0"}, nullable=true)
+     */
+    private $supported = false;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -44,10 +61,13 @@ class Website implements \JsonSerializable
 
     /**
      * @param mixed $url
+     * @return Website
      */
-    public function setUrl($url): void
+    public function setUrl($url): Website
     {
         $this->url = $url;
+
+        return $this;
     }
 
     /**
@@ -60,10 +80,70 @@ class Website implements \JsonSerializable
 
     /**
      * @param mixed $token
+     * @return Website
      */
-    public function setToken($token): void
+    public function setToken($token): Website
     {
         $this->token = $token;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    /**
+     * @param mixed $version
+     * @return Website
+     */
+    public function setVersion($version): Website
+    {
+        $this->version = $version;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getApi()
+    {
+        return $this->api;
+    }
+
+    /**
+     * @param mixed $api
+     * @return Website
+     */
+    public function setApi($api): Website
+    {
+        $this->api = $api;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSupported()
+    {
+        return $this->supported;
+    }
+
+    /**
+     * @param mixed $supported
+     * @return Website
+     */
+    public function setSupported($supported): Website
+    {
+        $this->supported = $supported;
+
+        return $this;
     }
 
     /**
@@ -76,8 +156,12 @@ class Website implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
+            'id' => $this->id,
             'url' => $this->url,
-            'token' => $this->token
+            'token' => $this->token,
+            'version' => $this->version,
+            'api' => $this->api,
+            'supported' => $this->supported
         ];
     }
 

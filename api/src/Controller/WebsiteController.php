@@ -8,11 +8,13 @@
 
 namespace App\Controller;
 
+use App\Client\ManagerClient;
 use App\Entity\Website;
 use App\HttpKernel\ApiProblemResponse;
 use Cocur\Slugify\SlugifyInterface;
 use Crell\ApiProblem\ApiProblem;
 use Doctrine\ORM\EntityManagerInterface;
+use GuzzleHttp\ClientInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,17 +30,17 @@ class WebsiteController extends ApiController
 {
     private $entityManager;
 
-    private $slugify;
+    private $client;
 
     /**
      * WebsiteController constructor.
      * @param EntityManagerInterface $entityManager
-     * @param SlugifyInterface $slugify
+     * @param ManagerClient $client
      */
-    public function __construct(EntityManagerInterface $entityManager, SlugifyInterface $slugify)
+    public function __construct(EntityManagerInterface $entityManager, ManagerClient $client)
     {
         $this->entityManager = $entityManager;
-        $this->slugify = $slugify;
+        $this->client = $client;
     }
 
     /**
@@ -50,7 +52,6 @@ class WebsiteController extends ApiController
     public function getAll(Request $request)
     {
         $websites = $this->entityManager->getRepository('App:Website')->findAll();
-
         return new JsonResponse($websites);
     }
 
@@ -66,15 +67,24 @@ class WebsiteController extends ApiController
 
         $website = $this->entityManager->getRepository('App:Website')->findOneBy(['url' => $json['url']]);
 
-        if ($this->jsonIsValid($json))
-        {
-            if (!$website)
-            {
+        if ($this->jsonIsValid($json)) {
+            if (!$website) {
                 $website = new Website();
                 $website->setUrl($json['url']);
             }
 
             $website->setToken($json['token']);
+
+            if ($response = $this->client->serverContao($website)) {
+                if ($response->getStatusCode() === Response::HTTP_OK) {
+                    $config = json_decode($response->getBody()->getContents(), true);
+
+                    $website->setVersion($config['version']);
+                    $website->setApi($config['api']);
+                    $website->setSupported($config['supported']);
+                }
+            }
+
             $this->entityManager->persist($website);
             $this->entityManager->flush();
 

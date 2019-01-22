@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ApiController extends AbstractController
 {
+
     public function getJsonContent(Request $request)
     {
         return json_decode($request->getContent(), true) ?? [];
