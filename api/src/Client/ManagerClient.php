@@ -18,7 +18,6 @@ use GuzzleHttp\Exception\GuzzleException;
  */
 class ManagerClient
 {
-
     /**
      * @var ClientInterface $guzzle
      */
@@ -35,16 +34,105 @@ class ManagerClient
 
     /**
      * @param Website $website
-     * @return \Psr\Http\Message\ResponseInterface
+     * @param string $endpoint
+     * @param string $method
+     * @return \Psr\Http\Message\ResponseInterface|null
      */
-    public function serverContao(Website $website)
+    private function apiRequest(Website $website, string $endpoint = '', $method = 'GET')
     {
         try {
             return $this->guzzle
-                ->request('GET', $website->getUrl() . '/api/server/contao', $this->authHeader($website));
+                ->request($method, $website->getManagerUrl() . $endpoint, $this->authHeader($website));
         } catch (GuzzleException $e) {
             return null;
         }
+    }
+
+    /**
+     * @param Website $website
+     * @return \Psr\Http\Message\ResponseInterface|null
+     */
+    private function homepageRequest(Website $website)
+    {
+        try {
+            return $this->guzzle->request('GET', $website->getUrl());
+        } catch (GuzzleException $e) {
+            return null;
+        }
+    }
+
+    /**
+     * @param Website $website
+     * @return \Psr\Http\Message\ResponseInterface|null
+     */
+    public function fetchMetadata(Website $website)
+    {
+        return $this->homepageRequest($website);
+    }
+
+    /**
+     * @param Website $website
+     * @return \Psr\Http\Message\ResponseInterface|null
+     */
+    public function serverContao(Website $website)
+    {
+        return $this->apiRequest($website, '/api/server/contao');
+    }
+
+    /**
+     * @param Website $website
+     * @return \Psr\Http\Message\ResponseInterface|null
+     */
+    public function serverComposer(Website $website)
+    {
+        return $this->apiRequest($website, '/api/server/composer');
+    }
+
+    /**
+     * @param Website $website
+     * @return \Psr\Http\Message\ResponseInterface|null
+     */
+    public function serverConfig(Website $website)
+    {
+        return $this->apiRequest($website, '/api/server/config');
+    }
+
+    /**
+     * @param Website $website
+     * @return \Psr\Http\Message\ResponseInterface|null
+     */
+    public function serverPhpWeb(Website $website)
+    {
+        return $this->apiRequest($website, '/api/server/php-web');
+    }
+
+    /**
+     * @param Website $website
+     * @return \Psr\Http\Message\ResponseInterface|null
+     */
+    public function serverPhpCli(Website $website)
+    {
+        return $this->apiRequest($website, '/api/server/php-cli');
+    }
+
+    /**
+     * @param Website $website
+     * @return \Psr\Http\Message\ResponseInterface|null
+     */
+    public function configManager(Website $website)
+    {
+        return $this->apiRequest($website, '/api/config/manager');
+    }
+
+    /**
+     * returns the composer.json file
+     *
+     * @param Website $website
+     * @return \Psr\Http\Message\ResponseInterface|null
+     */
+    public function packagesRoot(Website $website)
+    {
+        return $this->apiRequest($website, '/api/packages/root');
     }
 
     /**

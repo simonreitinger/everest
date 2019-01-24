@@ -9,12 +9,31 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Website implements \JsonSerializable
 {
+    const CONTAO_MANAGER = 'contao-manager.phar.php';
+
+    public function __construct()
+    {
+        $this->setAdded();
+    }
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastUpdate;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $added;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -24,24 +43,75 @@ class Website implements \JsonSerializable
     /**
      * @ORM\Column(type="string", length=255)
      */
+    private $cleanUrl;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $managerUrl;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private $token;
 
     /**
-     * Contao version
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=1023, nullable=true)
      */
-    private $version;
+    private $favicon;
 
     /**
-     * API version
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $api;
+    private $title;
 
-    /*
-     * @ORM\Column(type="boolean", options={"default":"0"}, nullable=true)
+    /**
+     * from /api/server/contao
+     * @ORM\Column(type="json_array", nullable=true)
      */
-    private $supported = false;
+    private $contao;
+
+    /**
+     * from /api/server/composer
+     * @ORM\Column(type="json_array", nullable=true)
+     */
+    private $composer;
+
+    /**
+     * from /api/config/manager
+     * @ORM\Column(type="json_array", nullable=true)
+     */
+    private $manager;
+
+    /**
+     * from /api/server/php-cli
+     * @ORM\Column(type="json_array", nullable=true)
+     */
+    private $phpCli;
+
+    /**
+     * from /api/server/php-web
+     * @ORM\Column(type="json_array", nullable=true)
+     */
+    private $phpWeb;
+
+    /**
+     * from /api/server/config
+     * @ORM\Column(type="json_array", nullable=true)
+     */
+    private $config;
+
+    /**
+     * from /api/server/self-update
+     * @ORM\Column(type="json_array", nullable=true)
+     */
+    private $selfUpdate;
+
+    /**
+     * from /api/packages/root
+     * @ORM\Column(type="json_array", nullable=true)
+     */
+    private $packages;
 
     /**
      * @return mixed
@@ -49,6 +119,45 @@ class Website implements \JsonSerializable
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastUpdate()
+    {
+        return $this->lastUpdate;
+    }
+
+    /**
+     * @return Website
+     */
+    public function setLastUpdate(): Website
+    {
+        $this->lastUpdate = new \DateTime();
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAdded()
+    {
+        return $this->added;
+    }
+
+    /**
+     * @return Website
+     */
+    public function setAdded(): Website
+    {
+        // can only be set once
+        if (!$this->added) {
+            $this->added = new \DateTime();
+        }
+
+        return $this;
     }
 
     /**
@@ -66,6 +175,48 @@ class Website implements \JsonSerializable
     public function setUrl($url): Website
     {
         $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCleanUrl()
+    {
+        return $this->cleanUrl;
+    }
+
+    /**
+     * @param mixed $url
+     * @return Website
+     */
+    public function setCleanUrl($url): Website
+    {
+        $this->cleanUrl = $url;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getManagerUrl()
+    {
+        return $this->managerUrl;
+    }
+
+    /**
+     * localhosts have no Contao Manager file
+     *
+     * @param mixed $url
+     * @return Website
+     */
+    public function setManagerUrl($url): Website
+    {
+        $this->managerUrl = (strpos($url, 'localhost') !== false)
+            ? $url
+            : $url . '/' . static::CONTAO_MANAGER;
 
         return $this;
     }
@@ -92,18 +243,18 @@ class Website implements \JsonSerializable
     /**
      * @return mixed
      */
-    public function getVersion()
+    public function getFavicon()
     {
-        return $this->version;
+        return $this->favicon;
     }
 
     /**
-     * @param mixed $version
+     * @param $favicon
      * @return Website
      */
-    public function setVersion($version): Website
+    public function setFavicon($favicon): Website
     {
-        $this->version = $version;
+        $this->favicon = $favicon;
 
         return $this;
     }
@@ -111,18 +262,18 @@ class Website implements \JsonSerializable
     /**
      * @return mixed
      */
-    public function getApi()
+    public function getTitle()
     {
-        return $this->api;
+        return $this->title;
     }
 
     /**
-     * @param mixed $api
+     * @param $title
      * @return Website
      */
-    public function setApi($api): Website
+    public function setTitle($title): Website
     {
-        $this->api = $api;
+        $this->title = $title;
 
         return $this;
     }
@@ -130,20 +281,150 @@ class Website implements \JsonSerializable
     /**
      * @return mixed
      */
-    public function getSupported()
+    public function getContao()
     {
-        return $this->supported;
+        return $this->contao;
     }
 
     /**
-     * @param mixed $supported
+     * @param mixed $contao
      * @return Website
      */
-    public function setSupported($supported): Website
+    public function setContao($contao): Website
     {
-        $this->supported = $supported;
+        $this->contao = $contao;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComposer()
+    {
+        return $this->composer;
+    }
+
+    /**
+     * @param mixed $composer
+     * @return Website
+     */
+    public function setComposer($composer): Website
+    {
+        $this->composer = $composer;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getManager()
+    {
+        return $this->manager;
+    }
+
+    /**
+     * @param mixed $manager
+     * @return Website
+     */
+    public function setManager($manager): Website
+    {
+        $this->manager = $manager;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhpCli()
+    {
+        return $this->phpCli;
+    }
+
+    /**
+     * @param mixed $phpCli
+     * @return Website
+     */
+    public function setPhpCli($phpCli): Website
+    {
+        $this->phpCli = $phpCli;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhpWeb()
+    {
+        return $this->phpWeb;
+    }
+
+    /**
+     * @param mixed $phpWeb
+     * @return Website
+     */
+    public function setPhpWeb($phpWeb): Website
+    {
+        $this->phpWeb = $phpWeb;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+    /**
+     * @param mixed $config
+     * @return Website
+     */
+    public function setConfig($config): Website
+    {
+        $this->config = $config;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSelfUpdate()
+    {
+        return $this->selfUpdate;
+    }
+
+    /**
+     * @param mixed $selfUpdate
+     * @return Website
+     */
+    public function setSelfUpdate($selfUpdate): Website
+    {
+        $this->selfUpdate = $selfUpdate;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPackages()
+    {
+        return $this->packages;
+    }
+
+    /**
+     * @param mixed $packages
+     */
+    public function setPackages($packages): void
+    {
+        $this->packages = $packages;
     }
 
     /**
@@ -158,10 +439,20 @@ class Website implements \JsonSerializable
         return [
             'id' => $this->id,
             'url' => $this->url,
-            'token' => $this->token,
-            'version' => $this->version,
-            'api' => $this->api,
-            'supported' => $this->supported
+            'cleanUrl' => $this->cleanUrl,
+            'managerUrl' => $this->managerUrl,
+            'lastUpdate' => $this->lastUpdate ? $this->lastUpdate->format(DATE_ATOM) : null, // formatted for json
+            'added' => $this->added ? $this->added->format(DATE_ATOM) : null,
+            'favicon' => $this->favicon,
+            'title' => $this->title,
+            'contao' => $this->contao,
+            'composer' => $this->composer,
+            'manager' => $this->manager,
+            'phpCli' => $this->phpCli,
+            'phpWeb' => $this->phpWeb,
+            'config' => $this->config,
+            'selfUpdate' => $this->selfUpdate,
+            'packages' => $this->packages,
         ];
     }
 

@@ -11,10 +11,8 @@ namespace App\Controller;
 use App\Client\ManagerClient;
 use App\Entity\Website;
 use App\HttpKernel\ApiProblemResponse;
-use Cocur\Slugify\SlugifyInterface;
 use Crell\ApiProblem\ApiProblem;
 use Doctrine\ORM\EntityManagerInterface;
-use GuzzleHttp\ClientInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,8 +26,15 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class WebsiteController extends ApiController
 {
+
+    /**
+     * @var EntityManagerInterface $entityManager
+     */
     private $entityManager;
 
+    /**
+     * @var ManagerClient $client
+     */
     private $client;
 
     /**
@@ -46,10 +51,9 @@ class WebsiteController extends ApiController
     /**
      * @Route("/all", methods={"GET"})
      *
-     * @param Request $request
      * @return JsonResponse
      */
-    public function getAll(Request $request)
+    public function getAll()
     {
         $websites = $this->entityManager->getRepository('App:Website')->findAll();
         return new JsonResponse($websites);
@@ -70,20 +74,14 @@ class WebsiteController extends ApiController
         if ($this->jsonIsValid($json)) {
             if (!$website) {
                 $website = new Website();
-                $website->setUrl($json['url']);
+                $website
+                    ->setUrl($json['url'])
+                    ->setManagerUrl($json['url'])
+                    ->setCleanUrl(parse_url($json['url'], PHP_URL_HOST)) // without protocol
+                ;
             }
 
             $website->setToken($json['token']);
-
-            if ($response = $this->client->serverContao($website)) {
-                if ($response->getStatusCode() === Response::HTTP_OK) {
-                    $config = json_decode($response->getBody()->getContents(), true);
-
-                    $website->setVersion($config['version']);
-                    $website->setApi($config['api']);
-                    $website->setSupported($config['supported']);
-                }
-            }
 
             $this->entityManager->persist($website);
             $this->entityManager->flush();

@@ -1,8 +1,23 @@
-<div class="website bg-pink" >
-  <div class="header">
-    <h3>{{ website.url }}</h3>
-    <p>Version {{ website.version }}</p>
-    <p>API Version {{ website.api }}</p>
-    <p>Security {{ (website.supported) ? 'passing' : 'nope.' }}</p>
+<div class="tr website flex" >
+  <div class="td w30 p10">
+    <div class="flex name">
+      <img [src]="website.favicon" width="16" height="16" class="pr10">
+      <a class="link color-grey" [href]="website.url" target="_blank">{{ website.cleanUrl }}</a>
+    </div>
+  </div>
+  <div class="td w20 p10">
+    <a class="version flex" href="https://contao.org"><img src="assets/img/icons/contao.svg" width="16" height="16" class="pr10"> Contao</a>
+    <span [ngClass]="{
+      'color-green': website.contao.supported === true,
+      'color-red': website.contao.supported === false
+    }">Version {{ website.contao.version }}</span>
+  </div>
+  <div class="td w20 p10">
+    <a class="version flex" href="https://secure.php.net"><img src="assets/img/icons/php.svg" width="16" height="16" class="pr10"> PHP</a>
+    <span [ngClass]="">Version {{ website.phpWeb.version }}</span>
+  </div>
+  <div class="td w30 p10">
+    <span class="block status"></span>
+    <span class="block">letztes Update am {{ website.lastUpdate | date:'medium' }}</span>
   </div>
 </div>

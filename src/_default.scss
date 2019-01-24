@@ -1,11 +1,29 @@
-$font: 400 16px/1.6 -apple-system,system-ui,Segoe UI,Helvetica Neue,sans-serif;
+// fonts
+$font: 400 14px/1.4 -apple-system,system-ui,Segoe UI,Helvetica Neue,sans-serif;
+$font-small: 12px;
+
+// width
 $max-width: 1400px;
 
+@for $i from 1 through 100 {
+  .w#{$i} {
+    width: #{percentage($i/100)};
+  }
+}
+
+$white: #fff;
+$grey: #444;
+$red: #D86E73;
+$blue: #5db7f4;
+$green: #5db27d;
+
+// colors
 $colors: (
-  red: #D86E73,
-  blue: #445e93,
-  pink: #fbc0b3,
-  yellow: #fcecc9
+  white: $white,
+  grey: $grey,
+  red: $red,
+  blue: $blue,
+  green: $green
 );
 
 @mixin bg-color-mod {
@@ -16,6 +34,69 @@ $colors: (
   }
 }
 
+@mixin color-mod {
+  @each $name, $hex in $colors {
+    &-#{$name} {
+      color: $hex;
+    }
+  }
+}
+
 .bg {
   @include bg-color-mod;
+}
+
+.color {
+  @include color-mod;
+}
+
+// margins and paddings
+@for $i from 1 through 100 {
+  .m#{$i} {
+    margin: #{$i}px;
+  }
+  .mt#{$i} {
+    margin-top: #{$i}px;
+  }
+  .mb#{$i} {
+    margin-bottom: #{$i}px;
+  }
+  .mtb#{$i} {
+    margin-top: #{$i}px;
+    margin-bottom: #{$i}px;
+  }
+  .ml#{$i} {
+    margin-left: #{$i}px;
+  }
+  .mr#{$i} {
+    margin-right: #{$i}px;
+  }
+  .mlr#{$i} {
+     margin-left: #{$i}px;
+    margin-right: #{$i}px;
+   }
+
+  .p#{$i} {
+    padding: #{$i}px;
+  }
+  .pt#{$i} {
+    padding-top: #{$i}px;
+  }
+  .pb#{$i} {
+    padding-bottom: #{$i}px;
+  }
+  .ptb#{$i} {
+    padding-top: #{$i}px;
+    padding-bottom: #{$i}px;
+  }
+  .pl#{$i} {
+    padding-left: #{$i}px;
+  }
+  .pr#{$i} {
+    padding-right: #{$i}px;
+  }
+  .plr#{$i} {
+    padding-left: #{$i}px;
+    padding-right: #{$i}px;
+  }
 }

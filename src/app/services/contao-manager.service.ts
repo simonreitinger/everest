@@ -14,6 +14,7 @@ export const defaultTask = {
   }
 };
 
+// this service is responsible for registering new installations
 @Injectable({
   providedIn: 'root'
 })

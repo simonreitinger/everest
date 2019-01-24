@@ -14,9 +14,7 @@ export class WebsiteComponent implements OnInit {
   constructor(private cs: ConfigService) { }
 
   ngOnInit() {
-    this.cs.getContaoConfig(this.website).subscribe(res => {
-      console.log('test', res);
-    });
+    console.log(this.website);
   }
 
 }

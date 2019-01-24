@@ -1,6 +1,19 @@
-<div class="website-add">
-    <a routerLink="/website/add">Add new website</a>
+<div class="website-add flex">
+    <h1>Installationen</h1>
+    <a class="btn bg-blue" routerLink="/website/add">Neue Installation</a>
 </div>
-<div id="websites">
-    <app-website *ngFor="let website of websites" [website]="website"></app-website>
+<div id="websites" class="bg-white">
+    <div class="table">
+        <div class="thead">
+            <div class="tr flex">
+                <div class="th w30 p10">Name</div>
+                <div class="th w20 p10">Software</div>
+                <div class="th w20 p10">Plattform</div>
+                <div class="th w30 p10">Status</div>
+            </div>
+        </div>
+        <div class="tbody">
+            <app-website *ngFor="let website of websites" [website]="website"></app-website>
+        </div>
+    </div>
 </div>

@@ -1,9 +1,23 @@
-.website {
-  padding: 10px;
+@import "../../default";
+
+.website-add {
+  justify-content: space-between;
+  align-items: baseline;
 }
 
-.button {
-  border: 0;
-  color: #000;
-  padding: 10px;
+#websites {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}
+
+.thead {
+  border-bottom: 1px solid #ccc;
+}
+
+.th {
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: $font-small;
 }

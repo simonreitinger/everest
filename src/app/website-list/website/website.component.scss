@@ -1,0 +1,20 @@
+@import "../../../default";
+
+
+.website {
+  .name {
+    align-items: center;
+  }
+}
+
+a {
+  color: $grey;
+
+  &:hover {
+    color: $blue;
+  }
+}
+
+.version {
+  align-items: center;
+}
