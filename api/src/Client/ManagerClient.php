@@ -24,6 +24,16 @@ class ManagerClient
     private $guzzle;
 
     /**
+     * @var int $startTime
+     */
+    private $startTime;
+
+    /**
+     * @var int $endTime
+     */
+    private $endTime;
+
+    /**
      * ManagerClient constructor.
      * @param ClientInterface $guzzle
      */
@@ -50,24 +60,39 @@ class ManagerClient
 
     /**
      * @param Website $website
+     * @param bool $logTime
      * @return \Psr\Http\Message\ResponseInterface|null
      */
-    private function homepageRequest(Website $website)
+    public function homepageRequest(Website $website, $logTime = false)
     {
         try {
-            return $this->guzzle->request('GET', $website->getUrl());
+            if ($logTime) {
+                $this->startTime = microtime(true);
+            }
+
+            $response = $this->guzzle->request('GET', $website->getUrl());
+
+            if ($logTime) {
+                $this->endTime = microtime(true);
+            }
+
+            return $response;
+
         } catch (GuzzleException $e) {
             return null;
         }
     }
 
     /**
-     * @param Website $website
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return int
      */
-    public function fetchMetadata(Website $website)
+    public function getRequestTime()
     {
-        return $this->homepageRequest($website);
+        if ($this->startTime && $this->endTime) {
+            return round(($this->endTime - $this->startTime) * 1000);
+        }
+
+        return 0;
     }
 
     /**

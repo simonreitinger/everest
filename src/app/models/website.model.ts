@@ -1,5 +1,5 @@
 export interface WebsiteModel {
-  id: string;
+  hash: string;
   url: string;
   cleanUrl: string;
   managerUrl: string;

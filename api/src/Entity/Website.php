@@ -3,14 +3,19 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\WebsiteRepository")
+ * @ORM\Table(uniqueConstraints={@UniqueConstraint(name="search_idx", columns={"hash"})})
  */
 class Website implements \JsonSerializable
 {
     const CONTAO_MANAGER = 'contao-manager.phar.php';
 
+    /**
+     * Website constructor.
+     */
     public function __construct()
     {
         $this->setAdded();
@@ -24,14 +29,21 @@ class Website implements \JsonSerializable
     private $id;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $hash;
+
+    /**
+     * last time where the /config endpoint was called
+     *
      * @var \DateTime
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetimetz", nullable=true)
      */
     private $lastUpdate;
 
     /**
-     * @var \DateTime
-     * @ORM\Column(type="datetime", nullable=true)
+     * @var \DateTimeImmutable
+     * @ORM\Column(type="datetimetz_immutable", nullable=true)
      */
     private $added;
 
@@ -124,6 +136,14 @@ class Website implements \JsonSerializable
     /**
      * @return mixed
      */
+    public function getHash()
+    {
+        return $this->hash;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getLastUpdate()
     {
         return $this->lastUpdate;
@@ -132,9 +152,12 @@ class Website implements \JsonSerializable
     /**
      * @return Website
      */
-    public function setLastUpdate(): Website
+    public function setLastUpdate(): self
     {
-        $this->lastUpdate = new \DateTime();
+        try {
+            $this->lastUpdate = new \DateTime();
+        } catch (\Exception $e) {
+        }
 
         return $this;
     }
@@ -150,11 +173,14 @@ class Website implements \JsonSerializable
     /**
      * @return Website
      */
-    public function setAdded(): Website
+    public function setAdded(): self
     {
-        // can only be set once
-        if (!$this->added) {
-            $this->added = new \DateTime();
+        try {
+            // can only be set once
+            if (!$this->added) {
+                $this->added = new \DateTimeImmutable();
+            }
+        } catch (\Exception $e) {
         }
 
         return $this;
@@ -172,9 +198,10 @@ class Website implements \JsonSerializable
      * @param mixed $url
      * @return Website
      */
-    public function setUrl($url): Website
+    public function setUrl($url): self
     {
         $this->url = $url;
+        $this->hash = hash('sha256', $url);
 
         return $this;
     }
@@ -191,7 +218,7 @@ class Website implements \JsonSerializable
      * @param mixed $url
      * @return Website
      */
-    public function setCleanUrl($url): Website
+    public function setCleanUrl($url): self
     {
         $this->cleanUrl = $url;
 
@@ -212,7 +239,7 @@ class Website implements \JsonSerializable
      * @param mixed $url
      * @return Website
      */
-    public function setManagerUrl($url): Website
+    public function setManagerUrl($url): self
     {
         $this->managerUrl = (strpos($url, 'localhost') !== false)
             ? $url
@@ -233,7 +260,7 @@ class Website implements \JsonSerializable
      * @param mixed $token
      * @return Website
      */
-    public function setToken($token): Website
+    public function setToken($token): self
     {
         $this->token = $token;
 
@@ -252,7 +279,7 @@ class Website implements \JsonSerializable
      * @param $favicon
      * @return Website
      */
-    public function setFavicon($favicon): Website
+    public function setFavicon($favicon): self
     {
         $this->favicon = $favicon;
 
@@ -271,7 +298,7 @@ class Website implements \JsonSerializable
      * @param $title
      * @return Website
      */
-    public function setTitle($title): Website
+    public function setTitle($title): self
     {
         $this->title = $title;
 
@@ -290,7 +317,7 @@ class Website implements \JsonSerializable
      * @param mixed $contao
      * @return Website
      */
-    public function setContao($contao): Website
+    public function setContao($contao): self
     {
         $this->contao = $contao;
 
@@ -309,7 +336,7 @@ class Website implements \JsonSerializable
      * @param mixed $composer
      * @return Website
      */
-    public function setComposer($composer): Website
+    public function setComposer($composer): self
     {
         $this->composer = $composer;
 
@@ -328,7 +355,7 @@ class Website implements \JsonSerializable
      * @param mixed $manager
      * @return Website
      */
-    public function setManager($manager): Website
+    public function setManager($manager): self
     {
         $this->manager = $manager;
 
@@ -347,7 +374,7 @@ class Website implements \JsonSerializable
      * @param mixed $phpCli
      * @return Website
      */
-    public function setPhpCli($phpCli): Website
+    public function setPhpCli($phpCli): self
     {
         $this->phpCli = $phpCli;
 
@@ -366,7 +393,7 @@ class Website implements \JsonSerializable
      * @param mixed $phpWeb
      * @return Website
      */
-    public function setPhpWeb($phpWeb): Website
+    public function setPhpWeb($phpWeb): self
     {
         $this->phpWeb = $phpWeb;
 
@@ -385,7 +412,7 @@ class Website implements \JsonSerializable
      * @param mixed $config
      * @return Website
      */
-    public function setConfig($config): Website
+    public function setConfig($config): self
     {
         $this->config = $config;
 
@@ -404,7 +431,7 @@ class Website implements \JsonSerializable
      * @param mixed $selfUpdate
      * @return Website
      */
-    public function setSelfUpdate($selfUpdate): Website
+    public function setSelfUpdate($selfUpdate): self
     {
         $this->selfUpdate = $selfUpdate;
 
@@ -428,16 +455,12 @@ class Website implements \JsonSerializable
     }
 
     /**
-     * Specify data which should be serialized to JSON
-     * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
-     * @since 5.4.0
+     * @return array|mixed
      */
     public function jsonSerialize()
     {
         return [
-            'id' => $this->id,
+            'hash' => $this->hash,
             'url' => $this->url,
             'cleanUrl' => $this->cleanUrl,
             'managerUrl' => $this->managerUrl,

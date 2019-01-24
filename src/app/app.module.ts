@@ -13,6 +13,7 @@ import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
 import { WebsiteComponent } from './website-list/website/website.component';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
+import { AccountComponent } from './account/account.component';
 
 registerLocaleData(localeDe);
 
@@ -24,7 +25,8 @@ registerLocaleData(localeDe);
     NavbarComponent,
     WebsiteListComponent,
     WebsiteAddComponent,
-    WebsiteComponent
+    WebsiteComponent,
+    AccountComponent
   ],
   imports: [
     BrowserModule,

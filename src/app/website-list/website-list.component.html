@@ -3,7 +3,7 @@
     <a class="btn bg-blue" routerLink="/website/add">Neue Installation</a>
 </div>
 <div id="websites" class="bg-white">
-    <div class="table">
+    <div class="table" *ngIf="websites">
         <div class="thead">
             <div class="tr flex">
                 <div class="th w30 p10">Name</div>
@@ -13,7 +13,10 @@
             </div>
         </div>
         <div class="tbody">
-            <app-website *ngFor="let website of websites" [website]="website"></app-website>
+            <app-website *ngFor="let website of websites" [website]="website" [phpVersions]="phpVersions"></app-website>
         </div>
+    </div>
+    <div class="table empty" *ngIf="!websites">
+        <p>Es wurden noch keine Installationen hinterlegt.</p>
     </div>
 </div>

@@ -6,15 +6,15 @@
  * Time: 16:31
  */
 
-namespace App\Controller\Config;
+namespace App\Controller;
 
 use App\Client\ManagerClient;
 use App\Client\WebsiteCrawler;
-use App\Controller\ApiController;
 use App\Entity\Website;
 use App\HttpKernel\ApiProblemResponse;
 use Crell\ApiProblem\ApiProblem;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,11 +22,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class ConfigController
- * @package App\Controller\Config
+ * @package App\Controller
  *
- * @Route("/config/{id}", name="website_config", methods={"GET"})
+ * responsible for updating configuration information
+ *
+ * @Route("/config/{hash}", name="website_config", methods={"GET"})
  */
-class ConfigController extends ApiController
+class ConfigController extends AbstractController
 {
     /**
      * @var EntityManagerInterface $entityManager
@@ -51,14 +53,14 @@ class ConfigController extends ApiController
     /**
      * fetch the current config data
      *
-     * @param $id
+     * @param $hash
      * @param Request $request
      * @return JsonResponse|ApiProblemResponse
      */
-    public function __invoke($id, Request $request)
+    public function __invoke($hash, Request $request)
     {
         /** @var Website $website */
-        $website = $this->entityManager->getRepository('App:Website')->findOneBy(['id' => $id]);
+        $website = $this->entityManager->getRepository(Website::class)->findOneBy(['hash' => $hash]);
 
         if (!$website) {
             return new ApiProblemResponse(
@@ -92,12 +94,13 @@ class ConfigController extends ApiController
         }
 
         // metadata
-        $metadataResponse = $this->client->fetchMetadata($website);
-        (new WebsiteCrawler($metadataResponse->getBody()->getContents(), $website))->fetchMetadata();
+        $metadataResponse = $this->client->homepageRequest($website);
+        (new WebsiteCrawler($metadataResponse->getBody()->getContents(), $website))->analyzeMetadata();
 
         $website->setLastUpdate();
         $this->entityManager->persist($website);
         $this->entityManager->flush();
-        return new JsonResponse($website);
+
+        return new JsonResponse(['success' => true]);
     }
 }

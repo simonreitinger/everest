@@ -13,18 +13,21 @@ use App\Entity\Website;
 use App\HttpKernel\ApiProblemResponse;
 use Crell\ApiProblem\ApiProblem;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class WebsiteController
  * @package App\Controller
  *
+ * lists and adds website to the database
+ *
  * @Route("/website")
  */
-class WebsiteController extends ApiController
+class WebsiteController extends AbstractController
 {
 
     /**
@@ -55,7 +58,7 @@ class WebsiteController extends ApiController
      */
     public function getAll()
     {
-        $websites = $this->entityManager->getRepository('App:Website')->findAll();
+        $websites = $this->entityManager->getRepository(Website::class)->findAll();
         return new JsonResponse($websites);
     }
 
@@ -69,16 +72,17 @@ class WebsiteController extends ApiController
     {
         $json = $this->getJsonContent($request);
 
-        $website = $this->entityManager->getRepository('App:Website')->findOneBy(['url' => $json['url']]);
+        $website = $this->entityManager->getRepository(Website::class)->findOneBy(['url' => $json['url']]);
 
+        // only progress with valid data
         if ($this->jsonIsValid($json)) {
             if (!$website) {
+                // set new urls
                 $website = new Website();
                 $website
                     ->setUrl($json['url'])
                     ->setManagerUrl($json['url'])
-                    ->setCleanUrl(parse_url($json['url'], PHP_URL_HOST)) // without protocol
-                ;
+                    ->setCleanUrl(parse_url($json['url'], PHP_URL_HOST)); // without protocol
             }
 
             $website->setToken($json['token']);
@@ -93,10 +97,16 @@ class WebsiteController extends ApiController
         return new ApiProblemResponse((new ApiProblem())->setStatus(Response::HTTP_BAD_REQUEST));
     }
 
-    private function jsonIsValid(array $json) {
+    private function jsonIsValid(array $json)
+    {
         return (
             $json['url'] &&
             $json['token']
         );
+    }
+
+    private function getJsonContent(Request $request)
+    {
+        return json_decode($request->getContent(), true) ?? [];
     }
 }

@@ -30,10 +30,10 @@ class WebsiteCrawler extends Crawler
         $this->website = $website;
     }
 
-    public function fetchMetadata()
+    public function analyzeMetadata()
     {
         // fetch favicon path when different
-        $this->filter('link[rel="icon"]')->reduce(function(Crawler $node) {
+        $this->filter('link')->reduce(function(Crawler $node) {
             $favicon = $this->getBaseHref() . $node->attr('href');
             if (
                 strpos($node->attr('rel'), 'icon') !== false &&

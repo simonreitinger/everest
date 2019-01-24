@@ -13,7 +13,7 @@ export class ConfigService {
   }
 
   getContaoConfig(website: WebsiteModel) {
-    return this.http.get(environment.everestApi + '/config/' + website.id);
+    return this.http.get(environment.everestApi + '/config/' + website.hash);
   }
 
 

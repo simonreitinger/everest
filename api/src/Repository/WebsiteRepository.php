@@ -21,16 +21,16 @@ class WebsiteRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $url
+     * @param $hash
      * @return Website|null
      */
-    public function findOneByUrl($url): ?Website
+    public function findOneByHash($hash): ?Website
     {
         try
         {
             return $this->createQueryBuilder('w')
-                ->where('w.url = :url')
-                ->setParameter('url', $url)
+                ->where('w.hash= :hash')
+                ->setParameter('hash', $hash)
                 ->getQuery()
                 ->getOneOrNullResult();
         }
@@ -38,6 +38,5 @@ class WebsiteRepository extends ServiceEntityRepository
         {
             return null;
         }
-
     }
 }
