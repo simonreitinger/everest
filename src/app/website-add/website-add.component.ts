@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ContaoManagerService } from '../../services/contao-manager.service';
+import { ContaoManagerService } from '../services/contao-manager.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfigService } from '../../services/config.service';
-import { WebsiteModel } from '../../models/website.model';
+import { ConfigService } from '../services/config.service';
+import { WebsiteModel } from '../models/website.model';
+import { FormControl, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-website-add',
@@ -11,9 +13,10 @@ import { WebsiteModel } from '../../models/website.model';
 })
 export class WebsiteAddComponent implements OnInit {
 
-  url: string;
+  url = new FormControl('', [Validators.required]);
 
   constructor(
+    private dialog: MatDialog,
     private cs: ConfigService,
     private cms: ContaoManagerService,
     private route: ActivatedRoute,
@@ -35,7 +38,13 @@ export class WebsiteAddComponent implements OnInit {
     });
   }
 
+  openConfirmDialog() {
+    const managerUrl = this.cms.getManagerUrl(this.url.value);
+    this.dialog.closeAll();
+    this.dialog.open()
+  }
+
   openManager() {
-    window.open(this.cms.getRegisterUrl(this.url));
+    window.open(this.cms.getRegisterUrl(this.url.value));
   }
 }

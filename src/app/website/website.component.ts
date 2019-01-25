@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { WebsiteModel } from '../../models/website.model';
-import { ConfigService } from '../../services/config.service';
-import { MonitoringService } from '../../services/monitoring.service';
-import { MonitoringModel } from '../../models/monitoring.model';
+import { WebsiteModel } from '../models/website.model';
+import { ConfigService } from '../services/config.service';
+import { MonitoringService } from '../services/monitoring.service';
+import { MonitoringModel } from '../models/monitoring.model';
 
 @Component({
   selector: 'app-website',

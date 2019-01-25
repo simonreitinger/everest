@@ -1,6 +1,6 @@
 <div class="website-add flex">
     <h1>Installationen</h1>
-    <a class="btn bg-blue" routerLink="/website/add">Neue Installation</a>
+    <button mat-button (click)="openDialog()">Neue Installation</button>
 </div>
 <div id="websites" class="bg-white">
     <div class="table" *ngIf="websites">

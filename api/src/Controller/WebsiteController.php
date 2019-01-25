@@ -90,8 +90,7 @@ class WebsiteController extends AbstractController
             $this->entityManager->persist($website);
             $this->entityManager->flush();
 
-            $json = ['success' => true];
-            return new JsonResponse($json);
+            return new JsonResponse($website);
         }
 
         return new ApiProblemResponse((new ApiProblem())->setStatus(Response::HTTP_BAD_REQUEST));

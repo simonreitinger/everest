@@ -4,6 +4,8 @@ import { WebsiteModel } from '../models/website.model';
 import { ContaoManagerService } from '../services/contao-manager.service';
 import { SoftwareService } from '../services/software.service';
 import { SoftwareModel } from '../models/software.model';
+import { WebsiteAddComponent } from '../website-add/website-add.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-website-list',
@@ -17,6 +19,7 @@ export class WebsiteListComponent implements OnInit {
   phpVersions: string[];
 
   constructor(
+    private dialog: MatDialog,
     private ws: WebsiteService,
     private cms: ContaoManagerService,
     private ss: SoftwareService
@@ -37,6 +40,11 @@ export class WebsiteListComponent implements OnInit {
         }
       }
     });
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(WebsiteAddComponent);
+    console.log(dialogRef);
   }
 
 

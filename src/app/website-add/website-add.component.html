@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>Neue Installation</h1>
+
+<mat-dialog-content>
+  <div class="website-add">
+    <form #f="ngForm" (ngSubmit)="openManager()">
+      <mat-form-field>
+        <input matInput type="text" name="url" placeholder="URL" id="url" [formControl]="url">
+      </mat-form-field>
+    </form>
+  </div>
+</mat-dialog-content>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="closeDialog()">Abbrechen</button>
+  <button class="btn bg-green" mat-button (click)="openConfirm()" cdkFocusInitial>Einrichten</button>
+</div>
