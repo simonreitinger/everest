@@ -33,27 +33,15 @@ class WebsiteCrawler extends Crawler
     public function analyzeMetadata()
     {
         // fetch favicon path when different
-        $this->filter('link')->reduce(function(Crawler $node) {
-            $favicon = $this->getBaseHref() . $node->attr('href');
-            if (
-                strpos($node->attr('rel'), 'icon') !== false &&
-                strpos($node->attr('href'), 'favicon') !== false &&
-                $favicon !== $this->website->getFavicon()
-            ) {
-                $this->website->setFavicon($favicon);
-                return;
-            }
-        });
+        $favicon = $this->filter('link[rel="icon"]')->first()->attr('href') ?? '';
+        $this->website->setFavicon($this->getBaseHref() . $favicon);
 
         // fetch title when different
-        $this->filter('title')->reduce(function(Crawler $node) {
-            if (
-                $this->website->getTitle() !== $node->text() &&
-                $node->text() !== $this->website->getTitle()
-            ) {
-                $this->website->setTitle($node->text());
-                return;
-            }
-        });
+        $title = $this->filter('title')->text();
+        $this->website->setTitle($title);
+
+        // fetch theme color
+        $themeColor = $this->filter('meta[name="theme-color"]')->attr('content') ?? '';
+        $this->website->setThemeColor($themeColor);
     }
 }

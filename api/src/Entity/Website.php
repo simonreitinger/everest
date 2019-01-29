@@ -78,6 +78,11 @@ class Website implements \JsonSerializable
     private $title;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $themeColor;
+
+    /**
      * from /api/server/contao
      * @ORM\Column(type="json_array", nullable=true)
      */
@@ -308,6 +313,22 @@ class Website implements \JsonSerializable
     /**
      * @return mixed
      */
+    public function getThemeColor()
+    {
+        return $this->themeColor;
+    }
+
+    /**
+     * @param mixed $themeColor
+     */
+    public function setThemeColor($themeColor): void
+    {
+        $this->themeColor = $themeColor;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getContao()
     {
         return $this->contao;
@@ -468,6 +489,7 @@ class Website implements \JsonSerializable
             'added' => $this->added ? $this->added->format(DATE_ATOM) : null,
             'favicon' => $this->favicon,
             'title' => $this->title,
+            'themeColor' => $this->themeColor,
             'contao' => $this->contao,
             'composer' => $this->composer,
             'manager' => $this->manager,
