@@ -32,9 +32,11 @@ export class ContaoManagerService {
       + '/#/oauth?scope=admin&client_id=everest&return_url=http://localhost:4200/website/add%3Forigin=' + url;
   }
 
+  // generate manager url depending on last char of url
+  // for slashes, it's not appended
   getManagerUrl(url: string) {
-    if (url.includes('localhost')) {
-      return url.replace('/' + CONTAO_MANAGER, '');
+    if (url.slice(-1) === '/') {
+      return url + CONTAO_MANAGER;
     }
 
     return url + '/' + CONTAO_MANAGER;

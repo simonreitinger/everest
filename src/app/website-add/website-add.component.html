@@ -1,16 +1,17 @@
-<h1 mat-dialog-title>Neue Installation</h1>
+<h2 mat-dialog-title>Neue Installation</h2>
 
 <mat-dialog-content>
   <div class="website-add">
-    <form #f="ngForm" (ngSubmit)="openManager()">
+    <form>
       <mat-form-field>
-        <input matInput type="text" name="url" placeholder="URL" id="url" [formControl]="url">
+        <input matInput type="text" name="url" placeholder="URL" id="url" (input)="checkManagerAutofill()" [formControl]="url">
       </mat-form-field>
     </form>
   </div>
 </mat-dialog-content>
 
 <div mat-dialog-actions>
-  <button mat-button (click)="closeDialog()">Abbrechen</button>
-  <button class="btn bg-green" mat-button (click)="openConfirm()" cdkFocusInitial>Einrichten</button>
+  <button class="btn bg-red" mat-button (click)="closeDialog()">Abbrechen</button>
+  <button class="btn bg-blue" mat-button [disabled]="disableManagerButton" (click)="setManagerUrl()">Contao Manager Autofill</button>
+  <button class="btn bg-green" mat-button (click)="openConfirmDialog()" cdkFocusInitial>Einrichten</button>
 </div>

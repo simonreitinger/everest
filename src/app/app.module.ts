@@ -8,7 +8,7 @@ import { registerLocaleData } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { AppMaterialModule } from './app-material.module';
+import { MaterialModule } from './material-module';
 import { NavbarComponent } from './navbar/navbar.component';
 import { LoginComponent } from './login/login.component';
 import { WebsiteListComponent } from './website-list/website-list.component';
@@ -16,6 +16,8 @@ import { HomeComponent } from './home/home.component';
 import { WebsiteAddComponent } from './website-add/website-add.component';
 import { WebsiteComponent } from './website/website.component';
 import { AccountComponent } from './account/account.component';
+import { MonitoringComponent } from './monitoring/monitoring.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 registerLocaleData(localeDe);
 
@@ -28,7 +30,8 @@ registerLocaleData(localeDe);
     WebsiteListComponent,
     WebsiteAddComponent,
     WebsiteComponent,
-    AccountComponent
+    AccountComponent,
+    MonitoringComponent
   ],
   imports: [
     BrowserModule,
@@ -37,12 +40,16 @@ registerLocaleData(localeDe);
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    AppMaterialModule
+    MaterialModule,
+    NgxChartsModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'de' }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    MonitoringComponent
+  ]
 })
 export class AppModule {
 }

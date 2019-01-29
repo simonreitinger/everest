@@ -21,6 +21,7 @@
     }">Version {{ website.phpWeb.version }}</span>
   </div>
   <div class="td w30 p10">
+    <span class="bg-red p10" (click)="openMonitoringDialog()">...</span>
     <span class="block status">
       letztes Monitoring:
       <span *ngIf="monitoring">{{ monitoring.createdAt | date:'medium' }} ({{ monitoring.status }} {{ monitoring.statusText }})</span>

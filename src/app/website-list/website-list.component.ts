@@ -29,13 +29,13 @@ export class WebsiteListComponent implements OnInit {
   ngOnInit() {
     this.ws.getAll().subscribe((res: WebsiteModel[]) => {
       this.websites = res;
+      console.log(res);
     });
     this.ss.getAll().subscribe((res: SoftwareModel[]) => {
       this.softwares = res;
       for (const software of this.softwares) {
         if (software.name === 'php') {
           this.phpVersions = software.versions;
-          console.log(this.phpVersions);
           break;
         }
       }
@@ -43,8 +43,10 @@ export class WebsiteListComponent implements OnInit {
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(WebsiteAddComponent);
-    console.log(dialogRef);
+    const dialogRef = this.dialog.open(WebsiteAddComponent, {
+      width: '400px',
+      height: '200px'
+    });
   }
 
 
