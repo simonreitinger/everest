@@ -16,7 +16,7 @@ export class MonitoringComponent implements OnInit {
   data: MonitoringModel[];
   chart: any;
 
-  // chart settings
+  // chart pagination settings
   perPage = 7;
   offset = 0;
 
