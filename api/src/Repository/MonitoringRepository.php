@@ -24,6 +24,7 @@ class MonitoringRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('m')
             ->where('m.website = :id')
             ->setParameter('id', $id)
+            ->orderBy('m.createdAt', 'desc')
             ->getQuery()
             ->getResult();
     }
@@ -31,5 +32,17 @@ class MonitoringRepository extends ServiceEntityRepository
     public function findCurrentByWebsiteId($id)
     {
         return $this->findOneBy(['website' => $id], ['createdAt' => 'desc']);
+    }
+
+    public function findByWebsiteIdAndDate($id, \DateTimeInterface $date)
+    {
+        return $this->createQueryBuilder('m')
+            ->where('m.website = :id')
+            ->where('m.createdAt = :date')
+            ->setParameter('id', $id)
+            ->setParameter('date', $date)
+            ->orderBy('m.createdAt', 'desc')
+            ->getQuery()
+            ->getResult();
     }
 }

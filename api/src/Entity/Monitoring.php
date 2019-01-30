@@ -3,10 +3,15 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MonitoringRepository")
+ * @ORM\Table(uniqueConstraints={
+ *      @UniqueConstraint(name="monitoring_unique",
+ *        columns={"website_id", "created_at"})
+ * })
  */
 class Monitoring implements \JsonSerializable
 {

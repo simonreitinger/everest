@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { WebsiteModel } from '../models/website.model';
-import { ConfigService } from '../services/config.service';
 import { MonitoringService } from '../services/monitoring.service';
 import { MonitoringModel } from '../models/monitoring.model';
 import { MatDialog } from '@angular/material';
@@ -30,8 +29,8 @@ export class WebsiteComponent implements OnInit {
       data: {
         website: this.website
       },
-      height: '500px',
-      width: '500px'
+      height: '450px',
+      width: '800px'
     });
   }
 }

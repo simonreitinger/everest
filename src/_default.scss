@@ -1,6 +1,6 @@
 // fonts
 $font: 400 14px/1.4 -apple-system,system-ui,Segoe UI,Helvetica Neue,sans-serif;
-$font-small: 12px;
+$font-small: .875rem;
 
 // width
 $max-width: 1400px;
@@ -12,18 +12,24 @@ $max-width: 1400px;
 }
 
 $white: #fff;
+$dark-white: #f3f3f3;
+$light-grey: #ccc;
 $grey: #2f2f2f;
 $red: #D86E73;
 $blue: #5db7f4;
 $green: #5db27d;
+$body: #e5e8ea;
 
 // colors
 $colors: (
   white: $white,
+  dark-white: $dark-white,
+  light-grey: $light-grey,
   grey: $grey,
   red: $red,
   blue: $blue,
-  green: $green
+  green: $green,
+  body: $body
 );
 
 @mixin bg-color-mod {

@@ -5,6 +5,10 @@
   .name {
     align-items: center;
   }
+
+  &:hover {
+      background-color: $dark-white;
+  }
 }
 
 a {

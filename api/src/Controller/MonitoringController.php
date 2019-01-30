@@ -61,13 +61,12 @@ class MonitoringController extends AbstractController
      */
     public function add($hash)
     {
-        /** @var WebsiteRepository $repo */
-        $repo = $this->entityManager->getRepository(Website::class);
-        $website = $repo->findOneByHash($hash);
+        /** @var WebsiteRepository $websiteRepo */
+        $websiteRepo = $this->entityManager->getRepository(Website::class);
+        $website = $websiteRepo->findOneByHash($hash);
 
         if ($website) {
-
-            // perform the uptime request
+            // perform the request
             $response = $this->client->homepageRequest($website, true);
 
             $monitoring = new Monitoring();

@@ -1,0 +1,21 @@
+@import "../../default";
+
+.stats {
+  width: 100%;
+}
+
+.table {
+  font-size: .875rem;
+}
+
+.th {
+  text-transform: uppercase;
+}
+
+.th, .tr {
+  border-bottom: 1px solid $light-grey;
+}
+
+.tr:last-child {
+  border-bottom: none;
+}

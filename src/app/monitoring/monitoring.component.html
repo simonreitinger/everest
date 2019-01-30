@@ -1,3 +1,28 @@
+<h2 mat-dialog-title>Monitoring von {{ website.cleanUrl }}</h2>
 <mat-dialog-content>
-  <canvas id="monitoringChart" width="500" height="400"></canvas>
+  <div class="flex">
+    <div>
+      <canvas id="monitoringChart" width="450" height="300"></canvas>
+    </div>
+    <div class="stats">
+      <div class="table p5" *ngIf="data">
+        <div class="thead flex">
+          <div class="th w40 p5">Zeit</div>
+          <div class="th w30 p5">Dauer</div>
+          <div class="th w30 p5">Status</div>
+        </div>
+        <div class="tr flex" *ngFor="let entry of getCurrentViewData()">
+          <div class="td w40 p5">{{ entry.createdAt | date:'short' }}</div>
+          <div class="td w30 p5">{{ entry.requestTimeInMs }} ms</div>
+          <div class="td w30 p5">{{ entry.status }} {{ entry.statusText }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <mat-paginator *ngIf="data"
+    [length]="data.length"
+    [hidePageSize]="true"
+    [pageSize]="perPage"
+    (page)="setOffset($event)"
+  ></mat-paginator>
 </mat-dialog-content>
