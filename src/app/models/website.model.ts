@@ -7,6 +7,7 @@ export interface WebsiteModel {
   added?: string;
   favicon: string;
   title: string;
+  themeColor: string;
   contao: {
     version: string;
     api: string;

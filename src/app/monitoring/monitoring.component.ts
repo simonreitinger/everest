@@ -1,8 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { MonitoringModel } from '../models/monitoring.model';
 import { MonitoringService } from '../services/monitoring.service';
 import { WebsiteModel } from '../models/website.model';
+import { Chart } from 'chart.js';
+import { defaultTask } from '../services/contao-manager.service';
 
 @Component({
   selector: 'app-monitoring',
@@ -13,19 +15,7 @@ export class MonitoringComponent implements OnInit {
 
   website: WebsiteModel;
   data: MonitoringModel[];
-
-  series: object[];
-  showXAxis = true;
-  showYAxis = true;
-  gradient = false;
-  showLegend = true;
-  showXAxisLabel = true;
-  xAxisLabel = 'Datum';
-  showYAxisLabel = true;
-  yAxisLabel = 'Dauer';
-  colorScheme = {
-    domain: ['#ccc, #000', '#f00', '#ff0']
-  };
+  chart: any;
 
   constructor(private ms: MonitoringService, @Inject(MAT_DIALOG_DATA) public injectedData: any) {
     this.website = injectedData.website;
@@ -34,15 +24,36 @@ export class MonitoringComponent implements OnInit {
   ngOnInit() {
     this.ms.getAll(this.website).subscribe((res: MonitoringModel[]) => {
       this.data = res;
-      this.buildSeries(res);
+      this.buildChart();
     });
   }
 
-  buildSeries(res: MonitoringModel[]) {
-    const entries = [];
-    for (const entry of res) {
-      entries.push({ name: entry.createdAt, value: entry.requestTimeInMs });
+  buildData() {
+    const data = [];
+    const labels = [];
+    for (const entry of this.data) {
+      labels.push(entry.createdAt);
+      data.push(entry.requestTimeInMs);
     }
-    this.series = [{ name: this.website.cleanUrl, series: entries }];
+
+    return {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: this.website.cleanUrl,
+          data: data,
+          backgroundColor: [this.website.themeColor ? this.website.themeColor : '#5db7f4']
+        }]
+      },
+      options: {
+
+      }
+    };
+  }
+
+  buildChart() {
+    const canvas = document.getElementById('monitoringChart');
+    this.chart = new Chart(canvas, this.buildData());
   }
 }

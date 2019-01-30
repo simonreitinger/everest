@@ -29,7 +29,9 @@ export class WebsiteComponent implements OnInit {
     this.dialog.open(MonitoringComponent, {
       data: {
         website: this.website
-      }
+      },
+      height: '500px',
+      width: '500px'
     });
   }
 }
