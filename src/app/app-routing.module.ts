@@ -4,11 +4,13 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { WebsiteListComponent } from './website-list/website-list.component';
 import { WebsiteAddComponent } from './website-add/website-add.component';
+import { WebsiteDetailComponent } from './website-detail/website-detail.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'websites', component: WebsiteListComponent },
   { path: 'website/add', component: WebsiteAddComponent },
+  { path: 'website/detail/:name', component: WebsiteDetailComponent },
   { path: 'login', component: LoginComponent }
 ];
 

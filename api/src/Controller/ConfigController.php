@@ -54,10 +54,9 @@ class ConfigController extends AbstractController
      * fetch the current config data
      *
      * @param $hash
-     * @param Request $request
      * @return JsonResponse|ApiProblemResponse
      */
-    public function __invoke($hash, Request $request)
+    public function __invoke($hash)
     {
         /** @var Website $website */
         $website = $this->entityManager->getRepository(Website::class)->findOneBy(['hash' => $hash]);
@@ -68,6 +67,13 @@ class ConfigController extends AbstractController
             );
         }
 
+        $this->updateConfig($website);
+
+        return new JsonResponse(['success' => true]);
+    }
+
+    public function updateConfig(Website $website): void
+    {
         // perform the configuration requests
         $responses = [
             'setContao' => $this->client->serverContao($website),
@@ -100,7 +106,5 @@ class ConfigController extends AbstractController
         $website->setLastUpdate();
         $this->entityManager->persist($website);
         $this->entityManager->flush();
-
-        return new JsonResponse(['success' => true]);
     }
 }

@@ -18,6 +18,7 @@ import { WebsiteComponent } from './website/website.component';
 import { AccountComponent } from './account/account.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { WebsiteDetailComponent } from './website-detail/website-detail.component';
 
 registerLocaleData(localeDe);
 
@@ -31,7 +32,8 @@ registerLocaleData(localeDe);
     WebsiteAddComponent,
     WebsiteComponent,
     AccountComponent,
-    MonitoringComponent
+    MonitoringComponent,
+    WebsiteDetailComponent
   ],
   imports: [
     BrowserModule,
