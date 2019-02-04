@@ -14,7 +14,8 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 export class WebsiteAddComponent implements OnInit {
 
   url = new FormControl('', [Validators.required]);
-  private disableManagerButton = false;
+  disableManagerButton = false;
+  disableConfirmButton = false;
 
   constructor(
     protected dialog: MatDialog,
@@ -54,6 +55,10 @@ export class WebsiteAddComponent implements OnInit {
 
   // check if the url contains the contao manager
   checkManagerAutofill() {
-    this.disableManagerButton = this.url.value.includes(CONTAO_MANAGER);
+    this.disableManagerButton = this.url.value ? this.url.value.includes(CONTAO_MANAGER) : false;
+  }
+
+  openUrl() {
+    window.open(this.url.value, '_blank');
   }
 }

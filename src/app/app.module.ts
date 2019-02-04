@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
 import { registerLocaleData } from '@angular/common';
 
@@ -19,6 +19,7 @@ import { AccountComponent } from './account/account.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { WebsiteDetailComponent } from './website-detail/website-detail.component';
+import { RequestInterceptor } from './interceptors/request.interceptor';
 
 registerLocaleData(localeDe);
 
@@ -46,7 +47,8 @@ registerLocaleData(localeDe);
     NgxChartsModule
   ],
   providers: [
-    { provide: LOCALE_ID, useValue: 'de' }
+    { provide: LOCALE_ID, useValue: 'de' },
+    { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true }
   ],
   bootstrap: [AppComponent],
   entryComponents: [

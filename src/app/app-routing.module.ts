@@ -5,12 +5,13 @@ import { HomeComponent } from './home/home.component';
 import { WebsiteListComponent } from './website-list/website-list.component';
 import { WebsiteAddComponent } from './website-add/website-add.component';
 import { WebsiteDetailComponent } from './website-detail/website-detail.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'websites', component: WebsiteListComponent },
-  { path: 'website/add', component: WebsiteAddComponent },
-  { path: 'website/detail/:name', component: WebsiteDetailComponent },
+  { path: 'websites', component: WebsiteListComponent, canActivate: [AuthGuard] },
+  { path: 'website/add', component: WebsiteAddComponent, canActivate: [AuthGuard] },
+  { path: 'website/detail/:name', component: WebsiteDetailComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent }
 ];
 

@@ -3,6 +3,7 @@
     <div class="flex name">
       <img [src]="website.favicon" width="16" height="16" class="pr10">
       <a class="link color-grey" [href]="website.url" target="_blank">{{ website.cleanUrl }}</a>
+      <a class="pl5 link color-grey" [href]="website.managerUrl">(zum Manager)</a>
     </div>
     <span class="block">hinzugefügt am {{ website.added | date:'short' }}</span>
   </div>
@@ -22,9 +23,9 @@
   </div>
   <div class="td w30 p10">
     <div class="block status">
-      <span>letztes Monitoring:</span>
-      <span *ngIf="monitoring">{{ monitoring.createdAt | date:'medium' }} ({{ monitoring.status }} {{ monitoring.statusText }})</span>
-      <span (click)="openMonitoringDialog()"><img src="assets/img/icons/chart.svg" width="20" height="20" class="pointer"></span>
+      <a (click)="openMonitoringDialog()">zum Monitoring</a>
+      <!--<span *ngIf="monitoring">{{ monitoring.createdAt | date:'medium' }} ({{ monitoring.status }} {{ monitoring.statusText }})</span>-->
+      <!--<span (click)="openMonitoringDialog()"><img src="assets/img/icons/chart.svg" width="20" height="20" class="pointer"></span>-->
     </div>
     <span class="block">letztes Update am {{ website.lastUpdate | date:'medium' }}</span>
   </div>

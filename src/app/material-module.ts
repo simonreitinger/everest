@@ -4,11 +4,9 @@ import {
   MatCheckboxModule,
   MatDialogModule,
   MatFormFieldModule,
-  MatInputModule, MatPaginatorIntl,
+  MatInputModule,
   MatPaginatorModule
 } from '@angular/material';
-import { registerLocaleData } from '@angular/common';
-import localeDe from '@angular/common/locales/de';
 
 const modules = [
   MatButtonModule,

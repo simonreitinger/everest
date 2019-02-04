@@ -44,7 +44,7 @@ export class WebsiteListComponent implements OnInit {
 
   openDialog() {
     const dialogRef = this.dialog.open(WebsiteAddComponent, {
-      width: '400px',
+      width: '500px',
       height: '200px'
     });
   }

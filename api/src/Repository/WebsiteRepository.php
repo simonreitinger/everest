@@ -39,4 +39,26 @@ class WebsiteRepository extends ServiceEntityRepository
             return null;
         }
     }
+
+    /**
+     * @param string $url
+     * @return Website|null
+     */
+    public function findOneByUrl(string $url): ?Website
+    {
+        try
+        {
+            return $this->createQueryBuilder('w')
+                ->orWhere('w.url = :url')
+                ->orWhere('w.cleanUrl LIKE :url')
+                ->orWhere('w.managerUrl LIKE :url')
+                ->setParameter('url', $url)
+                ->getQuery()
+                ->getOneOrNullResult();
+        }
+        catch (NonUniqueResultException $e)
+        {
+            return null;
+        }
+    }
 }

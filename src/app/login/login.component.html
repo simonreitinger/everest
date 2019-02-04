@@ -1,3 +1,11 @@
-<p>
-  login works!
-</p>
+<div id="login">
+  <form #form="ngForm" (ngSubmit)="onLogin()">
+    <mat-form-field>
+      <input matInput type="text" name="username" placeholder="Username" id="username" [formControl]="username">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="password" name="password" placeholder="Passwort" id="password" [formControl]="password">
+    </mat-form-field>
+    <button class="btn bg-green">Login</button>
+  </form>
+</div>

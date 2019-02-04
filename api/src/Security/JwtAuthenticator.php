@@ -45,7 +45,7 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
      */
     public function supports(Request $request)
     {
-        // TODO: Implement supports() method.
+        return false;
     }
 
     /**
@@ -54,23 +54,20 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
      */
     public function getCredentials(Request $request)
     {
-        $extractor = new AuthorizationHeaderTokenExtractor(
-            'Bearer',
-            'Authorization'
-        );
+        $extractor = new AuthorizationHeaderTokenExtractor('Bearer','Authorization');
 
         $token = $extractor->extract($request);
 
         if (!$token)
         {
-            return;
+            return '';
         }
 
         return $token;
     }
 
     /**
-     * @param mixed $credentials
+     * @param mixed $credentials (user token)
      * @param UserProviderInterface $userProvider
      * @return UserInterface|null
      */
@@ -84,10 +81,6 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
         {
             throw new CustomUserMessageAuthenticationException('Invalid Token');
         }
-
-        echo "<pre>";
-        print_r($userProvider->loadUserByUsername($data['username']));
-        exit;
 
         return $userProvider->loadUserByUsername($data['username']);
     }
