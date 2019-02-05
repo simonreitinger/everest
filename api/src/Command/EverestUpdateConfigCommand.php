@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EverestUpdateConfigCommand extends Command
 {
+
     protected static $defaultName = 'everest:update-config';
 
     /**
@@ -48,8 +49,7 @@ class EverestUpdateConfigCommand extends Command
         $this
             ->setDescription('Update script for all registered websites')
             ->addArgument('url', InputArgument::OPTIONAL, 'URL of the website to be updated')
-            ->addOption('all', 'a', null, 'Update config data for all websites')
-        ;
+            ->addOption('all', 'a', null, 'Update config data for all websites');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

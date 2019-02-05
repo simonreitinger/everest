@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
  */
 class Website implements \JsonSerializable
 {
+
     const CONTAO_MANAGER = 'contao-manager.phar.php';
 
     /**

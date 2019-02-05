@@ -9,12 +9,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class EverestMonitoringCommand extends Command
 {
+
     protected static $defaultName = 'everest:monitoring';
 
     /**
@@ -43,8 +43,7 @@ class EverestMonitoringCommand extends Command
         $this
             ->setDescription('Performs a request to every configured website')
             ->addArgument('url', InputArgument::OPTIONAL, 'URL of the website to be monitored')
-            ->addOption('all', 'a', null, 'Perform requests to all websites')
-        ;
+            ->addOption('all', 'a', null, 'Perform requests to all websites');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

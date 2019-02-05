@@ -6,13 +6,17 @@ import { WebsiteListComponent } from './website-list/website-list.component';
 import { WebsiteAddComponent } from './website-add/website-add.component';
 import { WebsiteDetailComponent } from './website-detail/website-detail.component';
 import { AuthGuard } from './guards/auth.guard';
+import { LogoutComponent } from './logout/logout.component';
+import { AccountComponent } from './account/account.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'logout', component: LogoutComponent },
   { path: 'websites', component: WebsiteListComponent, canActivate: [AuthGuard] },
   { path: 'website/add', component: WebsiteAddComponent, canActivate: [AuthGuard] },
   { path: 'website/detail/:name', component: WebsiteDetailComponent, canActivate: [AuthGuard] },
-  { path: 'login', component: LoginComponent }
+  { path: 'account', component: AccountComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

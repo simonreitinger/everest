@@ -57,7 +57,7 @@ $colors: (
 }
 
 // margins and paddings
-@for $i from 1 through 100 {
+@for $i from 1 through 30 {
   .m#{$i} {
     margin: #{$i}px;
   }

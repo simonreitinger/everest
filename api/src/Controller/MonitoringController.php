@@ -5,18 +5,17 @@
  * Date: 2019-01-24
  * Time: 10:30
  */
+
 namespace App\Controller;
+
 use App\Client\ManagerClient;
 use App\Entity\Monitoring;
 use App\Entity\Website;
 use App\HttpKernel\ApiProblemResponse;
 use App\Repository\MonitoringRepository;
 use App\Repository\WebsiteRepository;
-use Crell\ApiProblem\ApiProblem;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -28,8 +27,9 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/monitoring")
  */
-class MonitoringController extends AbstractController
+class MonitoringController extends ApiController
 {
+
     /**
      * @var EntityManagerInterface $entityManager
      */
@@ -40,6 +40,7 @@ class MonitoringController extends AbstractController
      */
 
     private $client;
+
     /**
      * MonitoringController constructor.
      * @param ManagerClient $client
@@ -65,9 +66,11 @@ class MonitoringController extends AbstractController
             /** @var MonitoringRepository $monitoringRepo */
             $monitoringRepo = $this->entityManager->getRepository(Monitoring::class);
             $monitoring = $monitoringRepo->findCurrentByWebsiteId($website->getId());
+
             return new JsonResponse($monitoring);
         }
-        return new ApiProblemResponse((new ApiProblem())->setStatus(Response::HTTP_BAD_REQUEST));
+
+        $this->createApiProblemResponse('', Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -76,7 +79,7 @@ class MonitoringController extends AbstractController
      * @param $hash
      * @return JsonResponse|ApiProblemResponse
      */
-    public function listForOne($hash, Request $request)
+    public function listForOne($hash)
     {
         /** @var WebsiteRepository $websiteRepo */
         $websiteRepo = $this->entityManager->getRepository(Website::class);
@@ -85,8 +88,10 @@ class MonitoringController extends AbstractController
             /** @var MonitoringRepository $monitoringRepo */
             $monitoringRepo = $this->entityManager->getRepository(Monitoring::class);
             $monitoring = $monitoringRepo->findByWebsiteId($website->getId()) ?? [];
+
             return new JsonResponse($monitoring);
         }
-        return new ApiProblemResponse((new ApiProblem())->setStatus(Response::HTTP_BAD_REQUEST));
+
+        $this->createApiProblemResponse('Invalid hash', Response::HTTP_BAD_REQUEST);
     }
 }

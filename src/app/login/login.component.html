@@ -7,5 +7,7 @@
       <input matInput type="password" name="password" placeholder="Passwort" id="password" [formControl]="password">
     </mat-form-field>
     <button class="btn bg-green">Login</button>
+    <mat-spinner *ngIf="showSpinner"></mat-spinner>
+    <mat-error *ngIf="loginFailed">Fehler</mat-error>
   </form>
 </div>

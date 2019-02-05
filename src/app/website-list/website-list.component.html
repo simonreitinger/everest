@@ -2,7 +2,7 @@
     <h1>Installationen</h1>
     <button mat-button (click)="openDialog()">Neue Installation</button>
 </div>
-<div id="websites" class="bg-white">
+<div id="websites" class="bg-white round-border">
     <div class="table" *ngIf="websites">
         <div class="thead">
             <div class="tr flex">
@@ -10,6 +10,7 @@
                 <div class="th w20 p10">Software</div>
                 <div class="th w20 p10">Plattform</div>
                 <div class="th w30 p10">Status</div>
+                <div class="th"></div>
             </div>
         </div>
         <div class="tbody">

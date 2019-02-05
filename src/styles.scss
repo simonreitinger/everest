@@ -1,5 +1,6 @@
-@import "default";
-@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import 'default';
+@import 'material';
+// @import '@angular/material/prebuilt-themes/indigo-pink.css';
 
 * {
   margin: 0;
@@ -47,4 +48,9 @@ a {
 
 .cdk-overlay-container .mat-form-field {
   width: 100%;
+}
+
+.round-border {
+  border-radius: 3px;
+  border: 1px solid $light-grey;
 }

@@ -20,6 +20,7 @@ use Psr\Http\Message\ResponseInterface;
  */
 interface VersionManagerInterface
 {
+
     /**
      * extract the versions from the given response
      *

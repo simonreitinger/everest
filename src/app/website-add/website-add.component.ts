@@ -59,6 +59,6 @@ export class WebsiteAddComponent implements OnInit {
   }
 
   openUrl() {
-    window.open(this.url.value, '_blank');
+    window.open(this.cms.getRegisterUrl(this.url.value), '_blank');
   }
 }

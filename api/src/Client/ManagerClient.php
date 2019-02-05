@@ -18,6 +18,7 @@ use GuzzleHttp\Exception\GuzzleException;
  */
 class ManagerClient
 {
+
     /**
      * @var ClientInterface $guzzle
      */

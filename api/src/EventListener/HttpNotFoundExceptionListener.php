@@ -36,10 +36,16 @@ class HttpNotFoundExceptionListener implements EventSubscriberInterface
     {
         $this->logger->alert($event->getException()->getMessage());
 
+        if (getenv('APP_ENV') === 'dev') {
+            $title = $event->getException()->getMessage();
+        } else {
+            $title = 'Unknown Error';
+        }
+
         $response = new ApiProblemResponse(
             (new ApiProblem())
                 ->setStatus(Response::HTTP_UNAUTHORIZED)
-                ->setTitle('Unauthorized')
+                ->setTitle($title)
         );
 
         $event->setResponse($response);
@@ -51,7 +57,7 @@ class HttpNotFoundExceptionListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-//            'kernel.exception' => 'onKernelException'
+            'kernel.exception' => 'onKernelException'
         ];
     }
 }

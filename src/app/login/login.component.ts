@@ -11,6 +11,8 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   username = new FormControl('', [Validators.required]);
   password = new FormControl('', [Validators.required]);
+  showSpinner = false;
+  loginFailed = false;
 
   constructor(private auth: AuthenticationService, private router: Router) {
   }
@@ -19,10 +21,14 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin() {
+    this.showSpinner = true;
     this.auth.login(this.username.value, this.password.value).subscribe(success => {
       if (success) {
         this.router.navigateByUrl('/websites');
       }
+    }, error => {
+      this.loginFailed = true;
+      this.showSpinner = false;
     });
   }
 

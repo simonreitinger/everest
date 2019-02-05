@@ -14,7 +14,6 @@ use App\Repository\SoftwareRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,8 +24,9 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/software")
  */
-class SoftwareController extends AbstractController
+class SoftwareController extends ApiController
 {
+
     /**
      * @var EntityManagerInterface $client
      */

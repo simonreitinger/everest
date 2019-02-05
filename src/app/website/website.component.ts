@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { WebsiteModel } from '../models/website.model';
 import { MonitoringService } from '../services/monitoring.service';
 import { MonitoringModel } from '../models/monitoring.model';
-import { MatDialog } from '@angular/material';
 import { MonitoringComponent } from '../monitoring/monitoring.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-website',

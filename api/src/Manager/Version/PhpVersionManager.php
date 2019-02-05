@@ -12,6 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class PhpVersionManager implements VersionManagerInterface
 {
+
     /**
      * extract the versions from the given response body ($json)
      *

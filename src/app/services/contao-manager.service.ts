@@ -24,12 +24,13 @@ export class ContaoManagerService {
   }
 
   getRegisterUrl(url: string) {
-    if (url.includes('localhost')) {
-      return url
-        + '/#/oauth?scope=admin&client_id=everest&return_url=http://localhost:4200/website/add%3Forigin=' + url;
-    }
-    return this.getManagerUrl(url)
-      + '/#/oauth?scope=admin&client_id=everest&return_url=http://localhost:4200/website/add%3Forigin=' + url;
+    const host = window.location.origin;
+    return url
+      + '/#/oauth?scope=admin&client_id=everest&return_url=' + host + '/website/add%3Forigin=' + this.stripManagerUrl(url);
+  }
+
+  stripManagerUrl(url: string) {
+    return url.replace('/' + CONTAO_MANAGER, '');
   }
 
   // generate manager url depending on last char of url

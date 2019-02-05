@@ -1,1 +1,24 @@
-<li (click)="showDropdown()">Account</li>
+<h1 class="w100">Mein Account</h1>
+<div id="account" class="w50 bg-white round-border pt20 plr10">
+  <form #form="ngForm" *ngIf="user" class="w100" (ngSubmit)="onSubmit(form)">
+    <p class="w100 mb10">Username: {{ user.username }}</p>
+    <mat-form-field class="w100">
+      <input matInput type="text" required email="true" placeholder="E-Mail" id="email" name="email" [(ngModel)]="user.email">
+    </mat-form-field>
+    <mat-form-field class="w100">
+      <input matInput type="text" required placeholder="Vorname" id="firstName" name="firstName" [(ngModel)]="user.firstName">
+    </mat-form-field>
+    <mat-form-field class="w100">
+      <input matInput type="text" required placeholder="Nachname" id="lastName" name="lastName" [(ngModel)]="user.lastName">
+    </mat-form-field>
+    <mat-error *ngIf="!canSubmit && !prmEmail.errors">Benutzer existiert bereits.</mat-error>
+    <button class="btn" [disabled]="!canSubmit" [ngClass]="{
+      'bg-green': canSubmit,
+      'bg-red': !canSubmit
+    }">Speichern</button>
+  </form>
+</div>
+
+<template #dialog>
+  <div id="container">Test</div>
+</template>

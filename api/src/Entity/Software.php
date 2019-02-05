@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Software implements \JsonSerializable
 {
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -27,7 +28,6 @@ class Software implements \JsonSerializable
      * @ORM\Column(type="json_array", nullable=true)
      */
     private $versions;
-
 
     public function getId(): ?int
     {

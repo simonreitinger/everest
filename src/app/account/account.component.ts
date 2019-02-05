@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { UserService } from '../services/user.service';
+import { UserModel } from '../models/user.model';
+import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../services/authentication.service';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-account',
@@ -7,14 +13,58 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccountComponent implements OnInit {
 
-  show: boolean = false;
+  canSubmit = true;
 
-  constructor() { }
+  user: UserModel;
+  initialUsername: string;
+  usernames: string[];
 
-  ngOnInit() {
+  @ViewChild('container') container;
+
+  constructor(private auth: AuthenticationService, private us: UserService, private router: Router, private dialog: MatDialog) {
   }
 
-  showDropdown() {
-    this.show = !this.show;
+  ngOnInit() {
+    this.us.getUser().subscribe(res => {
+      this.user = res;
+      this.initialUsername = res.username;
+    });
+
+    this.us.getUsers().subscribe(res => {
+      this.usernames = res;
+      console.log(res);
+    });
+  }
+
+  checkUsername() {
+    const currentInput = this.user.username;
+
+    if (this.usernames.includes(currentInput) && currentInput !== this.initialUsername) {
+      this.canSubmit = false;
+      return;
+    }
+
+    this.canSubmit = true;
+  }
+
+  onSubmit(form: NgForm) {
+    // form has been edited
+    if (form.dirty) {
+      this.us.updateUserData(form.value).subscribe(res => {
+        this.user = res;
+        this.usernames = this.usernames.filter(username => username !== this.initialUsername);
+        this.initialUsername = res.username;
+
+        if (this.initialUsername !== res.username) {
+          this.dialog.open(this.container);
+          this.auth.logout();
+        } else {
+          this.router.navigateByUrl('/websites');
+        }
+      });
+
+
+    }
+
   }
 }

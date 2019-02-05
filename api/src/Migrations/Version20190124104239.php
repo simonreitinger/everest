@@ -12,12 +12,13 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20190124104239 extends AbstractMigration
 {
-    public function getDescription() : string
+
+    public function getDescription(): string
     {
         return '';
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
@@ -25,7 +26,7 @@ final class Version20190124104239 extends AbstractMigration
         $this->addSql('ALTER TABLE monitoring CHANGE time created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', CHANGE response_time_in_ms request_time INT NOT NULL');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');

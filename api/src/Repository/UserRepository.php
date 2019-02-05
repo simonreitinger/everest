@@ -15,6 +15,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class UserRepository extends ServiceEntityRepository
 {
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, User::class);
@@ -26,16 +27,13 @@ class UserRepository extends ServiceEntityRepository
      */
     public function findOneByUsername($username): ?User
     {
-        try
-        {
+        try {
             return $this->createQueryBuilder('u')
                 ->where('u.username = :username')
                 ->setParameter('username', $username)
                 ->getQuery()
                 ->getOneOrNullResult();
-        }
-        catch(NonUniqueResultException $e)
-        {
+        } catch (NonUniqueResultException $e) {
             return null;
         }
     }

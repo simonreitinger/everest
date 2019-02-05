@@ -1,4 +1,4 @@
-<div class="tr website flex" >
+<div class="tr website flex">
   <div class="td w30 p10">
     <div class="flex name">
       <img [src]="website.favicon" width="16" height="16" class="pr10">
@@ -21,12 +21,23 @@
       'color-red': phpVersions.includes(website.phpWeb.version) === false
     }">Version {{ website.phpWeb.version }}</span>
   </div>
-  <div class="td w30 p10">
+  <div class="td w25 p10">
     <div class="block status">
       <a (click)="openMonitoringDialog()">zum Monitoring</a>
-      <!--<span *ngIf="monitoring">{{ monitoring.createdAt | date:'medium' }} ({{ monitoring.status }} {{ monitoring.statusText }})</span>-->
-      <!--<span (click)="openMonitoringDialog()"><img src="assets/img/icons/chart.svg" width="20" height="20" class="pointer"></span>-->
     </div>
     <span class="block">letztes Update am {{ website.lastUpdate | date:'medium' }}</span>
+  </div>
+  <div class="td w5 p10">
+    <button mat-icon-button [matMenuTriggerFor]="websiteMenu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #websiteMenu="matMenu" xPosition="before">
+      <button mat-menu-item>
+        <a class="color-grey" [routerLink]="'/website/detail/' + website.cleanUrl">
+          <mat-icon>zoom_in</mat-icon>
+          <span>Details</span>
+        </a>
+      </button>
+    </mat-menu>
   </div>
 </div>

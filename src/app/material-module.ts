@@ -3,9 +3,9 @@ import {
   MatButtonModule,
   MatCheckboxModule,
   MatDialogModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatPaginatorModule
+  MatFormFieldModule, MatIconModule,
+  MatInputModule, MatMenuModule,
+  MatPaginatorModule, MatProgressSpinnerModule
 } from '@angular/material';
 
 const modules = [
@@ -13,8 +13,11 @@ const modules = [
   MatCheckboxModule,
   MatDialogModule,
   MatFormFieldModule,
+  MatIconModule,
   MatInputModule,
-  MatPaginatorModule
+  MatMenuModule,
+  MatPaginatorModule,
+  MatProgressSpinnerModule
 ];
 
 @NgModule({

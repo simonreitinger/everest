@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ApiProblemResponse extends Response
 {
+
     /**
      * ApiProblemResponse constructor.
      *
@@ -21,12 +22,10 @@ class ApiProblemResponse extends Response
      */
     public function __construct(ApiProblem $problem, array $headers = [])
     {
-        if (!$problem->getStatus())
-        {
+        if (!$problem->getStatus()) {
             $problem->setStatus(500);
         }
-        if (!$problem->getTitle())
-        {
+        if (!$problem->getTitle()) {
             $code = $problem->getStatus();
             $problem->setTitle(isset(Response::$statusTexts[$code]) ? Response::$statusTexts[$code] : 'unknown status');
         }

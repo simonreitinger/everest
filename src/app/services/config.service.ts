@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class ConfigService {
 
-  constructor(private http: HttpClient, private cms: ContaoManagerService) {
+  constructor(private http: HttpClient) {
   }
 
   getContaoConfig(website: WebsiteModel) {

@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class Monitoring implements \JsonSerializable
 {
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -122,7 +123,7 @@ class Monitoring implements \JsonSerializable
             'createdAt' => $this->createdAt->format(DATE_ATOM),
             'status' => $this->status,
             'statusText' => Response::$statusTexts[$this->status],
-            'failed' => (bool) $this->status !== Response::HTTP_OK,
+            'failed' => (bool)$this->status !== Response::HTTP_OK,
             'requestTimeInMs' => $this->requestTime
         ];
     }

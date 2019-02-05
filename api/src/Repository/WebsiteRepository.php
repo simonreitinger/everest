@@ -15,6 +15,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class WebsiteRepository extends ServiceEntityRepository
 {
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Website::class);
@@ -26,16 +27,13 @@ class WebsiteRepository extends ServiceEntityRepository
      */
     public function findOneByHash($hash): ?Website
     {
-        try
-        {
+        try {
             return $this->createQueryBuilder('w')
                 ->where('w.hash= :hash')
                 ->setParameter('hash', $hash)
                 ->getQuery()
                 ->getOneOrNullResult();
-        }
-        catch (NonUniqueResultException $e)
-        {
+        } catch (NonUniqueResultException $e) {
             return null;
         }
     }
@@ -46,8 +44,7 @@ class WebsiteRepository extends ServiceEntityRepository
      */
     public function findOneByUrl(string $url): ?Website
     {
-        try
-        {
+        try {
             return $this->createQueryBuilder('w')
                 ->orWhere('w.url = :url')
                 ->orWhere('w.cleanUrl LIKE :url')
@@ -55,9 +52,7 @@ class WebsiteRepository extends ServiceEntityRepository
                 ->setParameter('url', $url)
                 ->getQuery()
                 ->getOneOrNullResult();
-        }
-        catch (NonUniqueResultException $e)
-        {
+        } catch (NonUniqueResultException $e) {
             return null;
         }
     }

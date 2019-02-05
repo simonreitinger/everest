@@ -11,9 +11,7 @@ namespace App\Controller;
 use App\Client\ManagerClient;
 use App\Entity\Website;
 use App\HttpKernel\ApiProblemResponse;
-use Crell\ApiProblem\ApiProblem;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +25,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/website")
  */
-class WebsiteController extends AbstractController
+class WebsiteController extends ApiController
 {
 
     /**
@@ -59,6 +57,7 @@ class WebsiteController extends AbstractController
     public function getAll()
     {
         $websites = $this->entityManager->getRepository(Website::class)->findAll();
+
         return new JsonResponse($websites);
     }
 
@@ -70,7 +69,7 @@ class WebsiteController extends AbstractController
      */
     public function add(Request $request)
     {
-        $json = $this->getJsonContent($request);
+        $json = $this->getRequestContentAsJson($request);
 
         $website = $this->entityManager->getRepository(Website::class)->findOneBy(['url' => $json['url']]);
 
@@ -93,7 +92,7 @@ class WebsiteController extends AbstractController
             return new JsonResponse($website);
         }
 
-        return new ApiProblemResponse((new ApiProblem())->setStatus(Response::HTTP_BAD_REQUEST));
+        $this->createApiProblemResponse('Invalid data', Response::HTTP_BAD_REQUEST);
     }
 
     private function jsonIsValid(array $json)
@@ -102,10 +101,5 @@ class WebsiteController extends AbstractController
             $json['url'] &&
             $json['token']
         );
-    }
-
-    private function getJsonContent(Request $request)
-    {
-        return json_decode($request->getContent(), true) ?? [];
     }
 }
