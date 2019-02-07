@@ -7,7 +7,7 @@
       <mat-panel-description>Installierte Pakete anzeigen</mat-panel-description>
     </mat-expansion-panel-header>
 
-    <mat-table [dataSource]="packages" class="w100" *ngIf="packages" matSort>
+    <mat-table matSort [dataSource]="packages" class="w100" *ngIf="packages">
       <ng-container matColumnDef="vendor">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Entwickler</mat-header-cell>
         <mat-cell *matCellDef="let element">{{ element.vendor }}</mat-cell>

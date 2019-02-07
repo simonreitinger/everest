@@ -1,9 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Data } from '@angular/router';
 import { WebsiteModel } from '../models/website.model';
 import { WebsiteService } from '../services/website.service';
 import { PackageLockModel } from '../models/package-lock.model';
-import { MatSort } from '@angular/material';
+import { MatSort, MatTableDataSource } from '@angular/material';
+import { DataSource } from '@angular/cdk/table';
+import { CollectionViewer } from '@angular/cdk/collections';
+import { merge, Observable, of } from 'rxjs';
 
 const PACKAGE_OPTIONS = {
   displayedColumns: ['vendor', 'repository', 'version', 'rootVersion', 'isPrivate']
@@ -30,7 +33,6 @@ export class WebsiteDetailComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.ws.getOne(params.hash).subscribe(res => {
         this.website = res;
-
         this.packages = this.buildPackages(res.composerLock);
       });
     });
