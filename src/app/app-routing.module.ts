@@ -14,8 +14,8 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LogoutComponent },
   { path: 'websites', component: WebsiteListComponent, canActivate: [AuthGuard] },
-  { path: 'website/add', component: WebsiteAddComponent, canActivate: [AuthGuard] },
-  { path: 'website/detail/:name', component: WebsiteDetailComponent, canActivate: [AuthGuard] },
+  { path: 'websites/add', component: WebsiteAddComponent, canActivate: [AuthGuard] },
+  { path: 'website/:hash', component: WebsiteDetailComponent, canActivate: [AuthGuard] },
   { path: 'account', component: AccountComponent, canActivate: [AuthGuard] }
 ];
 

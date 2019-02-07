@@ -32,11 +32,9 @@
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #websiteMenu="matMenu" xPosition="before">
-      <button mat-menu-item>
-        <a class="color-grey" [routerLink]="'/website/detail/' + website.cleanUrl">
-          <mat-icon>zoom_in</mat-icon>
-          <span>Details</span>
-        </a>
+      <button mat-menu-item [routerLink]="['/website', website.hash]">
+        <mat-icon>zoom_in</mat-icon>
+        <span>Details</span>
       </button>
     </mat-menu>
   </div>

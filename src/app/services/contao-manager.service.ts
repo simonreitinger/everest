@@ -26,7 +26,7 @@ export class ContaoManagerService {
   getRegisterUrl(url: string) {
     const host = window.location.origin;
     return url
-      + '/#/oauth?scope=admin&client_id=everest&return_url=' + host + '/website/add%3Forigin=' + this.stripManagerUrl(url);
+      + '/#/oauth?scope=admin&client_id=everest&return_url=' + host + '/websites/add%3Forigin=' + this.stripManagerUrl(url);
   }
 
   stripManagerUrl(url: string) {

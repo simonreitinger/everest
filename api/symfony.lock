@@ -1,7 +1,4 @@
 {
-    "cocur/slugify": {
-        "version": "v3.1"
-    },
     "crell/api-problem": {
         "version": "3.0"
     },

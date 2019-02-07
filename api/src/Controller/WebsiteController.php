@@ -89,10 +89,26 @@ class WebsiteController extends ApiController
             $this->entityManager->persist($website);
             $this->entityManager->flush();
 
-            return new JsonResponse($website);
+            return new JsonResponse($website, Response::HTTP_CREATED);
         }
 
         $this->createApiProblemResponse('Invalid data', Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * @Route("/{hash}", methods={"GET"})
+     *
+     * @return JsonResponse
+     */
+    public function getOneByHash($hash)
+    {
+        $website = $this->entityManager->getRepository(Website::class)->findOneByHash($hash);
+
+        if ($website) {
+            return new JsonResponse($website);
+        }
+
+        return $this->createApiProblemResponse('Not found', Response::HTTP_BAD_REQUEST);
     }
 
     private function jsonIsValid(array $json)

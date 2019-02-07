@@ -3,6 +3,9 @@
     <li><a routerLink="/" routerLinkActive="active">everest</a></li>
     <li><a routerLink="/websites" routerLinkActive="active">Websites</a></li>
   </ul>
+  <ul class="account" *ngIf="!auth.isTokenValid()">
+    <li><a routerLink="/login" routerLinkActive="active">Login</a></li>
+  </ul>
   <ul class="account" *ngIf="auth.isTokenValid()">
     <app-navbar-menu></app-navbar-menu>
   </ul>

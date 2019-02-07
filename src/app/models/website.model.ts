@@ -1,3 +1,5 @@
+import { PackageLockModel } from './package-lock.model';
+
 export interface WebsiteModel {
   hash: string;
   url: string;
@@ -69,7 +71,13 @@ export interface WebsiteModel {
     license: string[];
     authors: {}[];
     description: string;
-    repositories: {};
+    repositories: RepositoryModel[];
     'minimum-stability': string;
   };
+  composerLock: PackageLockModel[];
+}
+
+export interface RepositoryModel {
+  type: string;
+  url: string;
 }

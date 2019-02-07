@@ -120,6 +120,12 @@ class Website implements \JsonSerializable
     private $config;
 
     /**
+     * from /api/packages/local
+     * @ORM\Column(type="json_array", nullable=true)
+     */
+    private $composerLock;
+
+    /**
      * from /api/server/self-update
      * @ORM\Column(type="json_array", nullable=true)
      */
@@ -444,6 +450,25 @@ class Website implements \JsonSerializable
     /**
      * @return mixed
      */
+    public function getLock()
+    {
+        return $this->composerLock;
+    }
+
+    /**
+     * @param string $lock
+     * @return Website
+     */
+    public function setLock($lock): self
+    {
+        $this->composerLock = $lock;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getSelfUpdate()
     {
         return $this->selfUpdate;
@@ -497,6 +522,7 @@ class Website implements \JsonSerializable
             'phpCli' => $this->phpCli,
             'phpWeb' => $this->phpWeb,
             'config' => $this->config,
+            'composerLock' => $this->composerLock,
             'selfUpdate' => $this->selfUpdate,
             'packages' => $this->packages,
         ];

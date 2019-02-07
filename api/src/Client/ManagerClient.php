@@ -55,6 +55,7 @@ class ManagerClient
             return $this->guzzle
                 ->request($method, $website->getManagerUrl() . $endpoint, $this->authHeader($website));
         } catch (GuzzleException $e) {
+            echo $e->getMessage();
             return null;
         }
     }
@@ -80,6 +81,7 @@ class ManagerClient
             return $response;
 
         } catch (GuzzleException $e) {
+            echo $e->getMessage();
             return null;
         }
     }
@@ -159,6 +161,17 @@ class ManagerClient
     public function packagesRoot(Website $website)
     {
         return $this->apiRequest($website, '/api/packages/root');
+    }
+
+    /**
+     * returns the composer.lock file
+     *
+     * @param Website $website
+     * @return \Psr\Http\Message\ResponseInterface|null
+     */
+    public function composerLock(Website $website)
+    {
+        return $this->apiRequest($website, '/api/packages/local');
     }
 
     /**

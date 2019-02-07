@@ -1,10 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CONTAO_MANAGER, ContaoManagerService } from '../services/contao-manager.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigService } from '../services/config.service';
 import { WebsiteModel } from '../models/website.model';
-import { Form, FormControl, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import { FormControl, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-website-add',
@@ -15,7 +15,6 @@ export class WebsiteAddComponent implements OnInit {
 
   url = new FormControl('', [Validators.required]);
   disableManagerButton = false;
-  disableConfirmButton = false;
 
   constructor(
     protected dialog: MatDialog,
@@ -31,11 +30,10 @@ export class WebsiteAddComponent implements OnInit {
       this.route.queryParams.subscribe(values => {
         if (values.token && values.origin) {
           this.cms.saveUrlAndToken(values.origin, values.token).subscribe((website: WebsiteModel) => {
-            this.cs.getContaoConfig(website).subscribe((res: any) => {
-              if (res.success) {
-                this.router.navigateByUrl('/websites');
-              }
-            });
+            console.log(website);
+            if (website) {
+              this.router.navigateByUrl('/websites');
+            }
           });
         }
       });

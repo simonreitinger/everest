@@ -93,7 +93,7 @@ export class AuthenticationService {
   }
 
   // checks the exp property of the token for a valid date
-  private isLoggedIn(): boolean {
+  isLoggedIn(): boolean {
     const valid = this.isTokenValid();
 
     if (!valid) {
