@@ -1,16 +1,22 @@
 @import "../../default";
+@import "../../material";
 
-.website-add {
-  justify-content: space-between;
-  align-items: baseline;
+.mat-column-cleanUrl {
+
+}
+.mat-column-software {
+
+}
+.mat-column-platform {
+
+}
+.mat-column-status {
+  max-width: 150px;
+}
+.mat-column-detail {
+  max-width: 50px;
 }
 
-.thead {
-  border-bottom: 1px solid $light-grey;
-}
-
-.th {
-  text-transform: uppercase;
-  font-weight: 700;
-  font-size: $font-small;
+.hover-primary:hover {
+  color: map_get($mat-blue, 500);
 }

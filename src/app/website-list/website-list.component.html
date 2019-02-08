@@ -1,23 +1,77 @@
-<div class="website-add flex">
-    <h1>Installationen</h1>
-    <button mat-button (click)="openDialog()">Neue Installation</button>
+<div class="website-add flex flex-sb mb15">
+  <h1>Installationen</h1>
+  <button mat-raised-button color="accent" (click)="openDialog()">Neue Installation</button>
 </div>
 <div id="websites" class="bg-white round-border">
-    <div class="table" *ngIf="websites">
-        <div class="thead">
-            <div class="tr flex">
-                <div class="th w30 p10">Name</div>
-                <div class="th w20 p10">Software</div>
-                <div class="th w20 p10">Plattform</div>
-                <div class="th w30 p10">Status</div>
-                <div class="th"></div>
-            </div>
-        </div>
-        <div class="tbody">
-            <app-website *ngFor="let website of websites" [website]="website" [phpVersions]="phpVersions"></app-website>
-        </div>
-    </div>
-    <div class="table empty" *ngIf="!websites">
-        <p>Es wurden noch keine Installationen hinterlegt.</p>
-    </div>
+  <mat-table matSort [dataSource]="dataSource" (matSortChange)="sortData($event)" class="w100" *ngIf="dataSource">
+    <ng-container matColumnDef="cleanUrl">
+      <mat-header-cell *matHeaderCellDef mat-sort-header="cleanUrl">Name</mat-header-cell>
+      <mat-cell *matCellDef="let website">{{ website.cleanUrl }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="software">
+      <mat-header-cell *matHeaderCellDef>Software</mat-header-cell>
+      <mat-cell *matCellDef="let website">
+        <a class="version flex color-grey hover-primary" href="https://contao.org">
+          <img src="assets/img/icons/contao.svg" width="16" height="16" class="pr10"> Contao
+        </a>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="softwareVersion">
+      <mat-header-cell *matHeaderCellDef mat-sort-header="softwareVersion">Software Version</mat-header-cell>
+      <mat-cell *matCellDef="let website">
+        <span [ngClass]="{
+          'color-green': website.contao.supported === true,
+          'color-red': website.contao.supported === false
+        }">{{ website.contao.version }}</span>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="platform">
+      <mat-header-cell *matHeaderCellDef>Plattform</mat-header-cell>
+      <mat-cell *matCellDef="let website">
+        <a class="version flex color-grey hover-primary" href="https://secure.php.net">
+          <img src="assets/img/icons/php.svg" width="16" height="16" class="pr10"> PHP
+        </a>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="platformVersion">
+      <mat-header-cell *matHeaderCellDef>Plattform Version</mat-header-cell>
+      <mat-cell *matCellDef="let website">
+        <span *ngIf="phpVersions" [ngClass]="{
+          'color-green': phpVersions.includes(website.phpWeb.version) === true,
+          'color-red': phpVersions.includes(website.phpWeb.version) === false
+        }">{{ website.phpWeb.version }}</span>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef mat-sort-header="isPrivate">Status</mat-header-cell>
+      <mat-cell *matCellDef="let website">
+        <button mat-raised-button color="primary">
+          <a (click)="openMonitoringDialog(website)">Monitoring</a>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="detail">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let website">
+        <button mat-icon-button [matMenuTriggerFor]="websiteMenu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #websiteMenu="matMenu" xPosition="before">
+          <button mat-menu-item [routerLink]="['/website', website.hash]">
+            <mat-icon>zoom_in</mat-icon>
+            <span>Details</span>
+          </button>
+        </mat-menu>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="tableOptions.displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let website; columns: tableOptions.displayedColumns;"></mat-row>
+  </mat-table>
 </div>

@@ -31,6 +31,10 @@ a {
 
 .flex {
   display: flex;
+
+  &.flex-sb {
+    justify-content: space-between;
+  }
 }
 
 .block {
@@ -46,7 +50,7 @@ a {
   font-size: .9rem;
 }
 
-button a {
+button, button a {
   color: #fff;
 }
 
