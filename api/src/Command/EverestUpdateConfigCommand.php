@@ -192,6 +192,14 @@ class EverestUpdateConfigCommand extends Command
      */
     private function packageFoundInArray($name, array $repositories = [])
     {
+
+        if ($name == 'dreibein/contao-translation-bundle') {
+            echo "<pre>";
+            print_r($name);
+            print_r($repositories);
+            exit;
+        }
+
         foreach ($repositories as $repository) {
             if (stripos($repository, $name)) {
                 return true;

@@ -5,7 +5,7 @@ import { ContaoManagerService } from '../services/contao-manager.service';
 import { SoftwareService } from '../services/software.service';
 import { SoftwareModel } from '../models/software.model';
 import { WebsiteAddComponent } from '../website-add/website-add.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-website-list',
@@ -17,6 +17,7 @@ export class WebsiteListComponent implements OnInit {
   websites: WebsiteModel[];
   softwares: SoftwareModel[];
   phpVersions: string[];
+  dataSource: MatTableDataSource<WebsiteModel>;
 
   constructor(
     private dialog: MatDialog,
@@ -29,7 +30,7 @@ export class WebsiteListComponent implements OnInit {
   ngOnInit() {
     this.ws.getAll().subscribe((res: WebsiteModel[]) => {
       this.websites = res;
-      console.log(res);
+      this.dataSource = new MatTableDataSource(this.websites);
     });
     this.ss.getAll().subscribe((res: SoftwareModel[]) => {
       this.softwares = res;
