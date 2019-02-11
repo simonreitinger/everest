@@ -76,11 +76,12 @@ class TaskController extends ApiController
 
         $task = $this->entityManager->getRepository(Task::class)->findOneByWebsite($website->getId());
 
+        // status code is relevant for deciding if its a new / old task
         $statusCode = Response::HTTP_OK;
 
         if (!$task) {
-            $task = new Task();
             $statusCode = Response::HTTP_CREATED;
+            $task = new Task();
         }
 
         $task->setName($json['name']);
@@ -92,15 +93,27 @@ class TaskController extends ApiController
         }
 
         try {
+            // active tasks should not be put again, this causes a 401
+            if ($task->getOutput() && $task->getOutput()['status'] === 'active') {
+                return new JsonResponse($task->getOutput(), Response::HTTP_OK);
+            }
+
             $response = $this->client->putTask($website, $task);
 
-            if ($response->getStatusCode() === Response::HTTP_OK || $response->getStatusCode() === Response::HTTP_CREATED) {
-                $this->entityManager->persist($task);
-                $this->entityManager->flush();
+            if ($response) {
 
-                $json = $this->client->getJsonContent($response);
+                switch ($response->getStatusCode()) {
+                    case Response::HTTP_OK:
+                        $this->entityManager->persist($task);
+                        $this->entityManager->flush();
+                        $json = $this->client->getJsonContent($response);
 
-                return new JsonResponse($json);
+                        return new JsonResponse($json, $statusCode);
+
+                    case Response::HTTP_BAD_REQUEST:
+                        return $this->createApiProblemResponse('Task already running', Response::HTTP_BAD_REQUEST);
+                        break;
+                }
             }
         } catch (\Exception $e) {
         }
@@ -116,15 +129,35 @@ class TaskController extends ApiController
      */
     public function getTaskStatus($hash)
     {
+        /** @var Website $website */
         $website = $this->entityManager->getRepository(Website::class)->findOneByHash($hash);
-        if ($website) {
+
+        /** @var Task $task */
+        $task = $this->entityManager->getRepository(Task::class)->findOneByWebsite($website);
+        if ($website && $task) {
             $response = $this->client->getTask($website);
 
             $json = $this->client->getJsonContent($response);
 
+            if ($json['status'] === 'complete') {
+                $response = $this->client->removeTask($website);
+                $json = $this->client->getJsonContent($response);
+
+                $this->entityManager->remove($task);
+            } else {
+                $task->setOutput($json);
+                $this->entityManager->persist($task);
+            }
+
+            $this->entityManager->flush();
+
             return new JsonResponse($json);
         }
 
-        return $this->createApiProblemResponse('Invalid hash');
+        if (!$website) {
+            return $this->createApiProblemResponse('Invalid hash');
+        }
+
+        return $this->createApiProblemResponse('', Response::HTTP_NO_CONTENT);
     }
 }

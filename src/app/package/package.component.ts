@@ -1,7 +1,10 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { PackageLockModel } from '../models/package-lock.model';
-import { MatBottomSheet, MatSort, MatTableDataSource } from '@angular/material';
+import { MatBottomSheet, MatDialog, MatSort, MatTableDataSource } from '@angular/material';
 import { PackageOverviewSheetComponent } from './package-overview-sheet.component';
+import { WebsiteModel } from '../models/website.model';
+import { TaskOutputModel } from '../models/task-output.model';
+import { ConsoleOutputComponent } from '../console-output/console-output.component';
 
 const PACKAGE_OPTIONS = {
   displayedColumns: ['checked', 'vendor', 'repository', 'version', 'rootVersion', 'isPrivate', 'packagist']
@@ -15,14 +18,17 @@ const PACKAGE_OPTIONS = {
 export class PackageComponent implements OnInit {
 
   @Input() composerLock: PackageLockModel[];
+  @Input() website: WebsiteModel;
   packages: PackageLockModel[];
   checkedPackages: PackageLockModel[];
+
+  output: TaskOutputModel;
 
   packageOptions = PACKAGE_OPTIONS;
   dataSource: MatTableDataSource<PackageLockModel>;
   @ViewChild(MatSort) packageSort: MatSort;
 
-  constructor(private bottomSheet: MatBottomSheet) {
+  constructor(private bottomSheet: MatBottomSheet, private dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -30,17 +36,6 @@ export class PackageComponent implements OnInit {
     this.dataSource = new MatTableDataSource(this.packages);
 
     console.log(this.packages);
-  }
-
-  // add vendor and repo
-  private buildPackages(composerLock: PackageLockModel[]) {
-    const packages = [];
-    for (const pkg of composerLock) {
-      const splitted = pkg.name.split('/');
-      packages.push({ ...pkg, vendor: splitted[0], repository: splitted[1], checked: false });
-    }
-
-    return packages;
   }
 
   sortPackages(event) {
@@ -58,15 +53,47 @@ export class PackageComponent implements OnInit {
 
   applyFilter(value) {
     this.dataSource.filter = value.trim().toLowerCase();
-    this.sortPackages({active: '', direction: 'asc'});
+    this.sortPackages({ active: '', direction: 'asc' });
   }
 
   openSheet() {
-    this.bottomSheet.open(PackageOverviewSheetComponent);
+    const bottomSheetRef = this.bottomSheet.open(PackageOverviewSheetComponent, {
+      data:
+        {
+          website: this.website
+        }
+    });
+
+    bottomSheetRef.afterDismissed().subscribe(output => {
+      this.output = output;
+      this.openConsoleDialog();
+    });
+  }
+
+  openConsoleDialog() {
+    const dialogRef = this.dialog.open(ConsoleOutputComponent, {
+      height: '500px',
+      width: '800px',
+      data: {
+        output: this.output,
+        website: this.website
+      }
+    });
   }
 
   updateCheckedPackages() {
     this.checkedPackages = this.packages.filter(pkg => pkg.checked);
+  }
+
+  // add vendor and repo
+  private buildPackages(composerLock: PackageLockModel[]) {
+    const packages = [];
+    for (const pkg of composerLock) {
+      const splitted = pkg.name.split('/');
+      packages.push({ ...pkg, vendor: splitted[0], repository: splitted[1], checked: false });
+    }
+
+    return packages;
   }
 }
 

@@ -24,6 +24,7 @@ import { NavbarMenuComponent } from './navbar-menu/navbar-menu.component';
 import { LogoutComponent } from './logout/logout.component';
 import { PackageComponent } from './package/package.component';
 import { PackageOverviewSheetComponent } from './package/package-overview-sheet.component';
+import { ConsoleOutputComponent } from './console-output/console-output.component';
 
 registerLocaleData(localeDe);
 
@@ -43,6 +44,7 @@ registerLocaleData(localeDe);
     LogoutComponent,
     PackageComponent,
     PackageOverviewSheetComponent,
+    ConsoleOutputComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,7 +63,8 @@ registerLocaleData(localeDe);
   bootstrap: [AppComponent],
   entryComponents: [
     MonitoringComponent,
-    PackageOverviewSheetComponent
+    PackageOverviewSheetComponent,
+    ConsoleOutputComponent
   ]
 })
 export class AppModule {

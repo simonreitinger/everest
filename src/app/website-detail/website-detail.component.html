@@ -1,5 +1,5 @@
 <div id="detail" *ngIf="website">
   <h1 class="mb15">{{ website.cleanUrl }}</h1>
 
-  <app-package [composerLock]="website.composerLock"></app-package>
+  <app-package [composerLock]="website.composerLock" [website]="website"></app-package>
 </div>

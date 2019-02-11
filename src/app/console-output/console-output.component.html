@@ -1,0 +1,6 @@
+<div id="consoleDialog" class="define-height" *ngIf="output">
+  <h2>{{ output.summary }}</h2>
+  <div #console class="console-output p10">
+    <code>{{ output.console }}</code>
+  </div>
+</div>

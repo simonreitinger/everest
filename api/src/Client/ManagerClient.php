@@ -49,7 +49,7 @@ class ManagerClient
      * @param Website $website
      * @param string $endpoint
      * @param string $method
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ResponseInterface|null
      */
     private function apiRequest(Website $website, string $endpoint = '', $method = 'GET', $data = null)
     {
@@ -65,7 +65,7 @@ class ManagerClient
     /**
      * @param Website $website
      * @param bool $logTime
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ResponseInterface|null
      */
     public function homepageRequest(Website $website, $logTime = false)
     {
@@ -102,7 +102,7 @@ class ManagerClient
 
     /**
      * @param Website $website
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ResponseInterface|null
      */
     public function serverContao(Website $website)
     {
@@ -111,7 +111,7 @@ class ManagerClient
 
     /**
      * @param Website $website
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ResponseInterface|null
      */
     public function serverComposer(Website $website)
     {
@@ -120,7 +120,7 @@ class ManagerClient
 
     /**
      * @param Website $website
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ResponseInterface|null
      */
     public function serverConfig(Website $website)
     {
@@ -129,7 +129,7 @@ class ManagerClient
 
     /**
      * @param Website $website
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ResponseInterface|null
      */
     public function serverPhpWeb(Website $website)
     {
@@ -138,7 +138,7 @@ class ManagerClient
 
     /**
      * @param Website $website
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ResponseInterface|null
      */
     public function serverPhpCli(Website $website)
     {
@@ -147,7 +147,7 @@ class ManagerClient
 
     /**
      * @param Website $website
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ResponseInterface|null
      */
     public function configManager(Website $website)
     {
@@ -158,7 +158,7 @@ class ManagerClient
      * returns the composer.json file
      *
      * @param Website $website
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ResponseInterface|null
      */
     public function packagesRoot(Website $website)
     {
@@ -169,7 +169,7 @@ class ManagerClient
      * returns the composer.lock file
      *
      * @param Website $website
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ResponseInterface|null
      */
     public function composerLock(Website $website)
     {
@@ -179,7 +179,7 @@ class ManagerClient
     /**
      * @param Website $website
      * @param Task $task
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ResponseInterface|null
      */
     public function putTask(Website $website, Task $task)
     {
@@ -188,11 +188,20 @@ class ManagerClient
 
     /**
      * @param Website $website
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ResponseInterface|null
      */
     public function getTask(Website $website)
     {
         return $this->apiRequest($website, '/api/task');
+    }
+
+    /**
+     * @param Website $website
+     * @return ResponseInterface|null
+     */
+    public function removeTask(Website $website)
+    {
+        return $this->apiRequest($website, '/api/task', 'DELETE');
     }
 
     /**

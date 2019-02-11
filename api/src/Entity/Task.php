@@ -21,7 +21,7 @@ class Task implements \JsonSerializable
 
     /**
      * @var Website
-     * @ORM\ManyToOne(targetEntity="Website")
+     * @ORM\OneToOne(targetEntity="Website")
      * @ORM\JoinColumn(name="website_id", referencedColumnName="id")
      */
     private $website;
