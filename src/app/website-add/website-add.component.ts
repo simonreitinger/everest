@@ -57,15 +57,7 @@ export class WebsiteAddComponent implements OnInit {
   }
 
   isUrlValid() {
-    let url;
-    try {
-      url = (new URL(this.url.value));
-    } catch (err) {
-      this.disableOpenButton = true;
-    }
-
-    this.disableOpenButton = !(url && url.host && url.protocol && url.pathname.includes(CONTAO_MANAGER));
-    console.log(this.disableOpenButton);
+    this.disableOpenButton = !this.cms.isValidUrl(this.url.value);
   }
 
   openUrl() {

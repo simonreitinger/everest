@@ -93,6 +93,7 @@ class UserController extends ApiController
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws JWTDecodeFailureException
      */
     public function updateUser(Request $request)
     {

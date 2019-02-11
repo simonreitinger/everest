@@ -1,14 +1,16 @@
 import { NgModule } from '@angular/core';
 import {
+  MatBottomSheetModule,
   MatButtonModule,
   MatCheckboxModule,
   MatDialogModule, MatExpansionModule,
   MatFormFieldModule, MatIconModule,
-  MatInputModule, MatMenuModule,
+  MatInputModule, MatListModule, MatMenuModule,
   MatPaginatorModule, MatProgressSpinnerModule, MatSortModule, MatTableModule
 } from '@angular/material';
 
 const modules = [
+  MatBottomSheetModule,
   MatButtonModule,
   MatCheckboxModule,
   MatDialogModule,
@@ -16,6 +18,7 @@ const modules = [
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
+  MatListModule,
   MatMenuModule,
   MatPaginatorModule,
   MatProgressSpinnerModule,

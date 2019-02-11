@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "crell/api-problem": "^3.0",
+        "doctrine/annotations": "^1.6",
         "guzzlehttp/guzzle": "^6.3",
         "lexik/jwt-authentication-bundle": "^2.6",
         "sensio/framework-extra-bundle": "^5.2",
@@ -18,6 +19,7 @@
         "symfony/monolog-bundle": "^3.3",
         "symfony/orm-pack": "^1.0",
         "symfony/security-bundle": "4.2.*",
+        "symfony/validator": "4.2.*",
         "symfony/yaml": "4.2.*"
     },
     "config": {

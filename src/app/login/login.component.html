@@ -8,6 +8,6 @@
       <input matInput type="password" name="password" placeholder="Passwort" id="password" [formControl]="password">
     </mat-form-field>
     <button mat-raised-button color="accent" class="w100">Login <mat-spinner *ngIf="showSpinner" color="primary" [diameter]="30"></mat-spinner></button>
-    <mat-error *ngIf="loginFailed">Username oder Passwort fehlerhaft</mat-error>
+    <mat-error *ngIf="loginFailed" class="text-align-center mt20">Username oder Passwort fehlerhaft</mat-error>
   </form>
 </div>

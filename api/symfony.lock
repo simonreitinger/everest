@@ -317,6 +317,15 @@
     "symfony/test-pack": {
         "version": "v1.0.5"
     },
+    "symfony/validator": {
+        "version": "4.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.1",
+            "ref": "0cdc982334f45d554957a6167e030482795bf9d7"
+        }
+    },
     "symfony/var-exporter": {
         "version": "v4.2.2"
     },

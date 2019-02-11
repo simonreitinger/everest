@@ -8,4 +8,5 @@ export interface PackageLockModel {
   rootVersion: string;
   inRoot: boolean;
   isPrivate: boolean;
+  checked: boolean;
 }

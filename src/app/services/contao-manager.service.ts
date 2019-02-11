@@ -32,6 +32,10 @@ export class ContaoManagerService {
     return url.replace('/' + CONTAO_MANAGER, '');
   }
 
+  isValidUrl(url: string) {
+    return url.match('https?:\/\/.*\..*\/contao-manager\.phar\.php');
+  }
+
   // generate manager url depending on last char of url
   // for slashes, it's not appended
   getManagerUrl(url: string) {

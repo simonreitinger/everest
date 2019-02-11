@@ -115,7 +115,7 @@ class EverestUpdateConfigCommand extends Command
             //$io->writeln(sprintf('Performing %s request for %s...', $set, $website->getCleanUrl()));
             if ($response->getStatusCode() === Response::HTTP_OK) {
                 // decode into array for database
-                $json = json_decode($response->getBody()->getContents(), true);
+                $json = $this->client->getJsonContent($response);
 
                 // skip hosting providers, they are not needed for now
                 if ($set === 'setConfig') {
@@ -192,14 +192,6 @@ class EverestUpdateConfigCommand extends Command
      */
     private function packageFoundInArray($name, array $repositories = [])
     {
-
-        if ($name == 'dreibein/contao-translation-bundle') {
-            echo "<pre>";
-            print_r($name);
-            print_r($repositories);
-            exit;
-        }
-
         foreach ($repositories as $repository) {
             if (stripos($repository, $name)) {
                 return true;

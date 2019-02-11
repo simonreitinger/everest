@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
         // timeout for spinner to show
         setTimeout(() => {
           this.router.navigateByUrl('/websites');
-        }, 800);
+        }, 500);
       }
     }, error => {
       this.loginFailed = true;
