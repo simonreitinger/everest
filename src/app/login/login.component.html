@@ -1,4 +1,5 @@
-<div id="login">
+<div id="login" class="bg-white round-border center w30 p15">
+  <h1 class="mb15 text-align-center">Login</h1>
   <form #form="ngForm" (ngSubmit)="onLogin()">
     <mat-form-field>
       <input matInput type="text" name="username" placeholder="Username" id="username" [formControl]="username">
@@ -6,8 +7,7 @@
     <mat-form-field>
       <input matInput type="password" name="password" placeholder="Passwort" id="password" [formControl]="password">
     </mat-form-field>
-    <button class="btn bg-green">Login</button>
-    <mat-spinner *ngIf="showSpinner"></mat-spinner>
+    <button mat-raised-button color="accent" class="w100">Login <mat-spinner *ngIf="showSpinner" color="primary" [diameter]="30"></mat-spinner></button>
     <mat-error *ngIf="loginFailed">Username oder Passwort fehlerhaft</mat-error>
   </form>
 </div>

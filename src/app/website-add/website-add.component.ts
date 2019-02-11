@@ -15,6 +15,7 @@ export class WebsiteAddComponent implements OnInit {
 
   url = new FormControl('', [Validators.required]);
   disableManagerButton = false;
+  disableOpenButton = true;
 
   constructor(
     protected dialog: MatDialog,
@@ -45,15 +46,26 @@ export class WebsiteAddComponent implements OnInit {
   }
 
   setManagerUrl() {
-    if (!this.disableManagerButton) {
-      this.url.setValue(this.cms.getManagerUrl(this.url.value));
-      this.disableManagerButton = !this.disableManagerButton;
-    }
+    this.url.setValue(this.cms.getManagerUrl(this.url.value));
+    this.disableManagerButton = true;
   }
 
-  // check if the url contains the contao manager
-  checkManagerAutofill() {
+  // activate / deactivate buttons
+  checkUrl() {
     this.disableManagerButton = this.url.value ? this.url.value.includes(CONTAO_MANAGER) : false;
+    this.isUrlValid();
+  }
+
+  isUrlValid() {
+    let url;
+    try {
+      url = (new URL(this.url.value));
+    } catch (err) {
+      this.disableOpenButton = true;
+    }
+
+    this.disableOpenButton = !(url && url.host && url.protocol && url.pathname.includes(CONTAO_MANAGER));
+    console.log(this.disableOpenButton);
   }
 
   openUrl() {

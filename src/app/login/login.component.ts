@@ -24,7 +24,10 @@ export class LoginComponent implements OnInit {
     this.showSpinner = true;
     this.auth.login(this.username.value, this.password.value).subscribe(success => {
       if (success) {
-        this.router.navigateByUrl('/websites');
+        // timeout for spinner to show
+        setTimeout(() => {
+          this.router.navigateByUrl('/websites');
+        }, 800);
       }
     }, error => {
       this.loginFailed = true;

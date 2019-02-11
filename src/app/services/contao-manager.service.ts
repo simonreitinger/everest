@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { WebsiteModel } from '../models/website.model';
 
 export const CONTAO_MANAGER = 'contao-manager.phar.php';
 export const defaultTask = {
@@ -36,6 +35,15 @@ export class ContaoManagerService {
   // generate manager url depending on last char of url
   // for slashes, it's not appended
   getManagerUrl(url: string) {
+    if (url.includes(CONTAO_MANAGER)) {
+      return url;
+    }
+
+    try {
+      return (new URL(url)).origin + '/' + CONTAO_MANAGER;
+    } catch (err) {
+    }
+
     if (url.slice(-1) === '/') {
       return url + CONTAO_MANAGER;
     }

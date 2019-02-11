@@ -4,14 +4,14 @@
   <div class="website-add">
     <form>
       <mat-form-field>
-        <input matInput type="url" name="url" placeholder="URL" id="url" (input)="checkManagerAutofill()" [formControl]="url">
+        <input matInput type="url" name="url" placeholder="URL zum Contao Manager" id="url" (input)="checkUrl()" [formControl]="url">
       </mat-form-field>
     </form>
   </div>
 </mat-dialog-content>
 
 <div mat-dialog-actions>
-  <button class="bg-red" mat-button (click)="closeDialog()">Abbrechen</button>
-  <button class="bg-blue" mat-button [disabled]="disableManagerButton" (click)="setManagerUrl()">Contao Manager Autofill</button>
-  <button class="bg-green" mat-button (click)="openUrl()" cdkFocusInitial>Einrichten</button>
+  <button mat-button color="warn" (click)="closeDialog()">Abbrechen</button>
+  <button mat-button color="accent" [disabled]="disableManagerButton" (click)="setManagerUrl(); isUrlValid()">Contao Manager Autofill</button>
+  <button mat-button color="primary" [disabled]="disableOpenButton" (click)="openUrl()" cdkFocusInitial>Einrichten</button>
 </div>
