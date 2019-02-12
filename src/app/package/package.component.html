@@ -18,7 +18,7 @@
     <ng-container matColumnDef="checked">
       <mat-header-cell *matHeaderCellDef>Auswahl</mat-header-cell>
       <mat-cell *matCellDef="let element">
-        <mat-checkbox [(ngModel)]="element.checked" (click)="updateCheckedPackages()"></mat-checkbox>
+        <mat-checkbox [(ngModel)]="element.checked"></mat-checkbox>
       </mat-cell>
     </ng-container>
 

@@ -112,7 +112,6 @@ class TaskController extends ApiController
 
                     case Response::HTTP_BAD_REQUEST:
                         return $this->createApiProblemResponse('Task already running', Response::HTTP_BAD_REQUEST);
-                        break;
                 }
             }
         } catch (\Exception $e) {
@@ -141,9 +140,10 @@ class TaskController extends ApiController
 
             if ($json['status'] === 'complete') {
                 $response = $this->client->removeTask($website);
-                $json = $this->client->getJsonContent($response);
-
                 $this->entityManager->remove($task);
+
+                $this->forward(ConfigController::class, ['hash', $hash]);
+
             } else {
                 $task->setOutput($json);
                 $this->entityManager->persist($task);

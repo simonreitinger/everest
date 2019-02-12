@@ -29,16 +29,15 @@ export class ConsoleOutputComponent implements OnInit {
     this.interval = interval(5000).pipe(startWith(0)).subscribe(() => {
       this.cs.getTaskStatus(this.website).subscribe(output => {
         this.output = output;
-        this.updateScrollHeight();
         if (output.status !== 'active') {
           this.interval.unsubscribe();
         }
+        this.updateScrollHeight();
       });
     });
   }
 
   updateScrollHeight() {
-    console.log('scrollTop updating');
-    this.console.nativeElement.scrollTop = this.console.nativeElement.scrollHeight * 10;
+    this.console.nativeElement.scrollTop = this.console.nativeElement.clientHeight;
   }
 }

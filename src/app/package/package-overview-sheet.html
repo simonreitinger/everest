@@ -1,6 +1,15 @@
 <mat-nav-list>
+  <mat-checkbox [(ngModel)]="dryRun">Dry Run</mat-checkbox>
+  <a mat-list-item (click)="performInstall($event)">
+    <span mat-line>composer install</span>
+    <span mat-line>Alle Pakete mit der composer.lock abgleichen</span>
+  </a>
   <a mat-list-item (click)="performUpdate($event)">
     <span mat-line>composer update</span>
-    <span mat-line>Pakete updaten</span>
+    <span mat-line>Alle Pakete updaten</span>
+  </a>
+  <a mat-list-item (click)="performUpdateSelected($event)" *ngIf="packages.length">
+    <span mat-line>composer update</span>
+    <span mat-line>Ausgewählte Pakete updaten</span>
   </a>
 </mat-nav-list>

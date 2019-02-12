@@ -20,7 +20,6 @@ export class PackageComponent implements OnInit {
   @Input() composerLock: PackageLockModel[];
   @Input() website: WebsiteModel;
   packages: PackageLockModel[];
-  checkedPackages: PackageLockModel[];
 
   output: TaskOutputModel;
 
@@ -60,13 +59,16 @@ export class PackageComponent implements OnInit {
     const bottomSheetRef = this.bottomSheet.open(PackageOverviewSheetComponent, {
       data:
         {
-          website: this.website
+          website: this.website,
+          packages: this.packages.filter(pkg => pkg.checked).map(p => p.name)
         }
     });
 
     bottomSheetRef.afterDismissed().subscribe(output => {
-      this.output = output;
-      this.openConsoleDialog();
+      if (output) {
+        this.output = output;
+        this.openConsoleDialog();
+      }
     });
   }
 
@@ -79,10 +81,6 @@ export class PackageComponent implements OnInit {
         website: this.website
       }
     });
-  }
-
-  updateCheckedPackages() {
-    this.checkedPackages = this.packages.filter(pkg => pkg.checked);
   }
 
   // add vendor and repo
