@@ -48,18 +48,6 @@ class TaskController extends ApiController
     }
 
     /**
-     * @Route(methods={"GET"})
-     *
-     * @return JsonResponse
-     */
-    public function getTasks()
-    {
-        $tasks = $this->entityManager->getRepository(Task::class)->findAll();
-
-        return new JsonResponse($tasks);
-    }
-
-    /**
      * @Route(methods={"POST"})
      *
      * 200 for existing tasks, they are overwritten
@@ -87,10 +75,7 @@ class TaskController extends ApiController
         $task->setName($json['name']);
         $task->setConfig($json['config']);
         $task->setWebsite($website);
-        try {
-            $task->setCreatedAt(new \DateTime());
-        } catch (\Exception $e) {
-        }
+        $task->setCreatedAt(new \DateTime());
 
         try {
             // active tasks should not be put again, this causes a 401
@@ -124,7 +109,7 @@ class TaskController extends ApiController
      * @Route("/{hash}", methods={"GET"})
      *
      * @param $hash
-     * @return ApiProblemResponse|JsonResponse
+     * @return ApiProblemResponse|JsonResponse|Response
      */
     public function getTaskStatus($hash)
     {
@@ -141,15 +126,15 @@ class TaskController extends ApiController
             if ($json['status'] === 'complete') {
                 $response = $this->client->removeTask($website);
                 $this->entityManager->remove($task);
+                $this->entityManager->flush();
 
-                $this->forward(ConfigController::class, ['hash', $hash]);
-
+                // update config
+                $this->forward(ConfigController::class, ['hash' => $hash]);
             } else {
                 $task->setOutput($json);
                 $this->entityManager->persist($task);
+                $this->entityManager->flush();
             }
-
-            $this->entityManager->flush();
 
             return new JsonResponse($json);
         }
@@ -158,6 +143,6 @@ class TaskController extends ApiController
             return $this->createApiProblemResponse('Invalid hash');
         }
 
-        return $this->createApiProblemResponse('', Response::HTTP_NO_CONTENT);
+        return $this->createApiProblemResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

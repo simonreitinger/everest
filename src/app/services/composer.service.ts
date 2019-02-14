@@ -20,14 +20,14 @@ export class ComposerService {
     return this.http.get<TaskOutputModel>(environment.everestApi + '/task/' + website.hash);
   }
 
-  buildTask(name: string, website: WebsiteModel, require: string[] = [], update: string[] = [], remove: string[] = [], dryRun: boolean = false) {
+  buildTask(name: string, website: WebsiteModel, require: string[] = [], update: string[] = [], remove: string[] = [], dryRun: boolean = false): TaskModel {
     return {
-      name: name,
+      name,
       config: {
         dry_run: dryRun,
-        require: [],
-        remove: [],
-        update: []
+        require,
+        remove,
+        update
       },
       website: website.cleanUrl
     };

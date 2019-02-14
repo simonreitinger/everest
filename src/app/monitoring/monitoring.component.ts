@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, PageEvent } from '@angular/material';
+import { Component, Input, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material';
 import { MonitoringModel } from '../models/monitoring.model';
 import { MonitoringService } from '../services/monitoring.service';
 import { WebsiteModel } from '../models/website.model';
@@ -12,7 +12,7 @@ import { Chart } from 'chart.js';
 })
 export class MonitoringComponent implements OnInit {
 
-  website: WebsiteModel;
+  @Input() website: WebsiteModel;
   data: MonitoringModel[];
   chart: any;
 
@@ -20,14 +20,12 @@ export class MonitoringComponent implements OnInit {
   perPage = 7;
   offset = 0;
 
-  constructor(private ms: MonitoringService, @Inject(MAT_DIALOG_DATA) public injectedData: any) {
-    this.website = injectedData.website;
+  constructor(private ms: MonitoringService) {
   }
 
   ngOnInit() {
     this.ms.getAll(this.website).subscribe((res: MonitoringModel[]) => {
       this.data = res;
-      console.log(res);
       this.buildChart();
     });
   }

@@ -53,11 +53,10 @@ class SoftwareController extends ApiController
      *
      * @Route("/update", methods={"GET"}, host="localhost")
      *
-     * @param Request $request
      * @return JsonResponse
      * @throws \Exception
      */
-    public function updateSoftwares(Request $request)
+    public function updateSoftwares()
     {
         $softwares = $this->getParameter('softwares');
 

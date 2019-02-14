@@ -1,9 +1,9 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { TaskOutputModel } from '../models/task-output.model';
 import { ComposerService } from '../services/composer.service';
 import { WebsiteModel } from '../models/website.model';
-import { interval, Observable, Subscription } from 'rxjs';
+import { interval, Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
 @Component({
@@ -20,17 +20,20 @@ export class ConsoleOutputComponent implements OnInit {
 
   @ViewChild('console') console;
 
-  constructor(private cs: ComposerService, @Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(private dialogRef: MatDialogRef<ConsoleOutputComponent>,
+              private composerService: ComposerService,
+              @Inject(MAT_DIALOG_DATA) public data: any) {
     this.website = data.website;
     this.output = data.output;
   }
 
   ngOnInit() {
     this.interval = interval(5000).pipe(startWith(0)).subscribe(() => {
-      this.cs.getTaskStatus(this.website).subscribe(output => {
+      this.composerService.getTaskStatus(this.website).subscribe(output => {
         this.output = output;
         if (output.status !== 'active') {
           this.interval.unsubscribe();
+          this.dialogRef.disableClose = false;
         }
         this.updateScrollHeight();
       });

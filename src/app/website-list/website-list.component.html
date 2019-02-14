@@ -6,12 +6,15 @@
   <mat-table matSort [dataSource]="dataSource" (matSortChange)="sortData($event)" class="w100" *ngIf="dataSource">
     <ng-container matColumnDef="cleanUrl">
       <mat-header-cell *matHeaderCellDef mat-sort-header="cleanUrl">Name</mat-header-cell>
-      <mat-cell *matCellDef="let website">{{ website.cleanUrl }}</mat-cell>
+      <mat-cell *matCellDef="let website">
+        <img [src]="website.favicon" width="16" height="16" class="mr5">
+        <a class="color-grey hover-primary" [href]="website.url" target="_blank">{{ website.cleanUrl }}</a>
+      </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="software">
       <mat-header-cell *matHeaderCellDef>Software</mat-header-cell>
-      <mat-cell *matCellDef="let website">
+      <mat-cell *matCellDef="let website" [routerLink]="['/website', website.hash]">
         <a class="version flex color-grey hover-primary" href="https://contao.org">
           <img src="assets/img/icons/contao.svg" width="16" height="16" class="pr10"> Contao
         </a>
@@ -20,7 +23,7 @@
 
     <ng-container matColumnDef="softwareVersion">
       <mat-header-cell *matHeaderCellDef mat-sort-header="softwareVersion">Software Version</mat-header-cell>
-      <mat-cell *matCellDef="let website">
+      <mat-cell *matCellDef="let website" [routerLink]="['/website', website.hash]">
         <span [ngClass]="{
           'color-green': website.contao.supported === true,
           'color-red': website.contao.supported === false
@@ -30,7 +33,7 @@
 
     <ng-container matColumnDef="platform">
       <mat-header-cell *matHeaderCellDef>Plattform</mat-header-cell>
-      <mat-cell *matCellDef="let website">
+      <mat-cell *matCellDef="let website" [routerLink]="['/website', website.hash]">
         <a class="version flex color-grey hover-primary" href="https://secure.php.net">
           <img src="assets/img/icons/php.svg" width="16" height="16" class="pr10"> PHP
         </a>
@@ -39,7 +42,7 @@
 
     <ng-container matColumnDef="platformVersion">
       <mat-header-cell *matHeaderCellDef>Plattform Version</mat-header-cell>
-      <mat-cell *matCellDef="let website">
+      <mat-cell *matCellDef="let website" [routerLink]="['/website', website.hash]">
         <span *ngIf="phpVersions" [ngClass]="{
           'color-green': phpVersions.includes(website.phpWeb.version) === true,
           'color-red': phpVersions.includes(website.phpWeb.version) === false

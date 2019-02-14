@@ -1,5 +1,28 @@
 <div id="detail" *ngIf="website">
+  <a routerLink="/websites">back</a>
   <h1 class="mb15">{{ website.cleanUrl }}</h1>
 
-  <app-package [composerLock]="website.composerLock" [website]="website"></app-package>
+  <div>
+    <div class="mb15">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Dependencies</mat-panel-title>
+          <mat-panel-description>Installierte Pakete anzeigen</mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <app-package [website]="website"></app-package>
+      </mat-expansion-panel>
+    </div>
+
+    <div class="mb15">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Monitoring</mat-panel-title>
+          <mat-panel-description>Response-Diagramm anzeigen</mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <app-monitoring [website]="website"></app-monitoring>
+      </mat-expansion-panel>
+    </div>
+  </div>
 </div>

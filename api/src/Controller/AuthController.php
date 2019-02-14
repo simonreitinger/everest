@@ -59,7 +59,7 @@ class AuthController extends ApiController
     }
 
     /**
-     * @Route("/login")
+     * @Route("/login", methods={"POST"})
      *
      * @param Request $request
      * @return JsonResponse|ApiProblemResponse
@@ -78,7 +78,7 @@ class AuthController extends ApiController
         $passwordValid = $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
 
         if (!$passwordValid) {
-            $this->createApiProblemResponse('Invalid credentials', Response::HTTP_BAD_REQUEST);
+            return $this->createApiProblemResponse('Invalid credentials', Response::HTTP_BAD_REQUEST);
         }
 
         $token = $this->jwtEncoder->encode([
@@ -89,7 +89,7 @@ class AuthController extends ApiController
     }
 
     /**
-     * @Route("/token")
+     * @Route("/token", methods={"GET"})
      *
      * @param Request $request
      * @return JsonResponse|ApiProblemResponse

@@ -6,7 +6,7 @@ import { SoftwareService } from '../services/software.service';
 import { SoftwareModel } from '../models/software.model';
 import { WebsiteAddComponent } from '../website-add/website-add.component';
 import { MatDialog, MatSort, MatTableDataSource } from '@angular/material';
-import { MonitoringComponent } from '../monitoring/monitoring.component';
+import { MonitoringDialogComponent } from '../monitoring-dialog/monitoring-dialog.component';
 
 const TABLE_OPTIONS = {
   displayedColumns: ['cleanUrl', 'software', 'softwareVersion', 'platform', 'platformVersion', 'status', 'detail']
@@ -67,7 +67,7 @@ export class WebsiteListComponent implements OnInit {
   }
 
   openMonitoringDialog(website: WebsiteModel) {
-    this.dialog.open(MonitoringComponent, {
+    this.dialog.open(MonitoringDialogComponent, {
       data: {
         website: website
       },

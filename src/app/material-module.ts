@@ -3,10 +3,18 @@ import {
   MatBottomSheetModule,
   MatButtonModule,
   MatCheckboxModule,
-  MatDialogModule, MatExpansionModule,
-  MatFormFieldModule, MatIconModule,
-  MatInputModule, MatListModule, MatMenuModule,
-  MatPaginatorModule, MatProgressSpinnerModule, MatSortModule, MatTableModule
+  MatDialogModule,
+  MatExpansionModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatMenuModule,
+  MatPaginatorModule,
+  MatProgressSpinnerModule,
+  MatSlideToggleModule,
+  MatSortModule,
+  MatTableModule
 } from '@angular/material';
 
 const modules = [
@@ -22,6 +30,7 @@ const modules = [
   MatMenuModule,
   MatPaginatorModule,
   MatProgressSpinnerModule,
+  MatSlideToggleModule,
   MatSortModule,
   MatTableModule
 ];

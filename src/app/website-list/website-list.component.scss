@@ -20,3 +20,12 @@
 .hover-primary:hover {
   color: map_get($mat-blue, 500);
 }
+
+mat-row, mat-cell {
+  outline: none;
+  cursor: pointer;
+}
+
+mat-row:hover {
+  background-color: map_get($mat-light-theme-background, background);
+}

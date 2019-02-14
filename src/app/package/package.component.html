@@ -1,61 +1,54 @@
-<mat-expansion-panel>
-  <mat-expansion-panel-header>
-    <mat-panel-title>Packagist</mat-panel-title>
-    <mat-panel-description>Installierte Pakete anzeigen</mat-panel-description>
-  </mat-expansion-panel-header>
-
-  <div class="flex flex-sb">
-    <mat-form-field>
-      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-    </mat-form-field>
-    <div class="actions">
-      <button mat-raised-button color="accent" (click)="openSheet()">Aktion auswählen</button>
-    </div>
+<div class="flex flex-sb">
+  <mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+  </mat-form-field>
+  <mat-slide-toggle (change)="showDependencies()" [(ngModel)]="showAll">Anzeige: {{ showAll ? 'alle' : 'nur Root' }}</mat-slide-toggle>
+  <div class="actions">
+    <button mat-raised-button color="accent" (click)="openSheet()">Aktion auswählen</button>
   </div>
+</div>
 
 
-  <mat-table matSort [dataSource]="dataSource" (matSortChange)="sortPackages($event)" class="w100" *ngIf="dataSource">
-    <ng-container matColumnDef="checked">
-      <mat-header-cell *matHeaderCellDef>Auswahl</mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        <mat-checkbox [(ngModel)]="element.checked"></mat-checkbox>
-      </mat-cell>
-    </ng-container>
+<mat-table matSort [dataSource]="dataSource" (matSortChange)="sortPackages($event)" class="w100" *ngIf="dataSource">
+  <ng-container matColumnDef="checked">
+    <mat-header-cell *matHeaderCellDef>Auswahl</mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <mat-checkbox [(ngModel)]="element.checked" *ngIf="element.rootVersion"></mat-checkbox>
+    </mat-cell>
+  </ng-container>
 
-    <ng-container matColumnDef="vendor">
-      <mat-header-cell *matHeaderCellDef mat-sort-header="vendor">Entwickler</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{ element.vendor }}</mat-cell>
-    </ng-container>
+  <ng-container matColumnDef="vendor">
+    <mat-header-cell *matHeaderCellDef mat-sort-header="vendor">Entwickler</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.vendor }}</mat-cell>
+  </ng-container>
 
-    <ng-container matColumnDef="repository">
-      <mat-header-cell *matHeaderCellDef mat-sort-header="repository">Repository</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{ element.repository }}</mat-cell>
-    </ng-container>
+  <ng-container matColumnDef="repository">
+    <mat-header-cell *matHeaderCellDef mat-sort-header="repository">Repository</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.repository }}</mat-cell>
+  </ng-container>
 
-    <ng-container matColumnDef="version">
-      <mat-header-cell *matHeaderCellDef>Version (Lock)</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{ element.version }}</mat-cell>
-    </ng-container>
+  <ng-container matColumnDef="version">
+    <mat-header-cell *matHeaderCellDef>Version (Lock)</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.version }}</mat-cell>
+  </ng-container>
 
-    <ng-container matColumnDef="rootVersion">
-      <mat-header-cell *matHeaderCellDef>Version (Root)</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{ element.rootVersion }}</mat-cell>
-    </ng-container>
+  <ng-container matColumnDef="rootVersion">
+    <mat-header-cell *matHeaderCellDef>Version (Root)</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.rootVersion }}</mat-cell>
+  </ng-container>
 
-    <ng-container matColumnDef="isPrivate">
-      <mat-header-cell *matHeaderCellDef mat-sort-header="isPrivate">Privat</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{ element.isPrivate ? 'ja' : 'nein' }}</mat-cell>
-    </ng-container>
+  <ng-container matColumnDef="isPrivate">
+    <mat-header-cell *matHeaderCellDef mat-sort-header="isPrivate">Privat</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.isPrivate ? 'ja' : 'nein' }}</mat-cell>
+  </ng-container>
 
-    <ng-container matColumnDef="packagist">
-      <mat-header-cell *matHeaderCellDef>Detail</mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        <button mat-raised-button color="primary"><a [href]="'https://packagist.org/packages/' + element.name" target="_blank">Packagist</a></button>
-      </mat-cell>
-    </ng-container>
+  <ng-container matColumnDef="packagist">
+    <mat-header-cell *matHeaderCellDef>Detail</mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <button mat-raised-button color="primary"><a [href]="'https://packagist.org/packages/' + element.name" target="_blank">Packagist</a></button>
+    </mat-cell>
+  </ng-container>
 
-    <mat-header-row *matHeaderRowDef="packageOptions.displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let element; columns: packageOptions.displayedColumns;"></mat-row>
-  </mat-table>
-
-</mat-expansion-panel>
+  <mat-header-row *matHeaderRowDef="packageOptions.displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let element; columns: packageOptions.displayedColumns;"></mat-row>
+</mat-table>

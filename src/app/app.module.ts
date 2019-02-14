@@ -14,7 +14,6 @@ import { LoginComponent } from './login/login.component';
 import { WebsiteListComponent } from './website-list/website-list.component';
 import { HomeComponent } from './home/home.component';
 import { WebsiteAddComponent } from './website-add/website-add.component';
-import { WebsiteComponent } from './website/website.component';
 import { AccountComponent } from './account/account.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -25,6 +24,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { PackageComponent } from './package/package.component';
 import { PackageOverviewSheetComponent } from './package/package-overview-sheet.component';
 import { ConsoleOutputComponent } from './console-output/console-output.component';
+import { MonitoringDialogComponent } from './monitoring-dialog/monitoring-dialog.component';
 
 registerLocaleData(localeDe);
 
@@ -36,7 +36,6 @@ registerLocaleData(localeDe);
     NavbarComponent,
     WebsiteListComponent,
     WebsiteAddComponent,
-    WebsiteComponent,
     AccountComponent,
     MonitoringComponent,
     WebsiteDetailComponent,
@@ -45,6 +44,7 @@ registerLocaleData(localeDe);
     PackageComponent,
     PackageOverviewSheetComponent,
     ConsoleOutputComponent,
+    MonitoringDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,8 +63,9 @@ registerLocaleData(localeDe);
   bootstrap: [AppComponent],
   entryComponents: [
     MonitoringComponent,
+    MonitoringDialogComponent,
     PackageOverviewSheetComponent,
-    ConsoleOutputComponent
+    ConsoleOutputComponent,
   ]
 })
 export class AppModule {

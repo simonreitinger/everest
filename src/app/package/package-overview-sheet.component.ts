@@ -24,7 +24,6 @@ export class PackageOverviewSheetComponent {
               @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) {
     this.website = data.website;
     this.packages = data.packages;
-    console.log(this.packages);
   }
 
   performUpdate(event: MouseEvent) {
@@ -35,7 +34,7 @@ export class PackageOverviewSheetComponent {
 
   performUpdateSelected(event: MouseEvent) {
     event.preventDefault();
-    const task = this.composerService.buildTask('composer/require', this.website, [], this.packages, [], this.dryRun);
+    const task = this.composerService.buildTask('composer/update', this.website, [], this.packages, [], this.dryRun);
     this.handleTask(task);
   }
 

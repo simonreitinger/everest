@@ -10,7 +10,6 @@ namespace App\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Client;
-use Symfony\Component\HttpFoundation\Request;
 
 class ApiTestCase extends WebTestCase
 {
@@ -37,9 +36,9 @@ class ApiTestCase extends WebTestCase
         return static::$client;
     }
 
-    public function jsonRequestWithToken(string $token, string $method, string $url, array $payload = null)
+    public function jsonRequestWithToken(string $method, string $url, string $token, array $payload = null)
     {
-        static::$client->request($method, $url, [], [], ['Authorization' => $token], json_encode($payload));
+        static::$client->request($method, $url, [], [], ['Authorization' => 'Bearer ' . $token], json_encode($payload));
 
         return static::$client;
     }

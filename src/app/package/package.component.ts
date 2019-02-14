@@ -17,7 +17,6 @@ const PACKAGE_OPTIONS = {
 })
 export class PackageComponent implements OnInit {
 
-  @Input() composerLock: PackageLockModel[];
   @Input() website: WebsiteModel;
   packages: PackageLockModel[];
 
@@ -27,18 +26,18 @@ export class PackageComponent implements OnInit {
   dataSource: MatTableDataSource<PackageLockModel>;
   @ViewChild(MatSort) packageSort: MatSort;
 
+  showAll: boolean;
+
   constructor(private bottomSheet: MatBottomSheet, private dialog: MatDialog) {
   }
 
   ngOnInit() {
-    this.packages = this.buildPackages(this.composerLock);
-    this.dataSource = new MatTableDataSource(this.packages);
-
-    console.log(this.packages);
+    this.packages = this.buildPackages(this.website.composerLock);
+    this.dataSource = new MatTableDataSource(this.filterRootPackages());
   }
 
   sortPackages(event) {
-    this.dataSource.data = this.packages.sort((a, b) => {
+    this.dataSource.data = this.dataSource.data.sort((a, b) => {
       switch (event.direction) {
         case 'asc':
         default:
@@ -52,7 +51,23 @@ export class PackageComponent implements OnInit {
 
   applyFilter(value) {
     this.dataSource.filter = value.trim().toLowerCase();
-    this.sortPackages({ active: '', direction: 'asc' });
+
+    // empty values make the sorting go crazy
+    if (value) {
+      this.sortPackages({ active: 'vendor', direction: 'asc' });
+    }
+  }
+
+  showDependencies() {
+    if (this.showAll) {
+      this.dataSource.data = this.packages;
+    } else {
+      this.dataSource.data = this.filterRootPackages();
+    }
+  }
+
+  filterRootPackages() {
+    return this.packages.filter(pkg => pkg.rootVersion);
   }
 
   openSheet() {
@@ -79,7 +94,8 @@ export class PackageComponent implements OnInit {
       data: {
         output: this.output,
         website: this.website
-      }
+      },
+      disableClose: !this.output.autoclose
     });
   }
 

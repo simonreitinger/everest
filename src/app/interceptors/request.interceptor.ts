@@ -16,7 +16,7 @@ export class RequestInterceptor implements HttpInterceptor {
   // error handling in catchError statement
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.auth.getToken()) {
-      if (this.auth.getTimeUntilLogout() < 60) {
+      if (this.auth.getTimeUntilLogout() < 300) {
         this.auth.refreshToken();
       }
       req = req.clone({ headers: req.headers.set('Authorization', 'Bearer ' + this.auth.getToken()) });
