@@ -20,15 +20,15 @@ class TaskRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $website
+     * @param $installation
      * @return mixed
      */
-    public function findOneByWebsite($website)
+    public function findOneByInstallation($installation)
     {
         try {
             return $this->createQueryBuilder('t')
-                ->andWhere('t.website = :val')
-                ->setParameter('val', $website)
+                ->andWhere('t.installation = :val')
+                ->setParameter('val', $installation)
                 ->getQuery()
                 ->getOneOrNullResult()
             ;

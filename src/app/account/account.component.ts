@@ -59,7 +59,7 @@ export class AccountComponent implements OnInit {
           this.dialog.open(this.container);
           this.auth.logout();
         } else {
-          this.router.navigateByUrl('/websites');
+          this.router.navigateByUrl('/installations');
         }
       });
 

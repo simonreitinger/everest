@@ -9,14 +9,14 @@
 namespace App\Manager;
 
 use App\Client\ManagerClient;
-use App\Client\WebsiteCrawler;
-use App\Entity\Website;
+use App\Client\InstallationCrawler;
+use App\Entity\Installation;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Psr7\Response as Psr7Response;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class ConfigManager is responsible for updating the database records of websites
+ * Class ConfigManager is responsible for updating the database records of installations
  * @package App\Config
  */
 class ConfigManager
@@ -32,9 +32,9 @@ class ConfigManager
     private $client;
 
     /**
-     * @var Website[] $websites
+     * @var Installation[] $installations
      */
-    private $websites;
+    private $installations;
 
     /**
      * map properties to client methods
@@ -64,25 +64,25 @@ class ConfigManager
     }
 
     /**
-     * @param Website[] $websites
+     * @param Installation[] $installations
      * @return ConfigManager
      */
-    public function setWebsites(array $websites): ConfigManager
+    public function setInstallations(array $installations): ConfigManager
     {
-        $this->websites = $websites;
+        $this->installations = $installations;
 
         return $this;
     }
 
     public function fetchConfig(): bool
     {
-        if ($this->websites === null) {
-            throw new \BadMethodCallException('No websites found. Did you specify them using "setWebsites()"?');
+        if ($this->installations === null) {
+            throw new \BadMethodCallException('No installations found. Did you specify them using "setInstallations()"?');
         }
 
-        /** @var Website $website */
-        foreach ($this->websites as $website) {
-            if (!$this->updateConfig($website)) {
+        /** @var Installation $installation */
+        foreach ($this->installations as $installation) {
+            if (!$this->updateConfig($installation)) {
                 return false;
             }
         }
@@ -93,12 +93,12 @@ class ConfigManager
         return true;
     }
 
-    private function updateConfig(Website $website): bool
+    private function updateConfig(Installation $installation): bool
     {
         foreach ($this->responses as $set => $method) {
             try {
                 /** @var Psr7Response $response */
-                $response = $this->client->{$method}($website);
+                $response = $this->client->{$method}($installation);
 
                 if ($response->getStatusCode() === Response::HTTP_OK) {
                     // decode into array for database
@@ -110,11 +110,11 @@ class ConfigManager
                     }
 
                     if ($set === 'setLock') {
-                        $json = $this->buildLockData($json, $website->getPackages());
+                        $json = $this->buildLockData($json, $installation->getPackages());
                     }
 
                     // use the keys from $responses for setting the received json
-                    $website->{$set}($json);
+                    $installation->{$set}($json);
 
                     continue;
                 }
@@ -124,13 +124,13 @@ class ConfigManager
         }
 
         // metadata
-        $metadataResponse = $this->client->homepageRequest($website);
-        (new WebsiteCrawler($metadataResponse->getBody()->getContents(), $website))->analyzeMetadata();
+        $metadataResponse = $this->client->homepageRequest($installation);
+        (new InstallationCrawler($metadataResponse->getBody()->getContents(), $installation))->analyzeMetadata();
 
-        $website->setLastUpdate();
+        $installation->setLastUpdate();
 
-        // add website to changes
-        $this->entityManager->persist($website);
+        // add installation to changes
+        $this->entityManager->persist($installation);
 
         return true;
     }

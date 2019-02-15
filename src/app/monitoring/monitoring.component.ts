@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material';
 import { MonitoringModel } from '../models/monitoring.model';
 import { MonitoringService } from '../services/monitoring.service';
-import { WebsiteModel } from '../models/website.model';
+import { InstallationModel } from '../models/installation.model';
 import { Chart } from 'chart.js';
 
 @Component({
@@ -12,7 +12,7 @@ import { Chart } from 'chart.js';
 })
 export class MonitoringComponent implements OnInit {
 
-  @Input() website: WebsiteModel;
+  @Input() installation: InstallationModel;
   data: MonitoringModel[];
   chart: any;
 
@@ -24,7 +24,7 @@ export class MonitoringComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.ms.getAll(this.website).subscribe((res: MonitoringModel[]) => {
+    this.ms.getAll(this.installation).subscribe((res: MonitoringModel[]) => {
       this.data = res;
       this.buildChart();
     });
@@ -45,10 +45,10 @@ export class MonitoringComponent implements OnInit {
       data: {
         labels: labels,
         datasets: [{
-          label: this.website.cleanUrl,
+          label: this.installation.cleanUrl,
           data: data,
           backgroundColor: 'transparent',
-          borderColor: this.website.themeColor ? this.website.themeColor : '#5db7f4'
+          borderColor: this.installation.themeColor ? this.installation.themeColor : '#5db7f4'
         }]
       },
       options: {

@@ -6,16 +6,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\WebsiteRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\InstallationRepository")
  * @ORM\Table(uniqueConstraints={@UniqueConstraint(name="search_idx", columns={"hash"})})
  */
-class Website implements \JsonSerializable
+class Installation implements \JsonSerializable
 {
 
     const CONTAO_MANAGER = 'contao-manager.phar.php';
 
     /**
-     * Website constructor.
+     * Installation constructor.
      */
     public function __construct()
     {
@@ -162,7 +162,7 @@ class Website implements \JsonSerializable
     }
 
     /**
-     * @return Website
+     * @return Installation
      */
     public function setLastUpdate(): self
     {
@@ -183,7 +183,7 @@ class Website implements \JsonSerializable
     }
 
     /**
-     * @return Website
+     * @return Installation
      */
     public function setAdded(): self
     {
@@ -208,7 +208,7 @@ class Website implements \JsonSerializable
 
     /**
      * @param mixed $url
-     * @return Website
+     * @return Installation
      */
     public function setUrl($url): self
     {
@@ -228,7 +228,7 @@ class Website implements \JsonSerializable
 
     /**
      * @param mixed $url
-     * @return Website
+     * @return Installation
      */
     public function setCleanUrl($url): self
     {
@@ -249,7 +249,7 @@ class Website implements \JsonSerializable
      * localhosts have no Contao Manager file
      *
      * @param mixed $url
-     * @return Website
+     * @return Installation
      */
     public function setManagerUrl($url): self
     {
@@ -270,7 +270,7 @@ class Website implements \JsonSerializable
 
     /**
      * @param mixed $token
-     * @return Website
+     * @return Installation
      */
     public function setToken($token): self
     {
@@ -289,7 +289,7 @@ class Website implements \JsonSerializable
 
     /**
      * @param $favicon
-     * @return Website
+     * @return Installation
      */
     public function setFavicon($favicon): self
     {
@@ -308,7 +308,7 @@ class Website implements \JsonSerializable
 
     /**
      * @param $title
-     * @return Website
+     * @return Installation
      */
     public function setTitle($title): self
     {
@@ -343,7 +343,7 @@ class Website implements \JsonSerializable
 
     /**
      * @param mixed $contao
-     * @return Website
+     * @return Installation
      */
     public function setContao($contao): self
     {
@@ -362,7 +362,7 @@ class Website implements \JsonSerializable
 
     /**
      * @param mixed $composer
-     * @return Website
+     * @return Installation
      */
     public function setComposer($composer): self
     {
@@ -381,7 +381,7 @@ class Website implements \JsonSerializable
 
     /**
      * @param mixed $manager
-     * @return Website
+     * @return Installation
      */
     public function setManager($manager): self
     {
@@ -400,7 +400,7 @@ class Website implements \JsonSerializable
 
     /**
      * @param mixed $phpCli
-     * @return Website
+     * @return Installation
      */
     public function setPhpCli($phpCli): self
     {
@@ -419,7 +419,7 @@ class Website implements \JsonSerializable
 
     /**
      * @param mixed $phpWeb
-     * @return Website
+     * @return Installation
      */
     public function setPhpWeb($phpWeb): self
     {
@@ -438,7 +438,7 @@ class Website implements \JsonSerializable
 
     /**
      * @param mixed $config
-     * @return Website
+     * @return Installation
      */
     public function setConfig($config): self
     {
@@ -457,7 +457,7 @@ class Website implements \JsonSerializable
 
     /**
      * @param string $lock
-     * @return Website
+     * @return Installation
      */
     public function setLock($lock): self
     {
@@ -476,7 +476,7 @@ class Website implements \JsonSerializable
 
     /**
      * @param mixed $selfUpdate
-     * @return Website
+     * @return Installation
      */
     public function setSelfUpdate($selfUpdate): self
     {

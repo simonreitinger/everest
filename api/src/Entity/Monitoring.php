@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @ORM\Entity(repositoryClass="App\Repository\MonitoringRepository")
  * @ORM\Table(uniqueConstraints={
  *      @UniqueConstraint(name="monitoring_unique",
- *        columns={"website_id", "created_at"})
+ *        columns={"installation_id", "created_at"})
  * })
  */
 class Monitoring implements \JsonSerializable
@@ -30,11 +30,11 @@ class Monitoring implements \JsonSerializable
     private $createdAt;
 
     /**
-     * @var Website
-     * @ORM\ManyToOne(targetEntity="Website")
-     * @ORM\JoinColumn(name="website_id", referencedColumnName="id")
+     * @var Installation
+     * @ORM\ManyToOne(targetEntity="Installation")
+     * @ORM\JoinColumn(name="installation_id", referencedColumnName="id")
      */
-    private $website;
+    private $installation;
 
     /**
      * @ORM\Column(type="integer")
@@ -77,14 +77,14 @@ class Monitoring implements \JsonSerializable
         return $this;
     }
 
-    public function getWebsite(): ?Website
+    public function getInstallation(): ?Installation
     {
-        return $this->website;
+        return $this->installation;
     }
 
-    public function setWebsite(Website $website): self
+    public function setInstallation(Installation $installation): self
     {
-        $this->website = $website;
+        $this->installation = $installation;
 
         return $this;
     }
@@ -119,7 +119,7 @@ class Monitoring implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'websiteHash' => $this->website->getHash(),
+            'hash' => $this->installation->getHash(),
             'createdAt' => $this->createdAt->format(DATE_ATOM),
             'status' => $this->status,
             'statusText' => Response::$statusTexts[$this->status],

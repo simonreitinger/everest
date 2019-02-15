@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Client\ManagerClient;
 use App\Entity\Monitoring;
-use App\Entity\Website;
+use App\Entity\Installation;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -53,7 +53,7 @@ class EverestMonitoringCommand extends Command
         $all = $input->getOption('all');
 
         if ($url) {
-            $site = $this->entityManager->getRepository(Website::class)->findOneByUrl($url);
+            $site = $this->entityManager->getRepository(Installation::class)->findOneByUrl($url);
             $websites = [$site];
 
         } else {
@@ -61,19 +61,19 @@ class EverestMonitoringCommand extends Command
                 $io->error('Please specify the URL or set the --all option.');
                 exit(1);
             }
-            $websites = $this->entityManager->getRepository(Website::class)->findAll();
+            $websites = $this->entityManager->getRepository(Installation::class)->findAll();
         }
 
         $progress = $io->createProgressBar(count($websites));
         $progress->display();
 
-        /** @var Website $website */
+        /** @var Installation $website */
         foreach ($websites as $website) {
             $response = $this->client->homepageRequest($website, true);
 
             $monitoring = new Monitoring();
             $monitoring
-                ->setWebsite($website)
+                ->setInstallation($website)
                 ->setStatus($response->getStatusCode())
                 ->setRequestTime($this->client->getRequestTime());
 

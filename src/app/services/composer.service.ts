@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { TaskOutputModel } from '../models/task-output.model';
-import { WebsiteModel } from '../models/website.model';
+import { InstallationModel } from '../models/installation.model';
+import { of, timer } from 'rxjs';
+import { concatMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -16,11 +18,11 @@ export class ComposerService {
     return this.http.post<TaskOutputModel>(environment.everestApi + '/task', task);
   }
 
-  getTaskStatus(website: WebsiteModel) {
-    return this.http.get<TaskOutputModel>(environment.everestApi + '/task/' + website.hash);
+  getTaskStatus(installation: InstallationModel) {
+    return this.http.get<TaskOutputModel>(environment.everestApi + '/task/' + installation.hash + '?XDEBUG_SESSION_START=PHPSTORM', { observe: 'response' });
   }
 
-  buildTask(name: string, website: WebsiteModel, require: string[] = [], update: string[] = [], remove: string[] = [], dryRun: boolean = false): TaskModel {
+  buildTask(name: string, installation: InstallationModel, require: string[] = [], update: string[] = [], remove: string[] = [], dryRun: boolean = false): TaskModel {
     return {
       name,
       config: {
@@ -29,7 +31,7 @@ export class ComposerService {
         remove,
         update
       },
-      website: website.cleanUrl
+      installation: installation.cleanUrl
     };
   }
 }

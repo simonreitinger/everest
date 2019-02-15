@@ -9,7 +9,7 @@
 namespace App\Controller;
 
 use App\Manager\ConfigManager;
-use App\Entity\Website;
+use App\Entity\Installation;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,7 +46,7 @@ class ConfigController extends ApiController
     }
 
     /**
-     * load the config initially
+     * update config for specific installation
      *
      * @param $hash
      * @param Request $request
@@ -54,15 +54,15 @@ class ConfigController extends ApiController
      */
     public function __invoke($hash, Request $request)
     {
-        $website = $this->entityManager->getRepository(Website::class)->findOneByHash($hash);
+        $installation = $this->entityManager->getRepository(Installation::class)->findOneByHash($hash);
 
-        if ($website) {
+        if ($installation) {
             $this->configManager
-                ->setWebsites([$website])
+                ->setInstallations([$installation])
                 ->fetchConfig()
             ;
 
-            return new JsonResponse($website);
+            return new JsonResponse($installation);
         }
 
         return $this->createApiProblemResponse();

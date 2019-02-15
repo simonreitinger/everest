@@ -1,5 +1,5 @@
 export interface MonitoringModel {
-  websiteHash: string;
+  hash: string;
   createdAt: string;
   status: number;
   statusText: string;

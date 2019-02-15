@@ -20,30 +20,18 @@ class MonitoringRepository extends ServiceEntityRepository
         parent::__construct($registry, Monitoring::class);
     }
 
-    public function findByWebsiteId($id)
+    public function findByInstallationId($id)
     {
         return $this->createQueryBuilder('m')
-            ->where('m.website = :id')
+            ->where('m.installation = :id')
             ->setParameter('id', $id)
             ->orderBy('m.createdAt', 'desc')
             ->getQuery()
             ->getResult();
     }
 
-    public function findCurrentByWebsiteId($id)
+    public function findCurrentByInstallationId($id)
     {
-        return $this->findOneBy(['website' => $id], ['createdAt' => 'desc']);
-    }
-
-    public function findByWebsiteIdAndDate($id, \DateTimeInterface $date)
-    {
-        return $this->createQueryBuilder('m')
-            ->where('m.website = :id')
-            ->where('m.createdAt = :date')
-            ->setParameter('id', $id)
-            ->setParameter('date', $date)
-            ->orderBy('m.createdAt', 'desc')
-            ->getQuery()
-            ->getResult();
+        return $this->findOneBy(['installation' => $id], ['createdAt' => 'desc']);
     }
 }

@@ -1,6 +1,6 @@
 import { PackageLockModel } from './package-lock.model';
 
-export interface WebsiteModel {
+export interface InstallationModel {
   hash: string;
   url: string;
   cleanUrl: string;

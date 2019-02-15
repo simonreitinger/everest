@@ -20,11 +20,11 @@ class Task implements \JsonSerializable
     private $id;
 
     /**
-     * @var Website
-     * @ORM\OneToOne(targetEntity="Website")
-     * @ORM\JoinColumn(name="website_id", referencedColumnName="id")
+     * @var Installation
+     * @ORM\OneToOne(targetEntity="Installation")
+     * @ORM\JoinColumn(name="installation_id", referencedColumnName="id")
      */
-    private $website;
+    private $installation;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -64,14 +64,14 @@ class Task implements \JsonSerializable
         return $this;
     }
 
-    public function getWebsite()
+    public function getInstallation()
     {
-        return $this->website;
+        return $this->installation;
     }
 
-    public function setWebsite($website): self
+    public function setInstallation($installation): self
     {
-        $this->website = $website;
+        $this->installation = $installation;
 
         return $this;
     }
@@ -132,7 +132,7 @@ class Task implements \JsonSerializable
             'name' => $this->name,
             'config' => $this->config,
             'output' => $this->output,
-            'website' => $this->website->getCleanUrl()
+            'installation' => $this->installation->getCleanUrl()
         ];
     }
 }

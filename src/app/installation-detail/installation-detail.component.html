@@ -1,6 +1,6 @@
-<div id="detail" *ngIf="website">
-  <a routerLink="/websites">back</a>
-  <h1 class="mb15">{{ website.cleanUrl }}</h1>
+<div id="detail" *ngIf="installation">
+  <a routerLink="/installations">back</a>
+  <h1 class="mb15">{{ installation.cleanUrl }}</h1>
 
   <div>
     <div class="mb15">
@@ -10,7 +10,7 @@
           <mat-panel-description>Installierte Pakete anzeigen</mat-panel-description>
         </mat-expansion-panel-header>
 
-        <app-package [website]="website"></app-package>
+        <app-package [installation]="installation"></app-package>
       </mat-expansion-panel>
     </div>
 
@@ -21,7 +21,7 @@
           <mat-panel-description>Response-Diagramm anzeigen</mat-panel-description>
         </mat-expansion-panel-header>
 
-        <app-monitoring [website]="website"></app-monitoring>
+        <app-monitoring [installation]="installation"></app-monitoring>
       </mat-expansion-panel>
     </div>
   </div>

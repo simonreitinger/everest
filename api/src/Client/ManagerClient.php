@@ -9,7 +9,7 @@
 namespace App\Client;
 
 use App\Entity\Task;
-use App\Entity\Website;
+use App\Entity\Installation;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
@@ -46,12 +46,12 @@ class ManagerClient
     }
 
     /**
-     * @param Website $website
+     * @param Installation $website
      * @param string $endpoint
      * @param string $method
      * @return ResponseInterface|null
      */
-    private function apiRequest(Website $website, string $endpoint = '', $method = 'GET', $data = null)
+    private function apiRequest(Installation $website, string $endpoint = '', $method = 'GET', $data = null)
     {
         try {
             return $this->guzzle
@@ -63,11 +63,11 @@ class ManagerClient
     }
 
     /**
-     * @param Website $website
+     * @param Installation $website
      * @param bool $logTime
      * @return ResponseInterface|null
      */
-    public function homepageRequest(Website $website, $logTime = false)
+    public function homepageRequest(Installation $website, $logTime = false)
     {
         try {
             if ($logTime) {
@@ -101,55 +101,55 @@ class ManagerClient
     }
 
     /**
-     * @param Website $website
+     * @param Installation $website
      * @return ResponseInterface|null
      */
-    public function serverContao(Website $website)
+    public function serverContao(Installation $website)
     {
         return $this->apiRequest($website, '/api/server/contao');
     }
 
     /**
-     * @param Website $website
+     * @param Installation $website
      * @return ResponseInterface|null
      */
-    public function serverComposer(Website $website)
+    public function serverComposer(Installation $website)
     {
         return $this->apiRequest($website, '/api/server/composer');
     }
 
     /**
-     * @param Website $website
+     * @param Installation $website
      * @return ResponseInterface|null
      */
-    public function serverConfig(Website $website)
+    public function serverConfig(Installation $website)
     {
         return $this->apiRequest($website, '/api/server/config');
     }
 
     /**
-     * @param Website $website
+     * @param Installation $website
      * @return ResponseInterface|null
      */
-    public function serverPhpWeb(Website $website)
+    public function serverPhpWeb(Installation $website)
     {
         return $this->apiRequest($website, '/api/server/php-web');
     }
 
     /**
-     * @param Website $website
+     * @param Installation $website
      * @return ResponseInterface|null
      */
-    public function serverPhpCli(Website $website)
+    public function serverPhpCli(Installation $website)
     {
         return $this->apiRequest($website, '/api/server/php-cli');
     }
 
     /**
-     * @param Website $website
+     * @param Installation $website
      * @return ResponseInterface|null
      */
-    public function configManager(Website $website)
+    public function configManager(Installation $website)
     {
         return $this->apiRequest($website, '/api/config/manager');
     }
@@ -157,10 +157,10 @@ class ManagerClient
     /**
      * returns the composer.json file
      *
-     * @param Website $website
+     * @param Installation $website
      * @return ResponseInterface|null
      */
-    public function packagesRoot(Website $website)
+    public function packagesRoot(Installation $website)
     {
         return $this->apiRequest($website, '/api/packages/root');
     }
@@ -168,38 +168,38 @@ class ManagerClient
     /**
      * returns the composer.lock file
      *
-     * @param Website $website
+     * @param Installation $website
      * @return ResponseInterface|null
      */
-    public function composerLock(Website $website)
+    public function composerLock(Installation $website)
     {
         return $this->apiRequest($website, '/api/packages/local');
     }
 
     /**
-     * @param Website $website
+     * @param Installation $website
      * @param Task $task
      * @return ResponseInterface|null
      */
-    public function putTask(Website $website, Task $task)
+    public function putTask(Installation $website, Task $task)
     {
         return $this->apiRequest($website, '/api/task', 'PUT', $task);
     }
 
     /**
-     * @param Website $website
+     * @param Installation $website
      * @return ResponseInterface|null
      */
-    public function getTask(Website $website)
+    public function getTask(Installation $website)
     {
         return $this->apiRequest($website, '/api/task');
     }
 
     /**
-     * @param Website $website
+     * @param Installation $website
      * @return ResponseInterface|null
      */
-    public function removeTask(Website $website)
+    public function removeTask(Installation $website)
     {
         return $this->apiRequest($website, '/api/task', 'DELETE');
     }
@@ -214,10 +214,11 @@ class ManagerClient
     }
 
     /**
-     * @param Website $website
+     * @param Installation $website
+     * @param null $data
      * @return array
      */
-    private function buildOptions(Website $website, $data = null)
+    private function buildOptions(Installation $website, $data = null)
     {
         $options = [
             'headers' => [

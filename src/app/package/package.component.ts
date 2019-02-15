@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { PackageLockModel } from '../models/package-lock.model';
 import { MatBottomSheet, MatDialog, MatSort, MatTableDataSource } from '@angular/material';
 import { PackageOverviewSheetComponent } from './package-overview-sheet.component';
-import { WebsiteModel } from '../models/website.model';
+import { InstallationModel } from '../models/installation.model';
 import { TaskOutputModel } from '../models/task-output.model';
 import { ConsoleOutputComponent } from '../console-output/console-output.component';
 
@@ -17,7 +17,7 @@ const PACKAGE_OPTIONS = {
 })
 export class PackageComponent implements OnInit {
 
-  @Input() website: WebsiteModel;
+  @Input() installation: InstallationModel;
   packages: PackageLockModel[];
 
   output: TaskOutputModel;
@@ -32,7 +32,7 @@ export class PackageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.packages = this.buildPackages(this.website.composerLock);
+    this.packages = this.buildPackages(this.installation.composerLock);
     this.dataSource = new MatTableDataSource(this.filterRootPackages());
   }
 
@@ -74,7 +74,7 @@ export class PackageComponent implements OnInit {
     const bottomSheetRef = this.bottomSheet.open(PackageOverviewSheetComponent, {
       data:
         {
-          website: this.website,
+          installation: this.installation,
           packages: this.packages.filter(pkg => pkg.checked).map(p => p.name)
         }
     });
@@ -93,7 +93,7 @@ export class PackageComponent implements OnInit {
       width: '800px',
       data: {
         output: this.output,
-        website: this.website
+        installation: this.installation
       },
       disableClose: !this.output.autoclose
     });

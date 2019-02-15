@@ -1,7 +1,7 @@
 import { Component, Inject, Output } from '@angular/core';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material';
 import { ComposerService } from '../services/composer.service';
-import { WebsiteModel } from '../models/website.model';
+import { InstallationModel } from '../models/installation.model';
 import { TaskOutputModel } from '../models/task-output.model';
 
 @Component({
@@ -10,7 +10,7 @@ import { TaskOutputModel } from '../models/task-output.model';
 })
 export class PackageOverviewSheetComponent {
 
-  website: WebsiteModel;
+  installation: InstallationModel;
 
   // selected packages
   packages: string[];
@@ -22,31 +22,31 @@ export class PackageOverviewSheetComponent {
   constructor(private sheetRef: MatBottomSheetRef<PackageOverviewSheetComponent>,
               private composerService: ComposerService,
               @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) {
-    this.website = data.website;
+    this.installation = data.installation;
     this.packages = data.packages;
   }
 
   performUpdate(event: MouseEvent) {
     event.preventDefault();
-    const task = this.composerService.buildTask('composer/update', this.website, [], [], [], this.dryRun);
+    const task = this.composerService.buildTask('composer/update', this.installation, [], [], [], this.dryRun);
     this.handleTask(task);
   }
 
   performUpdateSelected(event: MouseEvent) {
     event.preventDefault();
-    const task = this.composerService.buildTask('composer/update', this.website, [], this.packages, [], this.dryRun);
+    const task = this.composerService.buildTask('composer/update', this.installation, [], this.packages, [], this.dryRun);
     this.handleTask(task);
   }
 
   performInstall(event: MouseEvent) {
     event.preventDefault();
-    const task = this.composerService.buildTask('composer/install', this.website, [], [], [], this.dryRun);
+    const task = this.composerService.buildTask('composer/install', this.installation, [], [], [], this.dryRun);
     this.handleTask(task);
   }
 
   performRemove(event: MouseEvent) {
     event.preventDefault();
-    const task = this.composerService.buildTask('composer/update', this.website, [], [], this.packages, this.dryRun);
+    const task = this.composerService.buildTask('composer/update', this.installation, [], [], this.packages, this.dryRun);
     this.handleTask(task);
   }
 

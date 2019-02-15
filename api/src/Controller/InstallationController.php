@@ -9,7 +9,7 @@
 namespace App\Controller;
 
 use App\Client\ManagerClient;
-use App\Entity\Website;
+use App\Entity\Installation;
 use App\HttpKernel\ApiProblemResponse;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,14 +18,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class WebsiteController
+ * Class InstallationController
  * @package App\Controller
  *
- * lists and adds website to the database
+ * lists and adds installation to the database
  *
- * @Route("/website")
+ * @Route("/installation")
  */
-class WebsiteController extends ApiController
+class InstallationController extends ApiController
 {
 
     /**
@@ -39,7 +39,7 @@ class WebsiteController extends ApiController
     private $client;
 
     /**
-     * WebsiteController constructor.
+     * InstallationController constructor.
      * @param EntityManagerInterface $entityManager
      * @param ManagerClient $client
      */
@@ -56,9 +56,9 @@ class WebsiteController extends ApiController
      */
     public function getAll()
     {
-        $websites = $this->entityManager->getRepository(Website::class)->findAll();
+        $installations = $this->entityManager->getRepository(Installation::class)->findAll();
 
-        return new JsonResponse($websites);
+        return new JsonResponse($installations);
     }
 
     /**
@@ -71,25 +71,25 @@ class WebsiteController extends ApiController
     {
         $json = $this->getRequestContentAsJson($request);
 
-        $website = $this->entityManager->getRepository(Website::class)->findOneBy(['url' => $json['url']]);
+        $installation = $this->entityManager->getRepository(Installation::class)->findOneBy(['url' => $json['url']]);
 
         // only progress with valid data
         if ($this->jsonIsValid($json)) {
-            if (!$website) {
+            if (!$installation) {
                 // set new urls
-                $website = new Website();
-                $website
+                $installation = new Installation();
+                $installation
                     ->setUrl($json['url'])
                     ->setManagerUrl($json['url'])
                     ->setCleanUrl(parse_url($json['url'], PHP_URL_HOST)); // without protocol
             }
 
-            $website->setToken($json['token']);
+            $installation->setToken($json['token']);
 
-            $this->entityManager->persist($website);
+            $this->entityManager->persist($installation);
             $this->entityManager->flush();
 
-            return new JsonResponse($website, Response::HTTP_CREATED);
+            return new JsonResponse($installation, Response::HTTP_CREATED);
         }
 
         $this->createApiProblemResponse('Invalid data', Response::HTTP_BAD_REQUEST);
@@ -102,10 +102,10 @@ class WebsiteController extends ApiController
      */
     public function getOneByHash($hash)
     {
-        $website = $this->entityManager->getRepository(Website::class)->findOneByHash($hash);
+        $installation = $this->entityManager->getRepository(Installation::class)->findOneByHash($hash);
 
-        if ($website) {
-            return new JsonResponse($website);
+        if ($installation) {
+            return new JsonResponse($installation);
         }
 
         return $this->createApiProblemResponse('Not found', Response::HTTP_BAD_REQUEST);

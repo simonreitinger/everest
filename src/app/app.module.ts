@@ -11,13 +11,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { MaterialModule } from './material-module';
 import { NavbarComponent } from './navbar/navbar.component';
 import { LoginComponent } from './login/login.component';
-import { WebsiteListComponent } from './website-list/website-list.component';
+import { InstallationListComponent } from './installation-list/installation-list.component';
 import { HomeComponent } from './home/home.component';
-import { WebsiteAddComponent } from './website-add/website-add.component';
+import { InstallationAddComponent } from './installation-add/installation-add.component';
 import { AccountComponent } from './account/account.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { WebsiteDetailComponent } from './website-detail/website-detail.component';
+import { InstallationDetailComponent } from './installation-detail/installation-detail.component';
 import { RequestInterceptor } from './interceptors/request.interceptor';
 import { NavbarMenuComponent } from './navbar-menu/navbar-menu.component';
 import { LogoutComponent } from './logout/logout.component';
@@ -34,11 +34,11 @@ registerLocaleData(localeDe);
     HomeComponent,
     LoginComponent,
     NavbarComponent,
-    WebsiteListComponent,
-    WebsiteAddComponent,
+    InstallationListComponent,
+    InstallationAddComponent,
     AccountComponent,
     MonitoringComponent,
-    WebsiteDetailComponent,
+    InstallationDetailComponent,
     NavbarMenuComponent,
     LogoutComponent,
     PackageComponent,

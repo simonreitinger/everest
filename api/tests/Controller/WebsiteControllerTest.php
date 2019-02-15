@@ -8,7 +8,7 @@
 
 namespace App\Tests\Controller;
 
-use App\Controller\WebsiteController;
+use App\Controller\InstallationController;
 use App\Entity\Website;
 use App\Tests\ApiTestCase;
 

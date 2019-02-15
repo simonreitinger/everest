@@ -1,46 +1,46 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { WebsiteService } from '../services/website.service';
-import { WebsiteModel } from '../models/website.model';
+import { InstallationService } from '../services/installation.service';
+import { InstallationModel } from '../models/installation.model';
 import { ContaoManagerService } from '../services/contao-manager.service';
 import { SoftwareService } from '../services/software.service';
 import { SoftwareModel } from '../models/software.model';
-import { WebsiteAddComponent } from '../website-add/website-add.component';
 import { MatDialog, MatSort, MatTableDataSource } from '@angular/material';
 import { MonitoringDialogComponent } from '../monitoring-dialog/monitoring-dialog.component';
+import { InstallationAddComponent } from '../installation-add/installation-add.component';
 
 const TABLE_OPTIONS = {
   displayedColumns: ['cleanUrl', 'software', 'softwareVersion', 'platform', 'platformVersion', 'status', 'detail']
 };
 
 @Component({
-  selector: 'app-website-list',
-  templateUrl: './website-list.component.html',
-  styleUrls: ['./website-list.component.scss']
+  selector: 'app-installation-list',
+  templateUrl: './installation-list.component.html',
+  styleUrls: ['./installation-list.component.scss']
 })
-export class WebsiteListComponent implements OnInit {
+export class InstallationListComponent implements OnInit {
 
   tableOptions = TABLE_OPTIONS;
 
-  websites: WebsiteModel[];
+  installations: InstallationModel[];
   softwares: SoftwareModel[];
   phpVersions: string[];
 
   @ViewChild(MatSort) sort: MatSort;
-  dataSource: MatTableDataSource<WebsiteModel>;
+  dataSource: MatTableDataSource<InstallationModel>;
 
   constructor(
     private dialog: MatDialog,
-    private ws: WebsiteService,
+    private is: InstallationService,
     private cms: ContaoManagerService,
     private ss: SoftwareService
   ) {
   }
 
   ngOnInit() {
-    this.ws.getAll().subscribe((res: WebsiteModel[]) => {
-      this.websites = res;
+    this.is.getAll().subscribe((res: InstallationModel[]) => {
+      this.installations = res;
       console.log(res);
-      this.dataSource = new MatTableDataSource(this.websites);
+      this.dataSource = new MatTableDataSource(this.installations);
     });
     this.ss.getAll().subscribe((res: SoftwareModel[]) => {
       this.softwares = res;
@@ -54,7 +54,7 @@ export class WebsiteListComponent implements OnInit {
   }
 
   sortData(event) {
-    this.dataSource.data = this.websites.sort((a, b) => {
+    this.dataSource.data = this.installations.sort((a, b) => {
       switch (event.direction) {
         case 'asc':
         default:
@@ -66,10 +66,10 @@ export class WebsiteListComponent implements OnInit {
     });
   }
 
-  openMonitoringDialog(website: WebsiteModel) {
+  openMonitoringDialog(installation: InstallationModel) {
     this.dialog.open(MonitoringDialogComponent, {
       data: {
-        website: website
+        installation: installation
       },
       height: '450px',
       width: '800px'
@@ -77,7 +77,7 @@ export class WebsiteListComponent implements OnInit {
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(WebsiteAddComponent, {
+    const dialogRef = this.dialog.open(InstallationAddComponent, {
       width: '500px',
       height: '200px'
     });

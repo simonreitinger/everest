@@ -2,16 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { CONTAO_MANAGER, ContaoManagerService } from '../services/contao-manager.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigService } from '../services/config.service';
-import { WebsiteModel } from '../models/website.model';
+import { InstallationModel } from '../models/installation.model';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 
 @Component({
-  selector: 'app-website-add',
-  templateUrl: './website-add.component.html',
-  styleUrls: ['./website-add.component.scss']
+  selector: 'app-installation-add',
+  templateUrl: './installation-add.component.html',
+  styleUrls: ['./installation-add.component.scss']
 })
-export class WebsiteAddComponent implements OnInit {
+export class InstallationAddComponent implements OnInit {
 
   url = new FormControl('', [Validators.required]);
   disableManagerButton = false;
@@ -30,10 +30,10 @@ export class WebsiteAddComponent implements OnInit {
     if (this.route) {
       this.route.queryParams.subscribe(values => {
         if (values.token && values.origin) {
-          this.cms.saveUrlAndToken(values.origin, values.token).subscribe((website: WebsiteModel) => {
-            console.log(website);
-            if (website) {
-              this.router.navigateByUrl('/websites');
+          this.cms.saveUrlAndToken(values.origin, values.token).subscribe((installation: InstallationModel) => {
+            console.log(installation);
+            if (installation) {
+              this.router.navigateByUrl('/installations');
             }
           });
         }

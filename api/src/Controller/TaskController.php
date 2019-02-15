@@ -10,12 +10,14 @@ namespace App\Controller;
 
 use App\Client\ManagerClient;
 use App\Entity\Task;
-use App\Entity\Website;
+use App\Entity\Installation;
 use App\HttpKernel\ApiProblemResponse;
+use App\Manager\ConfigManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -37,14 +39,20 @@ class TaskController extends ApiController
     private $client;
 
     /**
+     * @var ConfigManager $configManager
+     */
+    private $configManager;
+
+    /**
      * TaskController constructor.
      * @param EntityManagerInterface $entityManager
      * @param ManagerClient $client
      */
-    public function __construct(EntityManagerInterface $entityManager, ManagerClient $client)
+    public function __construct(EntityManagerInterface $entityManager, ManagerClient $client, ConfigManager $configManager)
     {
         $this->entityManager = $entityManager;
         $this->client = $client;
+        $this->configManager = $configManager;
     }
 
     /**
@@ -55,14 +63,15 @@ class TaskController extends ApiController
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws \Exception
      */
     public function postTask(Request $request)
     {
         $json = $this->getRequestContentAsJson($request);
 
-        $website = $this->entityManager->getRepository(Website::class)->findOneByUrl($json['website']);
+        $installation = $this->entityManager->getRepository(Installation::class)->findOneByUrl($json['installation']);
 
-        $task = $this->entityManager->getRepository(Task::class)->findOneByWebsite($website->getId());
+        $task = $this->entityManager->getRepository(Task::class)->findOneByInstallation($installation->getId());
 
         // status code is relevant for deciding if its a new / old task
         $statusCode = Response::HTTP_OK;
@@ -74,7 +83,7 @@ class TaskController extends ApiController
 
         $task->setName($json['name']);
         $task->setConfig($json['config']);
-        $task->setWebsite($website);
+        $task->setInstallation($installation);
         $task->setCreatedAt(new \DateTime());
 
         try {
@@ -83,7 +92,7 @@ class TaskController extends ApiController
                 return new JsonResponse($task->getOutput(), Response::HTTP_OK);
             }
 
-            $response = $this->client->putTask($website, $task);
+            $response = $this->client->putTask($installation, $task);
 
             if ($response) {
 
@@ -113,36 +122,36 @@ class TaskController extends ApiController
      */
     public function getTaskStatus($hash)
     {
-        /** @var Website $website */
-        $website = $this->entityManager->getRepository(Website::class)->findOneByHash($hash);
+        /** @var Installation $installation */
+        $installation = $this->entityManager->getRepository(Installation::class)->findOneByHash($hash);
 
         /** @var Task $task */
-        $task = $this->entityManager->getRepository(Task::class)->findOneByWebsite($website);
-        if ($website && $task) {
-            $response = $this->client->getTask($website);
+        $task = $this->entityManager->getRepository(Task::class)->findOneByInstallation($installation);
+        if ($installation) {
+            $response = $this->client->getTask($installation);
 
             $json = $this->client->getJsonContent($response);
 
-            if ($json['status'] === 'complete') {
-                $response = $this->client->removeTask($website);
-                $this->entityManager->remove($task);
-                $this->entityManager->flush();
+            // task has to exist to complete it
+            if ($task) {
+                if ($json['status'] === 'complete') {
+                    $response = $this->client->removeTask($installation);
+                    $this->entityManager->remove($task);
+                    $this->entityManager->flush();
 
-                // update config
-                $this->forward(ConfigController::class, ['hash' => $hash]);
-            } else {
-                $task->setOutput($json);
-                $this->entityManager->persist($task);
-                $this->entityManager->flush();
+                    $process = new Process(['php bin/console everest:update-config ' . $installation->getCleanUrl()], __DIR__ . '/../..');
+                    $process->start();
+                } else {
+                    $task->setOutput($json);
+                    $this->entityManager->persist($task);
+                    $this->entityManager->flush();
+                }
+
             }
 
             return new JsonResponse($json);
         }
 
-        if (!$website) {
-            return $this->createApiProblemResponse('Invalid hash');
-        }
-
-        return $this->createApiProblemResponse(null, Response::HTTP_NO_CONTENT);
+        return $this->createApiProblemResponse('Invalid hash', Response::HTTP_NO_CONTENT);
     }
 }

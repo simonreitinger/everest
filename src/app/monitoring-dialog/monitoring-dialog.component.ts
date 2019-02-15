@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MonitoringService } from '../services/monitoring.service';
 import { MAT_DIALOG_DATA } from '@angular/material';
-import { WebsiteModel } from '../models/website.model';
+import { InstallationModel } from '../models/installation.model';
 
 @Component({
   selector: 'app-monitoring-dialog',
@@ -10,10 +10,10 @@ import { WebsiteModel } from '../models/website.model';
 })
 export class MonitoringDialogComponent implements OnInit {
 
-  website: WebsiteModel;
+  installation: InstallationModel;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
-    this.website = data.website;
+    this.installation = data.installation;
   }
 
   ngOnInit() {

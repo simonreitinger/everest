@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { WebsiteModel } from '../models/website.model';
+import { InstallationModel } from '../models/installation.model';
 import { ContaoManagerService } from './contao-manager.service';
 import { environment } from '../../environments/environment';
 
@@ -12,8 +12,8 @@ export class ConfigService {
   constructor(private http: HttpClient) {
   }
 
-  getContaoConfig(website: WebsiteModel) {
-    return this.http.get(environment.everestApi + '/config/' + website.hash);
+  getContaoConfig(installation: InstallationModel) {
+    return this.http.get(environment.everestApi + '/config/' + installation.hash);
   }
 
 

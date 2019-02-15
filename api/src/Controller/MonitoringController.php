@@ -10,10 +10,10 @@ namespace App\Controller;
 
 use App\Client\ManagerClient;
 use App\Entity\Monitoring;
-use App\Entity\Website;
+use App\Entity\Installation;
 use App\HttpKernel\ApiProblemResponse;
 use App\Repository\MonitoringRepository;
-use App\Repository\WebsiteRepository;
+use App\Repository\InstallationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,13 +59,13 @@ class MonitoringController extends ApiController
      */
     public function currentStatusByHash($hash)
     {
-        /** @var WebsiteRepository $websiteRepo */
-        $websiteRepo = $this->entityManager->getRepository(Website::class);
-        $website = $websiteRepo->findOneByHash($hash);
-        if ($website) {
+        /** @var InstallationRepository $installationRepo */
+        $installationRepo = $this->entityManager->getRepository(Installation::class);
+        $installation = $installationRepo->findOneByHash($hash);
+        if ($installation) {
             /** @var MonitoringRepository $monitoringRepo */
             $monitoringRepo = $this->entityManager->getRepository(Monitoring::class);
-            $monitoring = $monitoringRepo->findCurrentByWebsiteId($website->getId());
+            $monitoring = $monitoringRepo->findCurrentByInstallationId($installation->getId());
 
             return new JsonResponse($monitoring);
         }
@@ -81,13 +81,13 @@ class MonitoringController extends ApiController
      */
     public function listForOne($hash)
     {
-        /** @var WebsiteRepository $websiteRepo */
-        $websiteRepo = $this->entityManager->getRepository(Website::class);
-        $website = $websiteRepo->findOneByHash($hash);
-        if ($website) {
+        /** @var InstallationRepository $installationRepo */
+        $installationRepo = $this->entityManager->getRepository(Installation::class);
+        $installation = $installationRepo->findOneByHash($hash);
+        if ($installation) {
             /** @var MonitoringRepository $monitoringRepo */
             $monitoringRepo = $this->entityManager->getRepository(Monitoring::class);
-            $monitoring = $monitoringRepo->findByWebsiteId($website->getId()) ?? [];
+            $monitoring = $monitoringRepo->findByInstallationId($installation->getId()) ?? [];
 
             return new JsonResponse($monitoring);
         }

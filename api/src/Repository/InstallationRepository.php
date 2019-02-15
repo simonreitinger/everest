@@ -2,30 +2,30 @@
 
 namespace App\Repository;
 
-use App\Entity\Website;
+use App\Entity\Installation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method Website|null find($id, $lockMode = null, $lockVersion = null)
- * @method Website|null findOneBy(array $criteria, array $orderBy = null)
- * @method Website[]    findAll()
- * @method Website[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Installation|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Installation|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Installation[]    findAll()
+ * @method Installation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class WebsiteRepository extends ServiceEntityRepository
+class InstallationRepository extends ServiceEntityRepository
 {
 
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, Website::class);
+        parent::__construct($registry, Installation::class);
     }
 
     /**
      * @param $hash
-     * @return Website|null
+     * @return Installation|null
      */
-    public function findOneByHash($hash): ?Website
+    public function findOneByHash($hash): ?Installation
     {
         try {
             return $this->createQueryBuilder('w')
@@ -40,9 +40,9 @@ class WebsiteRepository extends ServiceEntityRepository
 
     /**
      * @param string $url
-     * @return Website|null
+     * @return Installation|null
      */
-    public function findOneByUrl(string $url): ?Website
+    public function findOneByUrl(string $url): ?Installation
     {
         try {
             return $this->createQueryBuilder('w')

@@ -8,40 +8,40 @@
 
 namespace App\Client;
 
-use App\Entity\Website;
+use App\Entity\Installation;
 use Symfony\Component\DomCrawler\Crawler;
 
-class WebsiteCrawler extends Crawler
+class InstallationCrawler extends Crawler
 {
 
     /**
-     * @var Website $website
+     * @var Installation $installation
      */
-    private $website;
+    private $installation;
 
     /**
-     * WebsiteCrawler constructor.
+     * InstallationCrawler constructor.
      * @param $html string (given to parent constructor)
-     * @param $website Website (for storing data)
+     * @param $installation Installation (for storing data)
      */
-    public function __construct($html, $website)
+    public function __construct($html, $installation)
     {
         parent::__construct($html);
-        $this->website = $website;
+        $this->installation = $installation;
     }
 
     public function analyzeMetadata()
     {
         // fetch favicon path when different
         $favicon = $this->filter('link[rel="icon"]')->first()->attr('href') ?? '';
-        $this->website->setFavicon($this->getBaseHref() . $favicon);
+        $this->installation->setFavicon($this->getBaseHref() . $favicon);
 
         // fetch title when different
         $title = $this->filter('title')->text();
-        $this->website->setTitle($title);
+        $this->installation->setTitle($title);
 
         // fetch theme color
         $themeColor = $this->filter('meta[name="theme-color"]')->attr('content') ?? '';
-        $this->website->setThemeColor($themeColor);
+        $this->installation->setThemeColor($themeColor);
     }
 }

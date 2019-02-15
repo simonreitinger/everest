@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Entity\Website;
+use App\Entity\Installation;
 use App\Manager\ConfigManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -41,9 +41,9 @@ class EverestUpdateConfigCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Update script for all registered websites')
-            ->addArgument('url', InputArgument::OPTIONAL, 'URL of the website to be updated')
-            ->addOption('all', 'a', null, 'Update config data for all websites');
+            ->setDescription('Update script for all registered installations')
+            ->addArgument('url', InputArgument::OPTIONAL, 'URL of the installation to be updated')
+            ->addOption('all', 'a', null, 'Update config data for all installations');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -53,19 +53,19 @@ class EverestUpdateConfigCommand extends Command
         $all = $input->getOption('all');
 
         if ($url) {
-            $site = $this->entityManager->getRepository(Website::class)->findOneByUrl($url);
-            $websites = [$site];
+            $site = $this->entityManager->getRepository(Installation::class)->findOneByUrl($url);
+            $installations = [$site];
 
         } else {
             if (!$all) {
                 $io->error('Please specify the URL or set the --all option.');
                 exit(1);
             }
-            $websites = $this->entityManager->getRepository(Website::class)->findAll();
+            $installations = $this->entityManager->getRepository(Installation::class)->findAll();
         }
 
         $this->configManager
-            ->setWebsites($websites)
+            ->setInstallations($installations)
             ->fetchConfig()
         ;
 

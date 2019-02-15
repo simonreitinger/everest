@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { WebsiteModel } from '../models/website.model';
+import { InstallationModel } from '../models/installation.model';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -10,13 +10,13 @@ export class MonitoringService {
 
   constructor(private http: HttpClient) { }
 
-  // fetch all relevant monitoring stats for a website
-  getAll(website: WebsiteModel) {
-    return this.http.get(environment.everestApi + '/monitoring/' + website.hash);
+  // fetch all relevant monitoring stats for installation
+  getAll(installation: InstallationModel) {
+    return this.http.get(environment.everestApi + '/monitoring/' + installation.hash);
   }
 
-  // fetch the last monitoring stats for a website
-  getLast(website: WebsiteModel) {
-    return this.http.get(environment.everestApi + '/monitoring/' + website.hash + '/current');
+  // fetch the last monitoring stats for a installation
+  getLast(installation: InstallationModel) {
+    return this.http.get(environment.everestApi + '/monitoring/' + installation.hash + '/current');
   }
 }

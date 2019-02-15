@@ -6,6 +6,6 @@ interface TaskModel {
     update: string[];
     dry_run: boolean;
   };
-  website: string; // website.cleanUrl
+  installation: string; // installation.cleanUrl
   output?: string;
 }
