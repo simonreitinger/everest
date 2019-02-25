@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>PHP</ID>
+  <OriginalElement>/Users/simonreitinger/src/php/everest/api/src</OriginalElement>
+  <nodes>
+    <node x="607.25" y="875.0">\Symfony\Component\EventDispatcher\EventSubscriberInterface</node>
+    <node x="470.0" y="250.0">\App\Controller\InstallationController</node>
+    <node x="0.0" y="640.0">\Countable</node>
+    <node x="117.0" y="640.0">\IteratorAggregate</node>
+    <node x="42.75" y="955.0">\App\Entity\User</node>
+    <node x="553.0" y="720.0">\App\Command\EverestUserCommand</node>
+    <node x="149.0" y="565.0">\App\Repository\InstallationRepository</node>
+    <node x="144.0" y="250.0">\App\Controller\UserController</node>
+    <node x="477.0" y="80.0">\Symfony\Bundle\FrameworkBundle\Controller\AbstractController</node>
+    <node x="246.75" y="955.0">\App\Entity\Task</node>
+    <node x="200.0" y="405.0">\Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface</node>
+    <node x="523.0" y="565.0">\App\Repository\TaskRepository</node>
+    <node x="329.5" y="485.0">\Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository</node>
+    <node x="405.0" y="325.0">\Doctrine\Common\Collections\Selectable</node>
+    <node x="822.0" y="250.0">\App\Controller\ConfigController</node>
+    <node x="336.0" y="565.0">\App\Repository\MonitoringRepository</node>
+    <node x="78.5" y="720.0">\Symfony\Component\DomCrawler\Crawler</node>
+    <node x="454.0" y="405.0">\Doctrine\ORM\EntityRepository</node>
+    <node x="0.0" y="1030.0">\App\Factory\VersionManagerFactory</node>
+    <node x="225.0" y="1030.0">\App\Manager\ConfigManager</node>
+    <node x="212.25" y="875.0">\JsonSerializable</node>
+    <node x="744.0" y="720.0">\App\Command\EverestMonitoringCommand</node>
+    <node x="450.75" y="955.0">\App\Entity\Software</node>
+    <node x="398.0" y="1030.0">\App\Client\ManagerClient</node>
+    <node x="978.0" y="250.0">\App\Controller\AuthController</node>
+    <node x="305.0" y="720.0">\App\Command\EverestUpdateConfigCommand</node>
+    <node x="329.75" y="955.0">\App\Entity\Installation</node>
+    <node x="125.75" y="955.0">\App\Entity\Monitoring</node>
+    <node x="584.75" y="955.0">\App\EventListener\HttpNotFoundExceptionListener</node>
+    <node x="898.75" y="875.0">\Symfony\Component\HttpFoundation\Response</node>
+    <node x="45.0" y="800.0">\App\Client\InstallationCrawler</node>
+    <node x="672.0" y="565.0">\App\Repository\SoftwareRepository</node>
+    <node x="521.0" y="325.0">\Doctrine\Common\Persistence\ObjectRepository</node>
+    <node x="452.0" y="0.0">\Symfony\Contracts\Service\ServiceSubscriberInterface</node>
+    <node x="691.0" y="1030.0">\App\Kernel</node>
+    <node x="0.0" y="565.0">\App\Repository\UserRepository</node>
+    <node x="288.0" y="250.0">\App\Controller\MonitoringController</node>
+    <node x="0.0" y="875.0">\Symfony\Component\Security\Core\User\UserInterface</node>
+    <node x="652.0" y="250.0">\App\Controller\SoftwareController</node>
+    <node x="0.0" y="250.0">\App\Controller\TaskController</node>
+    <node x="863.75" y="955.0">\App\HttpKernel\ApiProblemResponse</node>
+    <node x="590.5" y="640.0">\Symfony\Component\Console\Command\Command</node>
+    <node x="493.5" y="160.0">\App\Controller\ApiController</node>
+    <node x="565.0" y="1030.0">/Users/simonreitinger/src/php/everest/api/src/Manager/Version</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="\App\Command\EverestUpdateConfigCommand" target="\Symfony\Component\Console\Command\Command">
+      <point x="0.0" y="-15.0" />
+      <point x="419.0" y="695.0" />
+      <point x="606.5" y="695.0" />
+      <point x="-32.0" y="15.0" />
+    </edge>
+    <edge source="\App\Client\InstallationCrawler" target="\Symfony\Component\DomCrawler\Crawler">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="\App\Command\EverestUserCommand" target="\Symfony\Component\Console\Command\Command">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="\App\Entity\Monitoring" target="\JsonSerializable">
+      <point x="0.0" y="-15.0" />
+      <point x="176.25" y="935.0" />
+      <point x="251.85000000000002" y="935.0" />
+      <point x="-26.399999999999977" y="15.0" />
+    </edge>
+    <edge source="\App\Repository\SoftwareRepository" target="\Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository">
+      <point x="0.0" y="-15.0" />
+      <point x="749.5" y="535.0" />
+      <point x="491.5" y="535.0" />
+      <point x="72.0" y="15.0" />
+    </edge>
+    <edge source="\Doctrine\ORM\EntityRepository" target="\Doctrine\Common\Collections\Selectable">
+      <point x="-34.0" y="-15.0" />
+      <point x="488.0" y="380.0" />
+      <point x="453.0" y="380.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="\App\Entity\Task" target="\JsonSerializable">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="\App\Command\EverestMonitoringCommand" target="\Symfony\Component\Console\Command\Command">
+      <point x="0.0" y="-15.0" />
+      <point x="848.5" y="695.0" />
+      <point x="670.5" y="695.0" />
+      <point x="32.0" y="15.0" />
+    </edge>
+    <edge source="\App\Controller\InstallationController" target="\App\Controller\ApiController">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="\Symfony\Component\DomCrawler\Crawler" target="\Countable">
+      <point x="-20.0" y="-15.0" />
+      <point x="98.5" y="695.0" />
+      <point x="48.5" y="695.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="\App\Entity\User" target="\Symfony\Component\Security\Core\User\UserInterface">
+      <point x="-15.75" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="\App\Controller\MonitoringController" target="\App\Controller\ApiController">
+      <point x="0.0" y="-15.0" />
+      <point x="369.0" y="230.0" />
+      <point x="534.5714285714286" y="230.0" />
+      <point x="-16.428571428571445" y="15.0" />
+    </edge>
+    <edge source="\Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository" target="\Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface">
+      <point x="-45.0" y="-15.0" />
+      <point x="374.5" y="460.0" />
+      <point x="317.0" y="460.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="\App\Repository\TaskRepository" target="\Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository">
+      <point x="0.0" y="-15.0" />
+      <point x="587.5" y="545.0" />
+      <point x="455.5" y="545.0" />
+      <point x="36.0" y="15.0" />
+    </edge>
+    <edge source="\App\EventListener\HttpNotFoundExceptionListener" target="\Symfony\Component\EventDispatcher\EventSubscriberInterface">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="\Symfony\Bundle\FrameworkBundle\Controller\AbstractController" target="\Symfony\Contracts\Service\ServiceSubscriberInterface">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="\Symfony\Component\DomCrawler\Crawler" target="\IteratorAggregate">
+      <point x="20.0" y="-15.0" />
+      <point x="138.5" y="695.0" />
+      <point x="188.5" y="695.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="\Doctrine\ORM\EntityRepository" target="\Doctrine\Common\Persistence\ObjectRepository">
+      <point x="34.0" y="-15.0" />
+      <point x="556.0" y="380.0" />
+      <point x="591.0" y="380.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="\App\Controller\SoftwareController" target="\App\Controller\ApiController">
+      <point x="0.0" y="-15.0" />
+      <point x="727.0" y="230.0" />
+      <point x="567.4285714285714" y="230.0" />
+      <point x="16.428571428571445" y="15.0" />
+    </edge>
+    <edge source="\App\Controller\UserController" target="\App\Controller\ApiController">
+      <point x="0.0" y="-15.0" />
+      <point x="206.0" y="220.0" />
+      <point x="518.1428571428571" y="220.0" />
+      <point x="-32.85714285714289" y="15.0" />
+    </edge>
+    <edge source="\App\Repository\MonitoringRepository" target="\Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="\App\Entity\Installation" target="\JsonSerializable">
+      <point x="0.0" y="-15.0" />
+      <point x="380.25" y="935.0" />
+      <point x="304.65" y="935.0" />
+      <point x="26.399999999999977" y="15.0" />
+    </edge>
+    <edge source="\App\Repository\UserRepository" target="\Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository">
+      <point x="0.0" y="-15.0" />
+      <point x="64.5" y="535.0" />
+      <point x="347.5" y="535.0" />
+      <point x="-72.0" y="15.0" />
+    </edge>
+    <edge source="\App\Controller\ApiController" target="\Symfony\Bundle\FrameworkBundle\Controller\AbstractController">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="\App\Controller\ConfigController" target="\App\Controller\ApiController">
+      <point x="0.0" y="-15.0" />
+      <point x="890.0" y="220.0" />
+      <point x="583.8571428571429" y="220.0" />
+      <point x="32.85714285714289" y="15.0" />
+    </edge>
+    <edge source="\App\Controller\AuthController" target="\App\Controller\ApiController">
+      <point x="0.0" y="-15.0" />
+      <point x="1040.5" y="210.0" />
+      <point x="600.2857142857143" y="210.0" />
+      <point x="49.285714285714334" y="15.0" />
+    </edge>
+    <edge source="\Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository" target="\Doctrine\ORM\EntityRepository">
+      <point x="45.0" y="-15.0" />
+      <point x="464.5" y="460.0" />
+      <point x="522.0" y="460.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="\App\HttpKernel\ApiProblemResponse" target="\Symfony\Component\HttpFoundation\Response">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="\App\Controller\TaskController" target="\App\Controller\ApiController">
+      <point x="0.0" y="-15.0" />
+      <point x="62.0" y="210.0" />
+      <point x="501.7142857142857" y="210.0" />
+      <point x="-49.28571428571428" y="15.0" />
+    </edge>
+    <edge source="\App\Entity\Software" target="\JsonSerializable">
+      <point x="0.0" y="-15.0" />
+      <point x="495.25" y="925.0" />
+      <point x="331.05" y="925.0" />
+      <point x="52.80000000000001" y="15.0" />
+    </edge>
+    <edge source="\App\Entity\User" target="\JsonSerializable">
+      <point x="15.75" y="-15.0" />
+      <point x="90.0" y="925.0" />
+      <point x="225.45" y="925.0" />
+      <point x="-52.80000000000001" y="15.0" />
+    </edge>
+    <edge source="\App\Repository\InstallationRepository" target="\Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository">
+      <point x="0.0" y="-15.0" />
+      <point x="232.5" y="545.0" />
+      <point x="383.5" y="545.0" />
+      <point x="-36.0" y="15.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="254.5" y="437.0" />
+  <SelectedNodes>
+    <node>\App\Kernel</node>
+  </SelectedNodes>
+  <Categories />
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
