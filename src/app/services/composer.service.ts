@@ -3,8 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { TaskOutputModel } from '../models/task-output.model';
 import { InstallationModel } from '../models/installation.model';
-import { of, timer } from 'rxjs';
-import { concatMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +17,7 @@ export class ComposerService {
   }
 
   getTaskStatus(installation: InstallationModel) {
-    return this.http.get<TaskOutputModel>(environment.everestApi + '/task/' + installation.hash + '?XDEBUG_SESSION_START=PHPSTORM', { observe: 'response' });
+    return this.http.get<TaskOutputModel>(environment.everestApi + '/task/' + installation.hash, { observe: 'response' });
   }
 
   buildTask(name: string, installation: InstallationModel, require: string[] = [], update: string[] = [], remove: string[] = [], dryRun: boolean = false): TaskModel {
