@@ -27,7 +27,6 @@ class Task implements \JsonSerializable
         return $this;
     }
 
-
     public function getConfig()
     {
         return $this->config;
