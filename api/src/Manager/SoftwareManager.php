@@ -86,7 +86,7 @@ class SoftwareManager
 
                 // duplicates of versions are possible at this point -> unique items in array
                 $software->setVersions(array_unique($versions));
-                $this->entityManager->persist(json_encode($software));
+                $this->entityManager->persist($software);
             }
 
             // save all

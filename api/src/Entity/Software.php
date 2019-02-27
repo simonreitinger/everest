@@ -39,7 +39,7 @@ class Software implements \JsonSerializable
      */
     public function getVersions(): ?array
     {
-        return $this->versions;
+        return json_decode($this->versions, true);
     }
 
     /**
@@ -48,7 +48,7 @@ class Software implements \JsonSerializable
      */
     public function setVersions(array $versions): self
     {
-        $this->versions = $versions;
+        $this->versions = json_encode($versions);
 
         return $this;
     }
@@ -78,8 +78,8 @@ class Software implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'name' => $this->name,
-            'versions' => json_decode($this->versions, true)
+            'name' => $this->getName(),
+            'versions' => $this->getVersions()
         ];
     }
 }
