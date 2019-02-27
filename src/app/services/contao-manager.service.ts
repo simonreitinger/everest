@@ -56,6 +56,6 @@ export class ContaoManagerService {
   }
 
   saveUrlAndToken(url: string, token: string) {
-    return this.http.post(environment.apiUrl + '/installation/add', { url, token });
+    return this.http.post(environment.apiUrl + '/installation/add?XDEBUG_SESSION_START=PHPSTORM', { url, token });
   }
 }

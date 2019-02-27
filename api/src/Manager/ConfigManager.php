@@ -114,11 +114,11 @@ class ConfigManager
                     }
 
                     if ($set === 'setLock') {
-                        $json = $this->buildLockData($json, $installation->getPackages());
+                        $json = $this->buildLockData($json, json_decode($installation->getPackages(), true));
                     }
 
                     // use the keys from $responses for setting the received json
-                    $installation->{$set}($json);
+                    $installation->{$set}(json_encode($json));
 
                     continue;
                 }
@@ -139,7 +139,7 @@ class ConfigManager
         return true;
     }
 
-    private function buildLockData(array $json, array $packages)
+    private function buildLockData(array $json, $packages)
     {
         $filtered = [];
 

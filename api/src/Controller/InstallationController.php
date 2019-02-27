@@ -130,7 +130,7 @@ class InstallationController extends ApiController
             ->findOneByHash($hash);
 
         if ($installation) {
-            // $installation->removeChildren($this->entityManager);
+            $installation->removeChildren($this->entityManager);
 
             $this->entityManager->remove($installation);
             $this->entityManager->flush();

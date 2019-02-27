@@ -86,55 +86,55 @@ class Installation implements \JsonSerializable
 
     /**
      * from /api/server/contao
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="text", length=65536, nullable=true)
      */
     private $contao;
 
     /**
      * from /api/server/composer
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="text", length=65536, nullable=true)
      */
     private $composer;
 
     /**
      * from /api/config/manager
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="text", length=65536, nullable=true)
      */
     private $manager;
 
     /**
      * from /api/server/php-cli
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="text", length=65536, nullable=true)
      */
     private $phpCli;
 
     /**
      * from /api/server/php-web
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="text", length=65536, nullable=true)
      */
     private $phpWeb;
 
     /**
      * from /api/server/config
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="text", length=65536, nullable=true)
      */
     private $config;
 
     /**
      * from /api/packages/local
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="text", length=65536, nullable=true)
      */
     private $composerLock;
 
     /**
      * from /api/server/self-update
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="text", length=65536, nullable=true)
      */
     private $selfUpdate;
 
     /**
      * from /api/packages/root
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="text", length=65536, nullable=true)
      */
     private $packages;
 
@@ -517,15 +517,15 @@ class Installation implements \JsonSerializable
             'favicon' => $this->favicon,
             'title' => $this->title,
             'themeColor' => $this->themeColor,
-            'contao' => $this->contao,
-            'composer' => $this->composer,
-            'manager' => $this->manager,
-            'phpCli' => $this->phpCli,
-            'phpWeb' => $this->phpWeb,
-            'config' => $this->config,
-            'composerLock' => $this->composerLock,
-            'selfUpdate' => $this->selfUpdate,
-            'packages' => $this->packages,
+            'contao' => json_decode($this->contao, true),
+            'composer' => json_decode($this->composer, true),
+            'manager' => json_decode($this->manager, true),
+            'phpCli' => json_decode($this->phpCli, true),
+            'phpWeb' => json_decode($this->phpWeb, true),
+            'config' => json_decode($this->config, true),
+            'composerLock' => json_decode($this->composerLock, true),
+            'selfUpdate' => json_decode($this->selfUpdate, true),
+            'packages' => json_decode($this->packages, true)
         ];
     }
 
