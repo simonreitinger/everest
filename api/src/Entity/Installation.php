@@ -84,8 +84,6 @@ class Installation implements \JsonSerializable
      */
     private $themeColor;
 
-
-
     /**
      * @return mixed
      */
@@ -302,6 +300,7 @@ class Installation implements \JsonSerializable
                 'themeColor' => $this->themeColor
             ]
         );
+
     }
 
     public function removeChildren(EntityManagerInterface $entityManager): void

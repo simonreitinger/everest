@@ -37,7 +37,7 @@ class Task implements \JsonSerializable
     private $config;
 
     /**
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="text", length=65536, nullable=true)
      */
     private $output;
 
@@ -130,8 +130,8 @@ class Task implements \JsonSerializable
     {
         return [
             'name' => $this->name,
-            'config' => $this->config,
-            'output' => $this->output,
+            'config' => json_decode($this->config, true),
+            'output' => json_decode($this->output, true),
             'installation' => $this->installation->getCleanUrl()
         ];
     }

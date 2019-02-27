@@ -25,7 +25,7 @@ class Software implements \JsonSerializable
     /**
      * current version of the software
      *
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="text", length=65536, nullable=true)
      */
     private $versions;
 
@@ -79,7 +79,7 @@ class Software implements \JsonSerializable
     {
         return [
             'name' => $this->name,
-            'versions' => $this->versions
+            'versions' => json_decode($this->versions, true)
         ];
     }
 }
