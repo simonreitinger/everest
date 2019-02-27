@@ -71,6 +71,7 @@ class TaskController extends ApiController
 
         $installation = $this->entityManager->getRepository(Installation::class)->findOneByUrl($json['installation']);
 
+        /** @var Task $task */
         $task = $this->entityManager->getRepository(Task::class)->findOneByInstallation($installation->getId());
 
         // status code is relevant for deciding if its a new / old task

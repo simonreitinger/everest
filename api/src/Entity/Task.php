@@ -32,7 +32,7 @@ class Task implements \JsonSerializable
     private $name;
 
     /**
-     * @ORM\Column(type="json_array")
+     * only a field for configuration
      */
     private $config;
 
@@ -130,7 +130,6 @@ class Task implements \JsonSerializable
     {
         return [
             'name' => $this->name,
-            'config' => json_decode($this->config, true),
             'output' => json_decode($this->output, true),
             'installation' => $this->installation->getCleanUrl()
         ];
