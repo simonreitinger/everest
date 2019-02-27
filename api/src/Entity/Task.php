@@ -2,49 +2,12 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
-/**
- * @ORM\Entity(repositoryClass="App\Repository\TaskRepository")
- */
 class Task implements \JsonSerializable
 {
-    const RUNNING = 'running';
-    const DONE = 'done';
-
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
     private $id;
-
-    /**
-     * @var Installation
-     * @ORM\OneToOne(targetEntity="Installation")
-     * @ORM\JoinColumn(name="installation_id", referencedColumnName="id")
-     */
-    private $installation;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
     private $name;
-
-    /**
-     * only a field for configuration
-     */
     private $config;
-
-    /**
-     * @ORM\Column(type="text", length=65536, nullable=true)
-     */
     private $output;
-
-    /**
-     * @var \DateTime
-     * @ORM\Column(type="datetimetz", nullable=true)
-     */
     private $createdAt;
 
     public function getId(): ?int
@@ -64,17 +27,6 @@ class Task implements \JsonSerializable
         return $this;
     }
 
-    public function getInstallation()
-    {
-        return $this->installation;
-    }
-
-    public function setInstallation($installation): self
-    {
-        $this->installation = $installation;
-
-        return $this;
-    }
 
     public function getConfig()
     {
@@ -130,8 +82,7 @@ class Task implements \JsonSerializable
     {
         return [
             'name' => $this->name,
-            'output' => json_decode($this->output, true),
-            'installation' => $this->installation->getCleanUrl()
+            'output' => json_decode($this->output, true)
         ];
     }
 }

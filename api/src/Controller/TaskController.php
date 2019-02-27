@@ -38,21 +38,16 @@ class TaskController extends ApiController
      */
     private $client;
 
-    /**
-     * @var ConfigManager $configManager
-     */
-    private $configManager;
 
     /**
      * TaskController constructor.
      * @param EntityManagerInterface $entityManager
      * @param ManagerClient $client
      */
-    public function __construct(EntityManagerInterface $entityManager, ManagerClient $client, ConfigManager $configManager)
+    public function __construct(EntityManagerInterface $entityManager, ManagerClient $client)
     {
         $this->entityManager = $entityManager;
         $this->client = $client;
-        $this->configManager = $configManager;
     }
 
     /**
@@ -71,21 +66,11 @@ class TaskController extends ApiController
 
         $installation = $this->entityManager->getRepository(Installation::class)->findOneByUrl($json['installation']);
 
-        /** @var Task $task */
-        $task = $this->entityManager->getRepository(Task::class)->findOneByInstallation($installation->getId());
-
-        // status code is relevant for deciding if its a new / old task
-        $statusCode = Response::HTTP_OK;
-
-        if (!$task) {
-            $statusCode = Response::HTTP_CREATED;
-            $task = new Task();
-        }
-
-        $task->setName($json['name']);
-        $task->setConfig($json['config']);
-        $task->setInstallation($installation);
-        $task->setCreatedAt(new \DateTime());
+        $task = new Task();
+        $task
+            ->setName($json['name'])
+            ->setConfig($json['config'])
+            ->setCreatedAt(new \DateTime());
 
         try {
             // active tasks should not be put again, this causes a 401
@@ -99,11 +84,9 @@ class TaskController extends ApiController
 
                 switch ($response->getStatusCode()) {
                     case Response::HTTP_OK:
-                        $this->entityManager->persist($task);
-                        $this->entityManager->flush();
                         $json = $this->client->getJsonContent($response);
 
-                        return new JsonResponse($json, $statusCode);
+                        return new JsonResponse($json, Response::HTTP_OK);
 
                     case Response::HTTP_BAD_REQUEST:
                         return $this->createApiProblemResponse('Task already running', Response::HTTP_BAD_REQUEST);
@@ -126,28 +109,19 @@ class TaskController extends ApiController
         /** @var Installation $installation */
         $installation = $this->entityManager->getRepository(Installation::class)->findOneByHash($hash);
 
-        /** @var Task $task */
-        $task = $this->entityManager->getRepository(Task::class)->findOneByInstallation($installation);
         if ($installation) {
             $response = $this->client->getTask($installation);
 
             $json = $this->client->getJsonContent($response);
 
-            // task has to exist to complete it
-            if ($task) {
-                if ($json['status'] === 'complete') {
-                    $response = $this->client->removeTask($installation);
-                    $this->entityManager->remove($task);
-                    $this->entityManager->flush();
+            if ($json['status'] === 'complete') {
+                $response = $this->client->removeTask($installation);
 
-                    $process = new Process(['php bin/console everest:update-config ' . $installation->getCleanUrl()], __DIR__ . '/../..');
-                    $process->start();
-                } else {
-                    $task->setOutput($json);
-                    $this->entityManager->persist($task);
-                    $this->entityManager->flush();
+                $process = new Process(['php bin/console everest:update-config ' . $installation->getCleanUrl()], __DIR__ . '/../..');
+                $process->start();
+                while ($process->isRunning()) {
+                    sleep(1);
                 }
-
             }
 
             return new JsonResponse($json);
