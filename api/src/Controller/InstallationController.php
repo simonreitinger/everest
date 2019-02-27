@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use App\Cache\InstallationCache;
 use App\Client\ManagerClient;
 use App\Entity\Installation;
 use App\Entity\Monitoring;
@@ -46,15 +47,25 @@ class InstallationController extends ApiController
     private $client;
 
     /**
+     * @var InstallationCache $cache
+     */
+    private $cache;
+
+    /**
      * InstallationController constructor.
      * @param EntityManagerInterface $entityManager
      * @param ManagerClient $client
      */
-    public function __construct(EntityManagerInterface $entityManager, ManagerClient $client, ConfigManager $configManager)
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ManagerClient $client,
+        ConfigManager $configManager,
+        InstallationCache $cache)
     {
         $this->entityManager = $entityManager;
         $this->client = $client;
         $this->configManager = $configManager;
+        $this->cache = $cache;
     }
 
     /**
@@ -66,7 +77,7 @@ class InstallationController extends ApiController
     {
         $installations = $this->entityManager->getRepository(Installation::class)->findAll();
 
-        return new JsonResponse($installations);
+        return new JsonResponse($this->mergeWithCache($installations));
     }
 
     /**
@@ -106,7 +117,7 @@ class InstallationController extends ApiController
             $this->entityManager->persist($installation);
             $this->entityManager->flush();
 
-            return new JsonResponse($installation, Response::HTTP_CREATED);
+            return new JsonResponse($this->mergeWithCache($installation), Response::HTTP_CREATED);
         }
 
         $this->createApiProblemResponse('Invalid data', Response::HTTP_BAD_REQUEST);
@@ -151,10 +162,34 @@ class InstallationController extends ApiController
         $installation = $this->entityManager->getRepository(Installation::class)->findOneByHash($hash);
 
         if ($installation) {
-            return new JsonResponse($installation);
+            return new JsonResponse($this->mergeWithCache($installation));
         }
 
         return $this->createApiProblemResponse('Not found', Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * @param Installation|Installation[] $installation
+     * @return array
+     */
+    public function mergeWithCache($installation)
+    {
+        if (is_array($installation)) {
+            $result = [];
+            foreach ($installation as $i) {
+               $result[] = array_merge(
+                   json_decode(json_encode($i), true),
+                   json_decode($this->cache->findByInstallation($i), true)
+               );
+            }
+
+            return $result;
+        }
+
+        return array_merge(
+            json_decode(json_encode($installation), true),
+            json_decode($this->cache->findByInstallation($installation), true)
+        );
     }
 
     private function jsonIsValid(array $json)

@@ -32,7 +32,7 @@ export class PackageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.packages = this.buildPackages(this.installation.composerLock);
+    this.packages = this.buildPackages();
     this.dataSource = new MatTableDataSource(this.filterRootPackages());
   }
 
@@ -100,9 +100,10 @@ export class PackageComponent implements OnInit {
   }
 
   // add vendor and repo
-  private buildPackages(composerLock: PackageLockModel[]) {
+  private buildPackages() {
     const packages = [];
-    for (const pkg of composerLock) {
+    console.log(this.installation);
+    for (const pkg of this.installation.composerLock) {
       const splitted = pkg.name.split('/');
       packages.push({ ...pkg, vendor: splitted[0], repository: splitted[1], checked: false });
     }

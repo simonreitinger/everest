@@ -8,6 +8,8 @@
 
 namespace App\Manager;
 
+use App\Cache\InstallationCache;
+use App\Cache\InstallationData;
 use App\Client\ManagerClient;
 use App\Client\InstallationCrawler;
 use App\Entity\Installation;
@@ -21,10 +23,16 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ConfigManager
 {
+
     /**
      * @var EntityManagerInterface $entityManager
      */
     private $entityManager;
+
+    /**
+     * @var InstallationCache $cache
+     */
+    private $cache;
 
     /**
      * @var ManagerClient $client
@@ -57,10 +65,11 @@ class ConfigManager
      * @param EntityManagerInterface $entityManager
      * @param ManagerClient $client
      */
-    public function __construct(EntityManagerInterface $entityManager, ManagerClient $client)
+    public function __construct(EntityManagerInterface $entityManager, ManagerClient $client, InstallationCache $cache)
     {
         $this->entityManager = $entityManager;
         $this->client = $client;
+        $this->cache = $cache;
     }
 
     /**
@@ -91,14 +100,13 @@ class ConfigManager
             }
         }
 
-        // save all
-        $this->entityManager->flush();
-
         return true;
     }
 
     private function updateConfig(Installation $installation): bool
     {
+        $data = new InstallationData();
+
         foreach ($this->responses as $set => $method) {
             try {
                 /** @var Psr7Response $response */
@@ -114,11 +122,11 @@ class ConfigManager
                     }
 
                     if ($set === 'setLock') {
-                        $json = $this->buildLockData($json, $installation->getPackages());
+                        $json = $this->buildLockData($json, $data->getPackages());
                     }
 
                     // use the keys from $responses for setting the received json
-                    $installation->{$set}($json);
+                    $data->{$set}($json);
 
                     continue;
                 }
@@ -131,14 +139,17 @@ class ConfigManager
         $metadataResponse = $this->client->homepageRequest($installation);
         (new InstallationCrawler($metadataResponse->getBody()->getContents(), $installation))->analyzeMetadata();
 
-        $installation->setLastUpdate();
-
-        // add installation to changes
+        $this->cache->saveInCache($installation, $data);
         $this->entityManager->persist($installation);
 
         return true;
     }
 
+    /**
+     * @param array $json
+     * @param array $packages (composer.json contents)
+     * @return array
+     */
     private function buildLockData(array $json, array $packages)
     {
         $filtered = [];

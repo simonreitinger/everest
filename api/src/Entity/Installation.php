@@ -84,59 +84,7 @@ class Installation implements \JsonSerializable
      */
     private $themeColor;
 
-    /**
-     * from /api/server/contao
-     * @ORM\Column(type="json_array", nullable=true)
-     */
-    private $contao;
 
-    /**
-     * from /api/server/composer
-     * @ORM\Column(type="json_array", nullable=true)
-     */
-    private $composer;
-
-    /**
-     * from /api/config/manager
-     * @ORM\Column(type="json_array", nullable=true)
-     */
-    private $manager;
-
-    /**
-     * from /api/server/php-cli
-     * @ORM\Column(type="json_array", nullable=true)
-     */
-    private $phpCli;
-
-    /**
-     * from /api/server/php-web
-     * @ORM\Column(type="json_array", nullable=true)
-     */
-    private $phpWeb;
-
-    /**
-     * from /api/server/config
-     * @ORM\Column(type="json_array", nullable=true)
-     */
-    private $config;
-
-    /**
-     * from /api/packages/local
-     * @ORM\Column(type="json_array", nullable=true)
-     */
-    private $composerLock;
-
-    /**
-     * from /api/server/self-update
-     * @ORM\Column(type="json_array", nullable=true)
-     */
-    private $selfUpdate;
-
-    /**
-     * from /api/packages/root
-     * @ORM\Column(type="json_array", nullable=true)
-     */
-    private $packages;
 
     /**
      * @return mixed
@@ -334,199 +282,26 @@ class Installation implements \JsonSerializable
         $this->themeColor = $themeColor;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getContao()
-    {
-        return $this->contao;
-    }
 
-    /**
-     * @param mixed $contao
-     * @return Installation
-     */
-    public function setContao($contao): self
-    {
-        $this->contao = $contao;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getComposer()
-    {
-        return $this->composer;
-    }
-
-    /**
-     * @param mixed $composer
-     * @return Installation
-     */
-    public function setComposer($composer): self
-    {
-        $this->composer = $composer;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getManager()
-    {
-        return $this->manager;
-    }
-
-    /**
-     * @param mixed $manager
-     * @return Installation
-     */
-    public function setManager($manager): self
-    {
-        $this->manager = $manager;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPhpCli()
-    {
-        return $this->phpCli;
-    }
-
-    /**
-     * @param mixed $phpCli
-     * @return Installation
-     */
-    public function setPhpCli($phpCli): self
-    {
-        $this->phpCli = $phpCli;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPhpWeb()
-    {
-        return $this->phpWeb;
-    }
-
-    /**
-     * @param mixed $phpWeb
-     * @return Installation
-     */
-    public function setPhpWeb($phpWeb): self
-    {
-        $this->phpWeb = $phpWeb;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getConfig()
-    {
-        return $this->config;
-    }
-
-    /**
-     * @param mixed $config
-     * @return Installation
-     */
-    public function setConfig($config): self
-    {
-        $this->config = $config;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLock()
-    {
-        return $this->composerLock;
-    }
-
-    /**
-     * @param string $lock
-     * @return Installation
-     */
-    public function setLock($lock): self
-    {
-        $this->composerLock = $lock;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSelfUpdate()
-    {
-        return $this->selfUpdate;
-    }
-
-    /**
-     * @param mixed $selfUpdate
-     * @return Installation
-     */
-    public function setSelfUpdate($selfUpdate): self
-    {
-        $this->selfUpdate = $selfUpdate;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPackages()
-    {
-        return $this->packages;
-    }
-
-    /**
-     * @param mixed $packages
-     */
-    public function setPackages($packages): void
-    {
-        $this->packages = $packages;
-    }
 
     /**
      * @return array|mixed
      */
     public function jsonSerialize()
     {
-        return [
-            'hash' => $this->hash,
-            'url' => $this->url,
-            'cleanUrl' => $this->cleanUrl,
-            'managerUrl' => $this->managerUrl,
-            'lastUpdate' => $this->lastUpdate ? $this->lastUpdate->format(DATE_ATOM) : null, // formatted for json
-            'added' => $this->added ? $this->added->format(DATE_ATOM) : null,
-            'favicon' => $this->favicon,
-            'title' => $this->title,
-            'themeColor' => $this->themeColor,
-            'contao' => $this->contao,
-            'composer' => $this->composer,
-            'manager' => $this->manager,
-            'phpCli' => $this->phpCli,
-            'phpWeb' => $this->phpWeb,
-            'config' => $this->config,
-            'composerLock' => $this->composerLock,
-            'selfUpdate' => $this->selfUpdate,
-            'packages' => $this->packages,
-        ];
+        return array_merge(
+            [
+                'hash' => $this->hash,
+                'url' => $this->url,
+                'cleanUrl' => $this->cleanUrl,
+                'managerUrl' => $this->managerUrl,
+                'lastUpdate' => $this->lastUpdate ? $this->lastUpdate->format(DATE_ATOM) : null, // formatted for json
+                'added' => $this->added ? $this->added->format(DATE_ATOM) : null,
+                'favicon' => $this->favicon,
+                'title' => $this->title,
+                'themeColor' => $this->themeColor
+            ]
+        );
     }
 
     public function removeChildren(EntityManagerInterface $entityManager): void
