@@ -77,6 +77,12 @@ class InstallationController extends ApiController
     {
         $installations = $this->entityManager->getRepository(Installation::class)->findAll();
 
+        if (!empty($installations) && !$this->cache->findByInstallation($installations[0])) {
+            $this->configManager
+                ->setInstallations($installations)
+                ->fetchConfig();
+        }
+
         return new JsonResponse($this->mergeWithCache($installations));
     }
 
