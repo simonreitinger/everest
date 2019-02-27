@@ -8,10 +8,11 @@
 
 namespace App\Controller;
 
-use App\Entity\Installation;
 use App\Manager\ConfigManager;
+use App\Entity\Installation;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class ConfigController
  * @package App\Controller
  *
- * @Route("/config")
+ * @Route("/config/{hash}")
  */
 class ConfigController extends ApiController
 {
@@ -47,12 +48,11 @@ class ConfigController extends ApiController
     /**
      * update config for specific installation
      *
-     * @Route("/{hash}")
-     *
      * @param $hash
+     * @param Request $request
      * @return Response
      */
-    public function forOne($hash)
+    public function __invoke($hash, Request $request)
     {
         $installation = $this->entityManager->getRepository(Installation::class)->findOneByHash($hash);
 
@@ -63,30 +63,6 @@ class ConfigController extends ApiController
             ;
 
             return new JsonResponse($installation);
-        }
-
-        return $this->createApiProblemResponse();
-    }
-
-    /**
-     * update config for specific installation
-     *
-     * @Route("/")
-     *
-     * @param $hash
-     * @return Response
-     */
-    public function forAll()
-    {
-        $installations = $this->entityManager->getRepository(Installation::class)->findAll();
-
-        if ($installations) {
-            $this->configManager
-                ->setInstallations($installations)
-                ->fetchConfig()
-            ;
-
-            return new JsonResponse($installations);
         }
 
         return $this->createApiProblemResponse();
