@@ -64,12 +64,16 @@ class ConfigManager
     }
 
     /**
-     * @param Installation[] $installations
+     * @param Installation[]|Installation $installations
      * @return ConfigManager
      */
-    public function setInstallations(array $installations): ConfigManager
+    public function setInstallations($installations): ConfigManager
     {
-        $this->installations = $installations;
+        if (is_array($installations)) {
+            $this->installations = $installations;
+        } else if($installations instanceof Installation) {
+            $this->installations = [$installations];
+        }
 
         return $this;
     }

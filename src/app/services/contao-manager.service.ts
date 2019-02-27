@@ -56,6 +56,6 @@ export class ContaoManagerService {
   }
 
   saveUrlAndToken(url: string, token: string) {
-    return this.http.post(environment.everestApi + '/installation/add', { url, token });
+    return this.http.post(environment.apiUrl + '/installation/add', { url, token });
   }
 }

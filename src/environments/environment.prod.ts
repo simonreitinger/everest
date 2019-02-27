@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  everestApi: 'https://apieverest.test'
+  apiUrl: 'https://api.monitoring.agentur-dreibein.de'
 };

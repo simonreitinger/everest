@@ -12,14 +12,18 @@ export class InstallationService {
   }
 
   getAll() {
-    return this.http.get<InstallationModel[]>(environment.everestApi + '/installation/all');
+    return this.http.get<InstallationModel[]>(environment.apiUrl + '/installation/all');
   }
 
   getOne(hash: string) {
-    return this.http.get<InstallationModel>(environment.everestApi + '/installation/' + hash);
+    return this.http.get<InstallationModel>(environment.apiUrl + '/installation/' + hash);
   }
 
   add(data: { url: string, token: string }) {
-    return this.http.post(environment.everestApi + '/installation/add', data);
+    return this.http.post(environment.apiUrl + '/installation/add', data);
+  }
+
+  remove(hash: string) {
+    return this.http.delete(environment.apiUrl + '/installation/delete/' + hash);
   }
 }

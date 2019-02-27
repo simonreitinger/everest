@@ -31,7 +31,6 @@ export class InstallationAddComponent implements OnInit {
       this.route.queryParams.subscribe(values => {
         if (values.token && values.origin) {
           this.cms.saveUrlAndToken(values.origin, values.token).subscribe((installation: InstallationModel) => {
-            console.log(installation);
             if (installation) {
               this.router.navigateByUrl('/installations');
             }

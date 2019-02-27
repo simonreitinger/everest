@@ -13,15 +13,15 @@ export class UserService {
 
   // details of logged in user
   getUser() {
-    return this.http.get<UserModel>(environment.everestApi + '/user');
+    return this.http.get<UserModel>(environment.apiUrl + '/user');
   }
 
   // list of all usernames
   getUsers() {
-    return this.http.get<string[]>(environment.everestApi + '/user/all');
+    return this.http.get<string[]>(environment.apiUrl + '/user/all');
   }
 
   updateUserData(user: UserModel) {
-    return this.http.post<UserModel>(environment.everestApi + '/user/update', user);
+    return this.http.post<UserModel>(environment.apiUrl + '/user/update', user);
   }
 }

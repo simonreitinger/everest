@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Entity\Software;
 use App\Factory\VersionManagerFactory;
+use App\Manager\SoftwareManager;
 use App\Repository\SoftwareRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\ClientInterface;
@@ -27,71 +28,41 @@ class SoftwareController extends ApiController
 {
 
     /**
+     * @var SoftwareManager $softwareManager
+     */
+    private $softwareManager;
+
+    /**
      * @var EntityManagerInterface $client
      */
     private $entityManager;
 
-    /**
-     * @var ClientInterface $client
-     */
-    private $client;
+
 
     /**
      * SoftwareController constructor.
      * @param ClientInterface $client
      */
-    public function __construct(EntityManagerInterface $entityManager, ClientInterface $client)
+    public function __construct(
+        SoftwareManager $softwareManager,
+        EntityManagerInterface $entityManager)
     {
+        $this->softwareManager = $softwareManager;
         $this->entityManager = $entityManager;
-        $this->client = $client;
     }
 
     /**
      * sets supported / maintained versions of softwares that can be defined in services.yaml
      *
      *
-     * @Route("/update", methods={"GET"}, host="localhost")
+     * @Route("/update", methods={"GET"})
      *
      * @return JsonResponse
      * @throws \Exception
      */
     public function updateSoftwares()
     {
-        $softwares = $this->getParameter('softwares');
-
-        /** @var SoftwareRepository $softwareRepo */
-        $softwareRepo = $this->entityManager->getRepository(Software::class);
-
-        $result = [];
-
-        foreach ($softwares as $name => $endpoints) {
-            // if software does not exist, create it
-            $software = $softwareRepo->findOneByName($name);
-            $manager = VersionManagerFactory::create($name);
-
-            if (!$software) {
-                $software = (new Software())->setName($name);
-            }
-
-            $versions = $software->getVersions() ?? [];
-
-            foreach ($endpoints as $url) {
-                try {
-                    $response = $this->client->request('GET', $url);
-                    $versions = array_merge($versions, $manager->extractVersions($response));
-                } catch (GuzzleException $e) {
-                }
-            }
-
-            // duplicates of versions are possible at this point -> unique items in array
-            $software->setVersions(array_unique($versions));
-            $this->entityManager->persist($software);
-        }
-
-        // save all
-        $this->entityManager->flush();
-
-        return new JsonResponse($softwareRepo->findAll());
+        return new JsonResponse($this->softwareManager->update());
     }
 
     /**

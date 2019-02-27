@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 
@@ -526,6 +527,21 @@ class Installation implements \JsonSerializable
             'selfUpdate' => $this->selfUpdate,
             'packages' => $this->packages,
         ];
+    }
+
+    public function removeChildren(EntityManagerInterface $entityManager): void
+    {
+        $monitorings = $entityManager->getRepository(Monitoring::class)->findByInstallationId($this->getId());
+        if ($monitorings) {
+            foreach ($monitorings as $monitoring) {
+                $entityManager->remove($monitoring);
+            }
+        }
+
+        $task = $entityManager->getRepository(Task::class)->findOneByInstallation($this);
+        if ($task) {
+            $entityManager->remove($task);
+        }
     }
 
 }

@@ -13,11 +13,11 @@ export class ComposerService {
   }
 
   pushTask(task: TaskModel) {
-    return this.http.post<TaskOutputModel>(environment.everestApi + '/task', task);
+    return this.http.post<TaskOutputModel>(environment.apiUrl + '/task', task);
   }
 
   getTaskStatus(installation: InstallationModel) {
-    return this.http.get<TaskOutputModel>(environment.everestApi + '/task/' + installation.hash, { observe: 'response' });
+    return this.http.get<TaskOutputModel>(environment.apiUrl + '/task/' + installation.hash, { observe: 'response' });
   }
 
   buildTask(name: string, installation: InstallationModel, require: string[] = [], update: string[] = [], remove: string[] = [], dryRun: boolean = false): TaskModel {

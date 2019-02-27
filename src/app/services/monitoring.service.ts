@@ -12,11 +12,11 @@ export class MonitoringService {
 
   // fetch all relevant monitoring stats for installation
   getAll(installation: InstallationModel) {
-    return this.http.get(environment.everestApi + '/monitoring/' + installation.hash);
+    return this.http.get(environment.apiUrl + '/monitoring/' + installation.hash);
   }
 
   // fetch the last monitoring stats for a installation
   getLast(installation: InstallationModel) {
-    return this.http.get(environment.everestApi + '/monitoring/' + installation.hash + '/current');
+    return this.http.get(environment.apiUrl + '/monitoring/' + installation.hash + '/current');
   }
 }

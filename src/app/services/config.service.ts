@@ -13,7 +13,7 @@ export class ConfigService {
   }
 
   getContaoConfig(installation: InstallationModel) {
-    return this.http.get(environment.everestApi + '/config/' + installation.hash);
+    return this.http.get(environment.apiUrl + '/config/' + installation.hash);
   }
 
 

@@ -13,13 +13,16 @@ export class RequestInterceptor implements HttpInterceptor {
   }
 
   // sets token, content type and accept headers.
-  // error handling in catchError statement
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.auth.getToken()) {
       if (this.auth.getTimeUntilLogout() < 300) {
         this.auth.refreshToken();
       }
-      req = req.clone({ headers: req.headers.set('Authorization', 'Bearer ' + this.auth.getToken()) });
+      req = req.clone({
+        headers: req.headers.set(
+          'Authorization',
+          'Bearer ' + this.auth.getToken())
+      });
     }
 
     if (!req.headers.has('Content-Type')) {
@@ -33,12 +36,10 @@ export class RequestInterceptor implements HttpInterceptor {
           reason: error && error.error.title ? error.error.title : '',
           status: error.status
         };
-        console.log(data);
 
         return throwError(error);
       })
     );
-
   }
 
 }

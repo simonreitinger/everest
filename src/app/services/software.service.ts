@@ -11,6 +11,6 @@ export class SoftwareService {
   }
 
   getAll() {
-    return this.http.get(environment.everestApi + '/software');
+    return this.http.get(environment.apiUrl + '/software');
   }
 }

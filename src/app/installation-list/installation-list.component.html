@@ -70,6 +70,10 @@
             <mat-icon>zoom_in</mat-icon>
             <span>Details</span>
           </button>
+          <button mat-menu-item color="primary" (click)="delete(installation.hash)">
+            <mat-icon>delete</mat-icon>
+            <span>Löschen</span>
+          </button>
         </mat-menu>
       </mat-cell>
     </ng-container>

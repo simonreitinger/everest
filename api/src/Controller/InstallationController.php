@@ -10,7 +10,9 @@ namespace App\Controller;
 
 use App\Client\ManagerClient;
 use App\Entity\Installation;
+use App\Entity\Monitoring;
 use App\HttpKernel\ApiProblemResponse;
+use App\Manager\ConfigManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,6 +36,11 @@ class InstallationController extends ApiController
     private $entityManager;
 
     /**
+     * @var ConfigManager $configManager
+     */
+    private $configManager;
+
+    /**
      * @var ManagerClient $client
      */
     private $client;
@@ -43,10 +50,11 @@ class InstallationController extends ApiController
      * @param EntityManagerInterface $entityManager
      * @param ManagerClient $client
      */
-    public function __construct(EntityManagerInterface $entityManager, ManagerClient $client)
+    public function __construct(EntityManagerInterface $entityManager, ManagerClient $client, ConfigManager $configManager)
     {
         $this->entityManager = $entityManager;
         $this->client = $client;
+        $this->configManager = $configManager;
     }
 
     /**
@@ -69,9 +77,12 @@ class InstallationController extends ApiController
      */
     public function add(Request $request)
     {
+        // parse payload
         $json = $this->getRequestContentAsJson($request);
 
-        $installation = $this->entityManager->getRepository(Installation::class)->findOneBy(['url' => $json['url']]);
+        $installation = $this->entityManager
+            ->getRepository(Installation::class)
+            ->findOneBy(['url' => $json['url']]);
 
         // only progress with valid data
         if ($this->jsonIsValid($json)) {
@@ -84,12 +95,47 @@ class InstallationController extends ApiController
                     ->setCleanUrl(parse_url($json['url'], PHP_URL_HOST)); // without protocol
             }
 
+            // new token can be set without deleting the installation
             $installation->setToken($json['token']);
+
+            // set the configuration
+            $this->configManager
+                ->setInstallations($installation)
+                ->fetchConfig();
 
             $this->entityManager->persist($installation);
             $this->entityManager->flush();
 
             return new JsonResponse($installation, Response::HTTP_CREATED);
+        }
+
+        $this->createApiProblemResponse('Invalid data', Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * @Route("/delete/{hash}", methods={"DELETE"})
+     *
+     * @param $hash
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function delete($hash, Request $request)
+    {
+        // parse payload
+        $json = $this->getRequestContentAsJson($request);
+
+        /** @var Installation $installation */
+        $installation = $this->entityManager
+            ->getRepository(Installation::class)
+            ->findOneByHash($hash);
+
+        if ($installation) {
+            // $installation->removeChildren($this->entityManager);
+
+            $this->entityManager->remove($installation);
+            $this->entityManager->flush();
+
+            return new JsonResponse(['success' => true], Response::HTTP_OK);
         }
 
         $this->createApiProblemResponse('Invalid data', Response::HTTP_BAD_REQUEST);

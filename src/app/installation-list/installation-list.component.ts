@@ -84,4 +84,12 @@ export class InstallationListComponent implements OnInit {
   }
 
 
+  delete(hash: string) {
+    this.is.remove(hash).subscribe((res: any) => {
+      if (res.success) {
+        this.installations = this.installations.filter(i => i.hash !== hash);
+        this.dataSource.data = this.installations;
+      }
+    });
+  }
 }

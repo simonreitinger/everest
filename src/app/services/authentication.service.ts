@@ -19,7 +19,7 @@ export class AuthenticationService {
 
   login(username: string, password: string) {
     const credentials = { username, password };
-    return this.http.post<any>(environment.everestApi + '/auth/login', credentials, { observe: 'response' }).pipe(
+    return this.http.post<any>(environment.apiUrl + '/auth/login', credentials, { observe: 'response' }).pipe(
       map(res => {
         if (res.body.token) {
           this.setToken(res.body.token);
@@ -32,7 +32,7 @@ export class AuthenticationService {
 
   // retrieve a new token
   refreshToken() {
-    return this.http.get<any>(environment.everestApi + '/auth/token', { observe: 'response' }).pipe(
+    return this.http.get<any>(environment.apiUrl + '/auth/token', { observe: 'response' }).pipe(
       map(res => {
         if (res.body.token) {
           this.setToken(res.body.token);
