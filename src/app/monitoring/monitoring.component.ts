@@ -36,7 +36,7 @@ export class MonitoringComponent implements OnInit {
 
     for (const entry of this.getCurrentViewData()) {
       const date = new Date(entry.createdAt);
-      labels.push(date.getHours() + ':' + date.getMinutes());
+      labels.push(date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes());
       data.push(entry.requestTimeInMs);
     }
 
