@@ -108,6 +108,8 @@ class ConfigManager
             }
         }
 
+        $this->entityManager->flush();
+
         return true;
     }
 
@@ -148,6 +150,9 @@ class ConfigManager
         (new InstallationCrawler($metadataResponse->getBody()->getContents(), $installation))->analyzeMetadata();
 
         $this->cache->saveInCache($installation, $data);
+
+        $installation->setLastUpdate();
+
         $this->entityManager->persist($installation);
 
         return true;

@@ -29,3 +29,12 @@ mat-row, mat-cell {
 mat-row:hover {
   background-color: map_get($mat-light-theme-background, background);
 }
+
+.vat {
+  vertical-align: top;
+}
+
+.last-update {
+  font-size: 11px;
+  color: #838383;
+}

@@ -7,8 +7,13 @@
     <ng-container matColumnDef="cleanUrl">
       <mat-header-cell *matHeaderCellDef mat-sort-header="cleanUrl">Name</mat-header-cell>
       <mat-cell *matCellDef="let installation">
-        <img [src]="installation.favicon" width="16" height="16" class="mr5">
-        <a class="color-grey hover-primary" [href]="installation.url" target="_blank">{{ installation.cleanUrl }}</a>
+        <div>
+          <div>
+            <img [src]="installation.favicon" width="16" height="16" class="mr5">
+            <a class="color-grey hover-primary vat" [href]="installation.url" target="_blank">{{ installation.cleanUrl }}</a>
+          </div>
+          <span class="last-update" *ngIf="installation.lastUpdate">Letztes Update: {{ installation.lastUpdate | date:'short' }}</span>
+        </div>
       </mat-cell>
     </ng-container>
 
