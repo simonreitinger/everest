@@ -87,7 +87,7 @@ class ConfigManager
         return $this;
     }
 
-    public function fetchConfig(): bool
+    public function fetchConfig($output = false): bool
     {
         if ($this->installations === null) {
             throw new \BadMethodCallException('No installations found. Did you specify them using "setInstallations()"?');
@@ -95,8 +95,16 @@ class ConfigManager
 
         /** @var Installation $installation */
         foreach ($this->installations as $installation) {
+            if ($output) {
+                echo 'updating ' . $installation->getCleanUrl() . PHP_EOL;
+            }
+
             if (!$this->updateConfig($installation)) {
                 return false;
+            }
+
+            if ($output) {
+                echo 'updated ' . $installation->getCleanUrl() . PHP_EOL;
             }
         }
 

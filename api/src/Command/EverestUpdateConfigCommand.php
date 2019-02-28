@@ -66,7 +66,7 @@ class EverestUpdateConfigCommand extends Command
 
         $this->configManager
             ->setInstallations($installations)
-            ->fetchConfig()
+            ->fetchConfig(true)
         ;
 
         $io->success('All done!');
