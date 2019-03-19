@@ -50,7 +50,7 @@ class SoftwareController extends ApiController
     }
 
     /**
-     * sets supported / maintained versions of softwares that can be defined in services.yaml.
+     * sets supported/maintained versions of softwares that can be defined in services.yaml.
      *
      * @Route("/update", methods={"GET"})
      *

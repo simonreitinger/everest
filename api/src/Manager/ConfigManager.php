@@ -135,6 +135,14 @@ class ConfigManager
                         unset($json['configs']);
                     }
 
+                    if ($set === 'setContao') {
+                        $installation->setSoftwareVersion($json['version']);
+                    }
+
+                    if ($set === 'setPhpWeb') {
+                        $installation->setPlatformVersion($json['version']);
+                    }
+
                     if ($set === 'setLock') {
                         $json = $this->buildLockData($json, $data->getPackages());
                     }
@@ -172,9 +180,9 @@ class ConfigManager
     {
         $filtered = [];
 
-        // root repository should include a "/" to filter php and ext versions
+        // root repository should include a "/" to filter php and ext from repos
         $rootRepositories = array_filter(array_keys($packages['require']), function ($name) {
-            return stripos($name, '/');
+            return strpos($name, '/');
         });
 
         $privateRepositories = array_map(function ($repo) {

@@ -7,6 +7,7 @@ import { SoftwareModel } from '../models/software.model';
 import { MatDialog, MatSort, MatTableDataSource } from '@angular/material';
 import { MonitoringDialogComponent } from '../monitoring-dialog/monitoring-dialog.component';
 import { InstallationAddComponent } from '../installation-add/installation-add.component';
+import { ConfigService } from '../services/config.service';
 
 const TABLE_OPTIONS = {
   displayedColumns: ['cleanUrl', 'software', 'softwareVersion', 'platform', 'platformVersion', 'status', 'detail']
@@ -32,6 +33,7 @@ export class InstallationListComponent implements OnInit {
     private dialog: MatDialog,
     private is: InstallationService,
     private cms: ContaoManagerService,
+    private cs: ConfigService,
     private ss: SoftwareService
   ) {
   }
@@ -83,11 +85,16 @@ export class InstallationListComponent implements OnInit {
     });
   }
 
+  update(installation: InstallationModel) {
+    this.cs.forceUpdate(installation).subscribe((res: any) => {
+        console.log(res);
+    });
+  }
 
-  delete(hash: string) {
-    this.is.remove(hash).subscribe((res: any) => {
+  delete(installation: InstallationModel) {
+    this.is.remove(installation.hash).subscribe((res: any) => {
       if (res.success) {
-        this.installations = this.installations.filter(i => i.hash !== hash);
+        this.installations = this.installations.filter(i => i.hash !== installation.hash);
         this.dataSource.data = this.installations;
       }
     });

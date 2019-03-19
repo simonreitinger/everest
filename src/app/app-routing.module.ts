@@ -7,6 +7,7 @@ import { AccountComponent } from './account/account.component';
 import { InstallationListComponent } from './installation-list/installation-list.component';
 import { InstallationAddComponent } from './installation-add/installation-add.component';
 import { InstallationDetailComponent } from './installation-detail/installation-detail.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -19,7 +20,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes), FormsModule, ReactiveFormsModule],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

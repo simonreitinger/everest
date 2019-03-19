@@ -3,7 +3,7 @@
   <form #form="ngForm" *ngIf="user" class="w100" (ngSubmit)="onSubmit(form)">
     <p class="w100 mb10">Username: {{ user.username }}</p>
     <mat-form-field class="w100">
-      <input matInput type="text" required email="true" placeholder="E-Mail" id="email" name="email" [(ngModel)]="user.email">
+      <input matInput type="text" required email placeholder="E-Mail" id="email" name="email" [(ngModel)]="user.email">
     </mat-form-field>
     <mat-form-field class="w100">
       <input matInput type="text" required placeholder="Vorname" id="firstName" name="firstName" [(ngModel)]="user.firstName">

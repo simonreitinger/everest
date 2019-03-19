@@ -161,6 +161,10 @@ class EverestUserCommand extends Command
         do {
             $choice = $io->choice('Select the field to be updated. Press enter to save & exit', $choices, 'save');
 
+            if ($choice === 'save') {
+                break;
+            }
+
             $this->performChoiceOnUser($choice, $user, $io);
         } while ($choice !== '');
 

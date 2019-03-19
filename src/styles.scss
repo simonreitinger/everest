@@ -35,6 +35,10 @@ a {
   &.flex-sb {
     justify-content: space-between;
   }
+
+  &.flex-aic {
+    align-items: center;
+  }
 }
 
 .block {

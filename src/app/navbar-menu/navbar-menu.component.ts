@@ -16,9 +16,11 @@ export class NavbarMenuComponent implements OnInit {
   constructor(private auth: AuthenticationService, private us: UserService, private router: Router) { }
 
   ngOnInit() {
-    this.us.getUser().subscribe(res => {
-      this.user = res;
-    });
+    if (this.auth.getToken()) {
+      this.us.getUser().subscribe(res => {
+        this.user = res;
+      });
+    }
   }
 
   logout() {

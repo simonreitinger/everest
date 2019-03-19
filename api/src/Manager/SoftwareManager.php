@@ -78,12 +78,10 @@ class SoftwareManager
                     $software = (new Software())->setName($name);
                 }
 
-                $versions = $software->getVersions() ?? [];
-
                 foreach ($endpoints as $url) {
                     try {
                         $response = $this->client->request('GET', $url);
-                        $versions = array_merge($versions, $manager->extractVersions($response));
+                        $versions = $manager->extractVersions($response);
                     } catch (GuzzleException $e) {
                     }
                 }
@@ -95,8 +93,6 @@ class SoftwareManager
 
             // save all
             $this->entityManager->flush();
-        } catch (OptimisticLockException $e) {
-        } catch (ORMException $e) {
         } catch (\Exception $e) {
         }
 

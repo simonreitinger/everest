@@ -10,53 +10,55 @@ export interface InstallationModel {
   favicon: string;
   title: string;
   themeColor: string;
+  softwareVersion: string;
+  platformVersion: string;
   contao: {
     version: string;
     api: string;
     supported: boolean;
   };
-  composer: {
-    json: {
-      found: boolean;
-      valid: boolean;
-      error?: string;
-    };
-    lock: {
-      found: boolean;
-      fresh: boolean;
-    };
-    vendor: {
-      found: boolean;
-    };
-  };
-  manager: {
-    server: string;
-    disable_cloud: boolean;
-    last_update: string;
-    latest_version: string;
-  };
-  phpCli: {
-    version: string;
-    version_id: number;
-    problem?: string;
-  };
-  phpWeb: {
-    version: string;
-    version_id: number;
-    platform: string;
-    problem?: string;
-  };
-  config: {
-    server: string;
-    php_cli: string;
-    detected: boolean;
-    cloud: {
-      enabled: boolean;
-      issues: string[]
-    }
-  };
-  selfUpdate: any[];
-  packages: {
+  // composer: {
+  //   json: {
+  //     found: boolean;
+  //     valid: boolean;
+  //     error?: string;
+  //   };
+  //   lock: {
+  //     found: boolean;
+  //     fresh: boolean;
+  //   };
+  //   vendor: {
+  //     found: boolean;
+  //   };
+  // };
+  // manager: {
+  //   server: string;
+  //   disable_cloud: boolean;
+  //   last_update: string;
+  //   latest_version: string;
+  // };
+  // phpCli: {
+  //   version: string;
+  //   version_id: number;
+  //   problem?: string;
+  // };
+  // phpWeb: {
+  //   version: string;
+  //   version_id: number;
+  //   platform: string;
+  //   problem?: string;
+  // };
+  // config: {
+  //   server: string;
+  //   php_cli: string;
+  //   detected: boolean;
+  //   cloud: {
+  //     enabled: boolean;
+  //     issues: string[]
+  //   }
+  // };
+  // selfUpdate: any[];
+  packages?: {
     name: string;
     version: string;
     version_normalized: string;

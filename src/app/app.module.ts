@@ -24,6 +24,7 @@ import { PackageComponent } from './package/package.component';
 import { PackageOverviewSheetComponent } from './package/package-overview-sheet.component';
 import { ConsoleOutputComponent } from './console-output/console-output.component';
 import { MonitoringDialogComponent } from './monitoring-dialog/monitoring-dialog.component';
+import { DetailInfoComponent } from './detail-info/detail-info.component';
 
 registerLocaleData(localeDe);
 
@@ -43,6 +44,7 @@ registerLocaleData(localeDe);
     PackageOverviewSheetComponent,
     ConsoleOutputComponent,
     MonitoringDialogComponent,
+    DetailInfoComponent,
   ],
   imports: [
     BrowserModule,

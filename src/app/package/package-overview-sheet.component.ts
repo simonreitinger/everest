@@ -3,6 +3,7 @@ import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material';
 import { ComposerService } from '../services/composer.service';
 import { InstallationModel } from '../models/installation.model';
 import { TaskOutputModel } from '../models/task-output.model';
+import { TaskModel } from '../models/task.model';
 
 @Component({
   selector: 'app-package-overview-sheet',

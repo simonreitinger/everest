@@ -12,7 +12,7 @@ export class ConfigService {
   constructor(private http: HttpClient) {
   }
 
-  getContaoConfig(installation: InstallationModel) {
+  forceUpdate(installation: InstallationModel) {
     return this.http.get(environment.apiUrl + '/config/' + installation.hash);
   }
 

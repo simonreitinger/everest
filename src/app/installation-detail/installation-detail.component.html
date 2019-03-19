@@ -1,8 +1,22 @@
 <div id="detail" *ngIf="installation">
-  <a routerLink="/installations">back</a>
-  <h1 class="mb15">{{ installation.cleanUrl }}</h1>
-
+  <div class="mb15 flex flex-sb detail-header">
+    <h1 class="mb15">{{ installation.cleanUrl }}</h1>
+    <div class="flex flex-aic">
+      <mat-spinner class="mr10 inline-block" [diameter]="30" *ngIf="updating"></mat-spinner>
+      <button mat-raised-button color="accent" class="flex" (click)="update()">Update erzwingen</button>
+    </div>
+  </div>
   <div>
+    <div class="mb15">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Details</mat-panel-title>
+          <mat-panel-description>Details zur Installation</mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <app-detail-info [installation]="installation"></app-detail-info>
+      </mat-expansion-panel>
+    </div>
     <div class="mb15">
       <mat-expansion-panel>
         <mat-expansion-panel-header>

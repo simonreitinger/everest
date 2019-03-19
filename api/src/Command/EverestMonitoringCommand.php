@@ -85,7 +85,7 @@ class EverestMonitoringCommand extends Command
             $monitoring
                 ->setInstallation($website)
                 ->setStatus($response->getStatusCode())
-                ->setRequestTime($this->client->getRequestTime())
+                ->setRequestTime((int) $this->client->getRequestTime())
             ;
 
             $this->entityManager->persist($monitoring);
