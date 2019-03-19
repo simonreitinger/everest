@@ -1,4 +1,4 @@
-interface TaskModel {
+export interface TaskModel {
   name: string; // e.g. 'composer/update'
   config: {
     require: string[];
