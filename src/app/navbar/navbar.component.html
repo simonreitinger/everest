@@ -1,7 +1,7 @@
 <nav id="navbar" class="center">
   <ul class="menu">
-    <li><a routerLink="/" routerLinkActive="active">everest</a></li>
-    <li><a routerLink="/installations" routerLinkActive="active">Installationen</a></li>
+    <li><a class="flex" routerLink="{{ auth.isTokenValid() ? '/installations' : '/' }}" routerLinkActive="active"><img src="assets/img/icons/favicon-192.png" width="32" height="32" alt="Everest"><span class="ml12"> Everest</span></a></li>
+    <li *ngIf="auth.isTokenValid()"><a routerLink="/installations" routerLinkActive="active">Installationen</a></li>
   </ul>
   <ul class="account" *ngIf="!auth.isTokenValid()">
     <li><a routerLink="/login" routerLinkActive="active">Login</a></li>

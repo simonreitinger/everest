@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
+ */
+
 namespace App\Repository;
 
 use App\Entity\Software;
@@ -14,16 +24,16 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class SoftwareRepository extends ServiceEntityRepository
 {
-
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Software::class);
     }
 
     /**
-     * returns the record with the specific name, e.g. 'php'
+     * returns the record with the specific name, e.g. 'php'.
      *
      * @param $name
+     *
      * @return Software|null
      */
     public function findOneByName($name)

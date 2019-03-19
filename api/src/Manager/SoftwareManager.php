@@ -1,9 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: simonreitinger
- * Date: 2019-02-27
- * Time: 11:54
+
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
  */
 
 namespace App\Manager;
@@ -21,7 +25,6 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class SoftwareManager
 {
-
     /**
      * @var ParameterBagInterface
      */
@@ -38,15 +41,16 @@ class SoftwareManager
     private $entityManager;
 
     /**
-     * @var ClientInterface $client
+     * @var ClientInterface
      */
     private $client;
 
     /**
      * SoftwareManager constructor.
+     *
      * @param EntityManagerInterface $entityManager
-     * @param ParameterBagInterface $params
-     * @param ClientInterface $client
+     * @param ParameterBagInterface  $params
+     * @param ClientInterface        $client
      */
     public function __construct(EntityManagerInterface $entityManager, ParameterBagInterface $params, ClientInterface $client)
     {
@@ -68,7 +72,7 @@ class SoftwareManager
             foreach ($this->software as $name => $endpoints) {
                 // if software does not exist, create it
                 $software = $softwareRepo->findOneByName($name);
-                    $manager = VersionManagerFactory::create($name);
+                $manager = VersionManagerFactory::create($name);
 
                 if (!$software) {
                     $software = (new Software())->setName($name);
@@ -91,7 +95,6 @@ class SoftwareManager
 
             // save all
             $this->entityManager->flush();
-
         } catch (OptimisticLockException $e) {
         } catch (ORMException $e) {
         } catch (\Exception $e) {

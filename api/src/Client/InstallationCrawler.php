@@ -1,9 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: simonreitinger
- * Date: 2019-01-23
- * Time: 14:20
+
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
  */
 
 namespace App\Client;
@@ -13,14 +17,14 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class InstallationCrawler extends Crawler
 {
-
     /**
-     * @var Installation $installation
+     * @var Installation
      */
     private $installation;
 
     /**
      * InstallationCrawler constructor.
+     *
      * @param $html string (given to parent constructor)
      * @param $installation Installation (for storing data)
      */
@@ -30,11 +34,11 @@ class InstallationCrawler extends Crawler
         $this->installation = $installation;
     }
 
-    public function analyzeMetadata()
+    public function analyzeMetadata(): void
     {
         // fetch favicon path when different
         $favicon = $this->filter('link[rel="icon"]')->first()->attr('href') ?? '';
-        $this->installation->setFavicon($this->getBaseHref() . $favicon);
+        $this->installation->setFavicon($this->getBaseHref().$favicon);
 
         // fetch title when different
         $title = $this->filter('title')->text();

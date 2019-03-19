@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
+ */
+
 namespace App\Command;
 
 use App\Manager\SoftwareManager;
@@ -12,12 +22,13 @@ class EverestSoftwareCommand extends Command
     protected static $defaultName = 'everest:software';
 
     /**
-     * @var SoftwareManager $softwareManager
+     * @var SoftwareManager
      */
     private $softwareManager;
 
     /**
      * EverestSoftwareCommand constructor.
+     *
      * @param SoftwareManager $softwareManager
      */
     public function __construct(SoftwareManager $softwareManager)
@@ -26,12 +37,12 @@ class EverestSoftwareCommand extends Command
         $this->softwareManager = $softwareManager;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Update software versions (PHP etc.)');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $this->softwareManager->update();
     }

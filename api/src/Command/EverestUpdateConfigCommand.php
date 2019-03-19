@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
+ */
+
 namespace App\Command;
 
 use App\Entity\Installation;
@@ -13,23 +23,23 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class EverestUpdateConfigCommand extends Command
 {
-
     protected static $defaultName = 'everest:update-config';
 
     /**
-     * @var EntityManagerInterface $entityManager
+     * @var EntityManagerInterface
      */
     private $entityManager;
 
     /**
-     * @var ConfigManager $configManager
+     * @var ConfigManager
      */
     private $configManager;
 
     /**
      * EverestUpdateConfigCommand constructor.
+     *
      * @param EntityManagerInterface $entityManager
-     * @param ConfigManager $configManager
+     * @param ConfigManager          $configManager
      */
     public function __construct(EntityManagerInterface $entityManager, ConfigManager $configManager)
     {
@@ -38,15 +48,16 @@ class EverestUpdateConfigCommand extends Command
         $this->configManager = $configManager;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Update script for all registered installations')
             ->addArgument('url', InputArgument::OPTIONAL, 'URL of the installation to be updated')
-            ->addOption('all', 'a', null, 'Update config data for all installations');
+            ->addOption('all', 'a', null, 'Update config data for all installations')
+        ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $io = new SymfonyStyle($input, $output);
         $url = $input->getArgument('url');
@@ -55,7 +66,6 @@ class EverestUpdateConfigCommand extends Command
         if ($url) {
             $site = $this->entityManager->getRepository(Installation::class)->findOneByUrl($url);
             $installations = [$site];
-
         } else {
             if (!$all) {
                 $io->error('Please specify the URL or set the --all option.');

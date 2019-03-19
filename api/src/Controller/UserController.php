@@ -1,9 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: simonreitinger
- * Date: 2019-02-05
- * Time: 15:22
+
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
  */
 
 namespace App\Controller;
@@ -19,26 +23,26 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class UserController
- * @package App\Controller
+ * Class UserController.
  *
  * @Route("/user")
  */
 class UserController extends ApiController
 {
     /**
-     * @var JWTEncoderInterface $jwtEncoder
+     * @var JWTEncoderInterface
      */
     private $jwtEncoder;
 
     /**
-     * @var EntityManagerInterface $entityManager
+     * @var EntityManagerInterface
      */
     private $entityManager;
 
     /**
      * UserController constructor.
-     * @param JWTEncoderInterface $jwtEncoder
+     *
+     * @param JWTEncoderInterface    $jwtEncoder
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(JWTEncoderInterface $jwtEncoder, EntityManagerInterface $entityManager)
@@ -51,8 +55,10 @@ class UserController extends ApiController
      * @Route(methods={"GET"})
      *
      * @param Request $request
-     * @return JsonResponse
+     *
      * @throws JWTDecodeFailureException
+     *
+     * @return JsonResponse
      */
     public function getUserDetail(Request $request)
     {
@@ -92,8 +98,10 @@ class UserController extends ApiController
      * @Route("/update", methods={"POST"})
      *
      * @param Request $request
-     * @return JsonResponse
+     *
      * @throws JWTDecodeFailureException
+     *
+     * @return JsonResponse
      */
     public function updateUser(Request $request)
     {
@@ -105,15 +113,16 @@ class UserController extends ApiController
         $validCount = 0;
 
         foreach ($payload as $key => $value) {
-            if (in_array($key, ['email', 'firstName', 'lastName'])) {
-                $validCount++;
+            if (\in_array($key, ['email', 'firstName', 'lastName'], true)) {
+                ++$validCount;
             }
         }
 
-        if ($validCount === count($payload)) {
+        if ($validCount === \count($payload)) {
             $user = $this->entityManager
                 ->getRepository(User::class)
-                ->findOneByUsername($decoded['username']);
+                ->findOneByUsername($decoded['username'])
+            ;
 
             $user
                 ->setEmail($payload['email'])

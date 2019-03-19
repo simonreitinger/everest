@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
+ */
+
 namespace App\Repository;
 
 use App\Entity\User;
@@ -15,7 +25,6 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class UserRepository extends ServiceEntityRepository
 {
-
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, User::class);
@@ -23,6 +32,7 @@ class UserRepository extends ServiceEntityRepository
 
     /**
      * @param $username
+     *
      * @return User|null
      */
     public function findOneByUsername($username): ?User
@@ -32,7 +42,8 @@ class UserRepository extends ServiceEntityRepository
                 ->where('u.username = :username')
                 ->setParameter('username', $username)
                 ->getQuery()
-                ->getOneOrNullResult();
+                ->getOneOrNullResult()
+            ;
         } catch (NonUniqueResultException $e) {
             return null;
         }

@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
+ */
+
 namespace App\Repository;
 
 use App\Entity\Monitoring;
@@ -14,7 +24,6 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class MonitoringRepository extends ServiceEntityRepository
 {
-
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Monitoring::class);
@@ -27,7 +36,8 @@ class MonitoringRepository extends ServiceEntityRepository
             ->setParameter('id', $id)
             ->orderBy('m.createdAt', 'desc')
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
     }
 
     public function findCurrentByInstallationId($id)

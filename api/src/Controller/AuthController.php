@@ -1,9 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: simonreitinger
- * Date: 2019-02-04
- * Time: 13:36
+
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
  */
 
 namespace App\Controller;
@@ -24,30 +28,30 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  * @Route("/auth")
  *
  * Class AuthController
- * @package App\Controller
  */
 class AuthController extends ApiController
 {
     /**
-     * @var JWTEncoderInterface $jwtEncoder
+     * @var JWTEncoderInterface
      */
     private $jwtEncoder;
 
     /**
-     * @var UserPasswordEncoderInterface $passwordEncoder
+     * @var UserPasswordEncoderInterface
      */
     private $passwordEncoder;
 
     /**
-     * @var EntityManagerInterface $entityManager
+     * @var EntityManagerInterface
      */
     private $entityManager;
 
     /**
      * AuthController constructor.
-     * @param JWTEncoderInterface $jwtEncoder
+     *
+     * @param JWTEncoderInterface          $jwtEncoder
      * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param EntityManagerInterface $entityManager
+     * @param EntityManagerInterface       $entityManager
      */
     public function __construct(JWTEncoderInterface $jwtEncoder,
                                 UserPasswordEncoderInterface $passwordEncoder,
@@ -62,8 +66,10 @@ class AuthController extends ApiController
      * @Route("/login", methods={"POST"})
      *
      * @param Request $request
-     * @return JsonResponse|ApiProblemResponse
+     *
      * @throws JWTEncodeFailureException
+     *
+     * @return JsonResponse|ApiProblemResponse
      */
     public function login(Request $request)
     {
@@ -82,7 +88,7 @@ class AuthController extends ApiController
         }
 
         $token = $this->jwtEncoder->encode([
-            'username' => $user->getUsername()
+            'username' => $user->getUsername(),
         ]);
 
         return new JsonResponse(['token' => $token]);
@@ -92,9 +98,11 @@ class AuthController extends ApiController
      * @Route("/token", methods={"GET"})
      *
      * @param Request $request
-     * @return JsonResponse|ApiProblemResponse
+     *
      * @throws JWTEncodeFailureException
      * @throws JWTDecodeFailureException
+     *
+     * @return JsonResponse|ApiProblemResponse
      */
     public function refreshToken(Request $request)
     {

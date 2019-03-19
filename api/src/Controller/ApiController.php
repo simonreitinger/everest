@@ -1,9 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: simonreitinger
- * Date: 2019-02-05
- * Time: 15:28
+
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
  */
 
 namespace App\Controller;
@@ -15,21 +19,21 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class ApiController provides often used methods for all controllers.
- * @package App\Controller
  */
 class ApiController extends AbstractController
 {
     /**
-     * returns the authorization header without "Bearer"
+     * returns the authorization header without "Bearer".
      *
      * @param Request $request
+     *
      * @return string
      */
     public function getJwtFromRequest(Request $request)
     {
         $auth = $request->headers->get('Authorization');
 
-        if (is_string($auth) && stripos($auth, 'bearer ') === 0) {
+        if (\is_string($auth) && stripos($auth, 'bearer ') === 0) {
             // remove 'bearer ' -> 7 characters
             return substr($auth, 7);
         }
@@ -39,6 +43,7 @@ class ApiController extends AbstractController
 
     /**
      * @param Request $request
+     *
      * @return mixed
      */
     public function getRequestContentAsJson(Request $request)

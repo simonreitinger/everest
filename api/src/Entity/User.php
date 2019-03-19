@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
+ */
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -11,7 +21,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User implements UserInterface, \JsonSerializable
 {
-
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -147,15 +156,18 @@ class User implements UserInterface, \JsonSerializable
      * This is important if, at any given point, sensitive information like
      * the plain-text password is stored on this object.
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 
     /**
-     * Specify data which should be serialized to JSON
-     * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+     * Specify data which should be serialized to JSON.
+     *
+     * @see https://php.net/manual/en/jsonserializable.jsonserialize.php
+     *
      * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
+     *               which is a value of any type other than a resource
+     *
      * @since 5.4.0
      */
     public function jsonSerialize()
@@ -164,7 +176,7 @@ class User implements UserInterface, \JsonSerializable
             'username' => $this->username,
             'email' => $this->email,
             'firstName' => $this->firstName,
-            'lastName' => $this->lastName
+            'lastName' => $this->lastName,
         ];
     }
 }

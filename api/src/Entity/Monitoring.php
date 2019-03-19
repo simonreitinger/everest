@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
+ */
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -15,7 +25,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class Monitoring implements \JsonSerializable
 {
-
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -24,7 +33,7 @@ class Monitoring implements \JsonSerializable
     private $id;
 
     /**
-     * @var \DateTimeImmutable $createdAt
+     * @var \DateTimeImmutable
      * @ORM\Column(type="datetimetz_immutable")
      */
     private $createdAt;
@@ -48,6 +57,7 @@ class Monitoring implements \JsonSerializable
 
     /**
      * Monitoring constructor.
+     *
      * @param $time
      */
     public function __construct()
@@ -63,18 +73,6 @@ class Monitoring implements \JsonSerializable
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
-    }
-
-    private function setCreatedAt(): self
-    {
-        try {
-            if (!$this->createdAt) {
-                $this->createdAt = new \DateTimeImmutable();
-            }
-        } catch (\Exception $e) {
-        }
-
-        return $this;
     }
 
     public function getInstallation(): ?Installation
@@ -123,8 +121,20 @@ class Monitoring implements \JsonSerializable
             'createdAt' => $this->createdAt->format(DATE_ATOM),
             'status' => $this->status,
             'statusText' => Response::$statusTexts[$this->status],
-            'failed' => (bool)$this->status !== Response::HTTP_OK,
-            'requestTimeInMs' => $this->requestTime
+            'failed' => (bool) $this->status !== Response::HTTP_OK,
+            'requestTimeInMs' => $this->requestTime,
         ];
+    }
+
+    private function setCreatedAt(): self
+    {
+        try {
+            if (!$this->createdAt) {
+                $this->createdAt = new \DateTimeImmutable();
+            }
+        } catch (\Exception $e) {
+        }
+
+        return $this;
     }
 }

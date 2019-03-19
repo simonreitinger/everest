@@ -1,46 +1,44 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: simonreitinger
- * Date: 2019-01-24
- * Time: 15:12
+
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
  */
 
 namespace App\Controller;
 
 use App\Entity\Software;
-use App\Factory\VersionManagerFactory;
 use App\Manager\SoftwareManager;
-use App\Repository\SoftwareRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class SoftwareController
- * @package App\Controller
+ * Class SoftwareController.
  *
  * @Route("/software")
  */
 class SoftwareController extends ApiController
 {
-
     /**
-     * @var SoftwareManager $softwareManager
+     * @var SoftwareManager
      */
     private $softwareManager;
 
     /**
-     * @var EntityManagerInterface $client
+     * @var EntityManagerInterface
      */
     private $entityManager;
 
-
-
     /**
      * SoftwareController constructor.
+     *
      * @param ClientInterface $client
      */
     public function __construct(
@@ -52,13 +50,13 @@ class SoftwareController extends ApiController
     }
 
     /**
-     * sets supported / maintained versions of softwares that can be defined in services.yaml
-     *
+     * sets supported / maintained versions of softwares that can be defined in services.yaml.
      *
      * @Route("/update", methods={"GET"})
      *
-     * @return JsonResponse
      * @throws \Exception
+     *
+     * @return JsonResponse
      */
     public function updateSoftwares()
     {
@@ -79,6 +77,8 @@ class SoftwareController extends ApiController
 
     /**
      * @Route("/{name}/versions", methods={"GET"})
+     *
+     * @param mixed $name
      *
      * @return JsonResponse
      */

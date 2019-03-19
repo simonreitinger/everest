@@ -1,9 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: simonreitinger
- * Date: 2019-01-17
- * Time: 15:54
+
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
  */
 
 namespace App\Controller;
@@ -11,7 +15,6 @@ namespace App\Controller;
 use App\Cache\InstallationCache;
 use App\Client\ManagerClient;
 use App\Entity\Installation;
-use App\Entity\Monitoring;
 use App\HttpKernel\ApiProblemResponse;
 use App\Manager\ConfigManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,40 +24,37 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class InstallationController
- * @package App\Controller
- *
- * lists and adds installation to the database
+ * Class InstallationController.
  *
  * @Route("/installation")
  */
 class InstallationController extends ApiController
 {
-
     /**
-     * @var EntityManagerInterface $entityManager
+     * @var EntityManagerInterface
      */
     private $entityManager;
 
     /**
-     * @var ConfigManager $configManager
+     * @var ConfigManager
      */
     private $configManager;
 
     /**
-     * @var ManagerClient $client
+     * @var ManagerClient
      */
     private $client;
 
     /**
-     * @var InstallationCache $cache
+     * @var InstallationCache
      */
     private $cache;
 
     /**
      * InstallationController constructor.
+     *
      * @param EntityManagerInterface $entityManager
-     * @param ManagerClient $client
+     * @param ManagerClient          $client
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -80,7 +80,8 @@ class InstallationController extends ApiController
         if (!empty($installations) && !$this->cache->findByInstallation($installations[0])) {
             $this->configManager
                 ->setInstallations($installations)
-                ->fetchConfig();
+                ->fetchConfig()
+            ;
         }
 
         return new JsonResponse($this->mergeWithCache($installations));
@@ -90,6 +91,7 @@ class InstallationController extends ApiController
      * @Route("/add", methods={"POST"})
      *
      * @param Request $request
+     *
      * @return JsonResponse|ApiProblemResponse
      */
     public function add(Request $request)
@@ -99,7 +101,8 @@ class InstallationController extends ApiController
 
         $installation = $this->entityManager
             ->getRepository(Installation::class)
-            ->findOneBy(['url' => $json['url']]);
+            ->findOneBy(['url' => $json['url']])
+        ;
 
         // only progress with valid data
         if ($this->jsonIsValid($json)) {
@@ -109,7 +112,8 @@ class InstallationController extends ApiController
                 $installation
                     ->setUrl($json['url'])
                     ->setManagerUrl($json['url'])
-                    ->setCleanUrl(parse_url($json['url'], PHP_URL_HOST)); // without protocol
+                    ->setCleanUrl(parse_url($json['url'], PHP_URL_HOST)) // without protocol
+                ;
             }
 
             // new token can be set without deleting the installation
@@ -118,7 +122,8 @@ class InstallationController extends ApiController
             // set the configuration
             $this->configManager
                 ->setInstallations($installation)
-                ->fetchConfig();
+                ->fetchConfig()
+            ;
 
             $this->entityManager->persist($installation);
             $this->entityManager->flush();
@@ -134,6 +139,7 @@ class InstallationController extends ApiController
      *
      * @param $hash
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function delete($hash, Request $request)
@@ -144,7 +150,8 @@ class InstallationController extends ApiController
         /** @var Installation $installation */
         $installation = $this->entityManager
             ->getRepository(Installation::class)
-            ->findOneByHash($hash);
+            ->findOneByHash($hash)
+        ;
 
         if ($installation) {
             $installation->removeChildren($this->entityManager);
@@ -161,6 +168,8 @@ class InstallationController extends ApiController
     /**
      * @Route("/{hash}", methods={"GET"})
      *
+     * @param mixed $hash
+     *
      * @return JsonResponse
      */
     public function getOneByHash($hash)
@@ -176,14 +185,15 @@ class InstallationController extends ApiController
 
     /**
      * @param Installation|Installation[] $installation
+     *
      * @return array
      */
     public function mergeWithCache($installation)
     {
-        if (is_array($installation)) {
+        if (\is_array($installation)) {
             $result = [];
             foreach ($installation as $i) {
-               $result[] = array_merge(
+                $result[] = array_merge(
                    json_decode(json_encode($i), true),
                    json_decode($this->cache->findByInstallation($i), true)
                );
@@ -200,9 +210,9 @@ class InstallationController extends ApiController
 
     private function jsonIsValid(array $json)
     {
-        return (
+        return
             $json['url'] &&
             $json['token']
-        );
+        ;
     }
 }

@@ -12,7 +12,6 @@ import { MaterialModule } from './material-module';
 import { NavbarComponent } from './navbar/navbar.component';
 import { LoginComponent } from './login/login.component';
 import { InstallationListComponent } from './installation-list/installation-list.component';
-import { HomeComponent } from './home/home.component';
 import { InstallationAddComponent } from './installation-add/installation-add.component';
 import { AccountComponent } from './account/account.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
@@ -31,7 +30,6 @@ registerLocaleData(localeDe);
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     LoginComponent,
     NavbarComponent,
     InstallationListComponent,

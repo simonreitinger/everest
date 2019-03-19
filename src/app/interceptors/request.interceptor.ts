@@ -3,6 +3,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthenticationService } from '../services/authentication.service';
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,10 @@ export class RequestInterceptor implements HttpInterceptor {
       req = req.clone({ headers: req.headers.set('Content-Type', 'application/json') });
     }
     req = req.clone({ headers: req.headers.set('Accept', 'application/json') });
+
+    if (environment.production === false) {
+      req.params.set('XDEBUG_SESSION_START', 'PHPSTORM');
+    }
 
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {

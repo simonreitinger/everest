@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
+ */
+
 namespace App\Entity;
 
 class Task implements \JsonSerializable
@@ -61,6 +71,7 @@ class Task implements \JsonSerializable
 
     /**
      * @param mixed $output
+     *
      * @return Task
      */
     public function setOutput($output)
@@ -71,17 +82,20 @@ class Task implements \JsonSerializable
     }
 
     /**
-     * Specify data which should be serialized to JSON
-     * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+     * Specify data which should be serialized to JSON.
+     *
+     * @see https://php.net/manual/en/jsonserializable.jsonserialize.php
+     *
      * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
+     *               which is a value of any type other than a resource
+     *
      * @since 5.4.0
      */
     public function jsonSerialize()
     {
         return [
             'name' => $this->name,
-            'output' => json_decode($this->output, true)
+            'output' => json_decode($this->output, true),
         ];
     }
 }

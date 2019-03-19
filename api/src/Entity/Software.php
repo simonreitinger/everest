@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
+ */
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -9,7 +19,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Software implements \JsonSerializable
 {
-
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -23,7 +32,7 @@ class Software implements \JsonSerializable
     private $name;
 
     /**
-     * current version of the software
+     * current version of the software.
      *
      * @ORM\Column(type="text", length=65536, nullable=true)
      */
@@ -44,6 +53,7 @@ class Software implements \JsonSerializable
 
     /**
      * @param array $versions
+     *
      * @return Software
      */
     public function setVersions(array $versions): self
@@ -63,6 +73,7 @@ class Software implements \JsonSerializable
 
     /**
      * @param string $name
+     *
      * @return Software
      */
     public function setName(string $name): self
@@ -79,7 +90,7 @@ class Software implements \JsonSerializable
     {
         return [
             'name' => $this->getName(),
-            'versions' => $this->getVersions()
+            'versions' => $this->getVersions(),
         ];
     }
 }

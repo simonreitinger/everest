@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
+ */
+
 namespace App\Entity;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,16 +22,7 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
  */
 class Installation implements \JsonSerializable
 {
-
-    const CONTAO_MANAGER = 'contao-manager.phar.php';
-
-    /**
-     * Installation constructor.
-     */
-    public function __construct()
-    {
-        $this->setAdded();
-    }
+    public const CONTAO_MANAGER = 'contao-manager.phar.php';
 
     /**
      * @ORM\Id()
@@ -36,7 +37,7 @@ class Installation implements \JsonSerializable
     private $hash;
 
     /**
-     * last time where the /config endpoint was called
+     * last time where the /config endpoint was called.
      *
      * @var \DateTime
      * @ORM\Column(type="datetimetz", nullable=true)
@@ -83,6 +84,14 @@ class Installation implements \JsonSerializable
      * @ORM\Column(type="string", length=191, nullable=true)
      */
     private $themeColor;
+
+    /**
+     * Installation constructor.
+     */
+    public function __construct()
+    {
+        $this->setAdded();
+    }
 
     /**
      * @return mixed
@@ -155,6 +164,7 @@ class Installation implements \JsonSerializable
 
     /**
      * @param mixed $url
+     *
      * @return Installation
      */
     public function setUrl($url): self
@@ -175,6 +185,7 @@ class Installation implements \JsonSerializable
 
     /**
      * @param mixed $url
+     *
      * @return Installation
      */
     public function setCleanUrl($url): self
@@ -193,16 +204,17 @@ class Installation implements \JsonSerializable
     }
 
     /**
-     * localhosts have no Contao Manager file
+     * localhosts have no Contao Manager file.
      *
      * @param mixed $url
+     *
      * @return Installation
      */
     public function setManagerUrl($url): self
     {
         $this->managerUrl = (strpos($url, 'localhost') !== false)
             ? $url
-            : $url . '/' . static::CONTAO_MANAGER;
+            : $url.'/'.static::CONTAO_MANAGER;
 
         return $this;
     }
@@ -217,6 +229,7 @@ class Installation implements \JsonSerializable
 
     /**
      * @param mixed $token
+     *
      * @return Installation
      */
     public function setToken($token): self
@@ -236,6 +249,7 @@ class Installation implements \JsonSerializable
 
     /**
      * @param $favicon
+     *
      * @return Installation
      */
     public function setFavicon($favicon): self
@@ -255,6 +269,7 @@ class Installation implements \JsonSerializable
 
     /**
      * @param $title
+     *
      * @return Installation
      */
     public function setTitle($title): self
@@ -280,8 +295,6 @@ class Installation implements \JsonSerializable
         $this->themeColor = $themeColor;
     }
 
-
-
     /**
      * @return array|mixed
      */
@@ -297,10 +310,9 @@ class Installation implements \JsonSerializable
                 'added' => $this->added ? $this->added->format(DATE_ATOM) : null,
                 'favicon' => $this->favicon,
                 'title' => $this->title,
-                'themeColor' => $this->themeColor
+                'themeColor' => $this->themeColor,
             ]
         );
-
     }
 
     public function removeChildren(EntityManagerInterface $entityManager): void
@@ -317,5 +329,4 @@ class Installation implements \JsonSerializable
             $entityManager->remove($task);
         }
     }
-
 }

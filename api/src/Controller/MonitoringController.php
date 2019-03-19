@@ -1,48 +1,48 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: simonreitinger
- * Date: 2019-01-24
- * Time: 10:30
+
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
  */
 
 namespace App\Controller;
 
 use App\Client\ManagerClient;
-use App\Entity\Monitoring;
 use App\Entity\Installation;
+use App\Entity\Monitoring;
 use App\HttpKernel\ApiProblemResponse;
-use App\Repository\MonitoringRepository;
 use App\Repository\InstallationRepository;
+use App\Repository\MonitoringRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class MonitoringController
- * @package App\Controller
- *
- * adds and lists uptime datasets
+ * Class MonitoringController.
  *
  * @Route("/monitoring")
  */
 class MonitoringController extends ApiController
 {
-
     /**
-     * @var EntityManagerInterface $entityManager
+     * @var EntityManagerInterface
      */
     private $entityManager;
 
     /**
-     * @var ManagerClient $client
+     * @var ManagerClient
      */
-
     private $client;
 
     /**
      * MonitoringController constructor.
+     *
      * @param ManagerClient $client
      */
     public function __construct(EntityManagerInterface $entityManager, ManagerClient $client)
@@ -55,6 +55,7 @@ class MonitoringController extends ApiController
      * @Route("/{hash}/current", methods={"GET"})
      *
      * @param $hash
+     *
      * @return JsonResponse|ApiProblemResponse
      */
     public function currentStatusByHash($hash)
@@ -77,6 +78,7 @@ class MonitoringController extends ApiController
      * @Route("/{hash}", methods={"GET"});
      *
      * @param $hash
+     *
      * @return JsonResponse|ApiProblemResponse
      */
     public function listForOne($hash)

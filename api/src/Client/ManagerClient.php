@@ -1,43 +1,46 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: simonreitinger
- * Date: 2019-01-22
- * Time: 21:30
+
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
  */
 
 namespace App\Client;
 
-use App\Entity\Task;
 use App\Entity\Installation;
+use App\Entity\Task;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * Class ManagerClient makes requests to the Contao Manager API
- * @package App\Client
+ * Class ManagerClient makes requests to the Contao Manager API.
  */
 class ManagerClient
 {
-
     /**
-     * @var ClientInterface $guzzle
+     * @var ClientInterface
      */
     private $guzzle;
 
     /**
-     * @var int $startTime
+     * @var int
      */
     private $startTime;
 
     /**
-     * @var int $endTime
+     * @var int
      */
     private $endTime;
 
     /**
      * ManagerClient constructor.
+     *
      * @param ClientInterface $guzzle
      */
     public function __construct(ClientInterface $guzzle)
@@ -47,24 +50,8 @@ class ManagerClient
 
     /**
      * @param Installation $website
-     * @param string $endpoint
-     * @param string $method
-     * @return ResponseInterface|null
-     */
-    private function apiRequest(Installation $website, string $endpoint = '', $method = 'GET', $data = null)
-    {
-        try {
-            return $this->guzzle
-                ->request($method, $website->getManagerUrl() . $endpoint, $this->buildOptions($website, $data));
-        } catch (GuzzleException $e) {
-            echo $e->getMessage();
-            return null;
-        }
-    }
-
-    /**
-     * @param Installation $website
-     * @param bool $logTime
+     * @param bool         $logTime
+     *
      * @return ResponseInterface|null
      */
     public function homepageRequest(Installation $website, $logTime = false)
@@ -81,9 +68,9 @@ class ManagerClient
             }
 
             return $response;
-
         } catch (GuzzleException $e) {
             echo $e->getMessage();
+
             return null;
         }
     }
@@ -102,6 +89,7 @@ class ManagerClient
 
     /**
      * @param Installation $website
+     *
      * @return ResponseInterface|null
      */
     public function serverContao(Installation $website)
@@ -111,6 +99,7 @@ class ManagerClient
 
     /**
      * @param Installation $website
+     *
      * @return ResponseInterface|null
      */
     public function serverComposer(Installation $website)
@@ -120,6 +109,7 @@ class ManagerClient
 
     /**
      * @param Installation $website
+     *
      * @return ResponseInterface|null
      */
     public function serverConfig(Installation $website)
@@ -129,6 +119,7 @@ class ManagerClient
 
     /**
      * @param Installation $website
+     *
      * @return ResponseInterface|null
      */
     public function serverPhpWeb(Installation $website)
@@ -138,6 +129,7 @@ class ManagerClient
 
     /**
      * @param Installation $website
+     *
      * @return ResponseInterface|null
      */
     public function serverPhpCli(Installation $website)
@@ -147,6 +139,7 @@ class ManagerClient
 
     /**
      * @param Installation $website
+     *
      * @return ResponseInterface|null
      */
     public function configManager(Installation $website)
@@ -155,9 +148,10 @@ class ManagerClient
     }
 
     /**
-     * returns the composer.json file
+     * returns the composer.json file.
      *
      * @param Installation $website
+     *
      * @return ResponseInterface|null
      */
     public function packagesRoot(Installation $website)
@@ -166,9 +160,10 @@ class ManagerClient
     }
 
     /**
-     * returns the composer.lock file
+     * returns the composer.lock file.
      *
      * @param Installation $website
+     *
      * @return ResponseInterface|null
      */
     public function composerLock(Installation $website)
@@ -178,7 +173,8 @@ class ManagerClient
 
     /**
      * @param Installation $website
-     * @param Task $task
+     * @param Task         $task
+     *
      * @return ResponseInterface|null
      */
     public function putTask(Installation $website, Task $task)
@@ -188,6 +184,7 @@ class ManagerClient
 
     /**
      * @param Installation $website
+     *
      * @return ResponseInterface|null
      */
     public function getTask(Installation $website)
@@ -197,6 +194,7 @@ class ManagerClient
 
     /**
      * @param Installation $website
+     *
      * @return ResponseInterface|null
      */
     public function removeTask(Installation $website)
@@ -206,6 +204,7 @@ class ManagerClient
 
     /**
      * @param ResponseInterface $response
+     *
      * @return mixed
      */
     public function getJsonContent(ResponseInterface $response)
@@ -215,15 +214,37 @@ class ManagerClient
 
     /**
      * @param Installation $website
-     * @param null $data
+     * @param string       $endpoint
+     * @param string       $method
+     * @param mixed|null   $data
+     *
+     * @return ResponseInterface|null
+     */
+    private function apiRequest(Installation $website, string $endpoint = '', $method = 'GET', $data = null)
+    {
+        try {
+            return $this->guzzle
+                ->request($method, $website->getManagerUrl().$endpoint, $this->buildOptions($website, $data))
+            ;
+        } catch (GuzzleException $e) {
+            echo $e->getMessage();
+
+            return null;
+        }
+    }
+
+    /**
+     * @param Installation $website
+     * @param null         $data
+     *
      * @return array
      */
     private function buildOptions(Installation $website, $data = null)
     {
         $options = [
             'headers' => [
-                'Contao-Manager-Auth' => $website->getToken()
-            ]
+                'Contao-Manager-Auth' => $website->getToken(),
+            ],
         ];
 
         if ($data) {

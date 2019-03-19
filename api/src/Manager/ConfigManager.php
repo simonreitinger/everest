@@ -1,53 +1,55 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: simonreitinger
- * Date: 2019-02-12
- * Time: 10:16
+
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
  */
 
 namespace App\Manager;
 
 use App\Cache\InstallationCache;
 use App\Cache\InstallationData;
-use App\Client\ManagerClient;
 use App\Client\InstallationCrawler;
+use App\Client\ManagerClient;
 use App\Entity\Installation;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Psr7\Response as Psr7Response;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class ConfigManager is responsible for updating the database records of installations
- * @package App\Config
+ * Class ConfigManager is responsible for updating the database records of installations.
  */
 class ConfigManager
 {
-
     /**
-     * @var EntityManagerInterface $entityManager
+     * @var EntityManagerInterface
      */
     private $entityManager;
 
     /**
-     * @var InstallationCache $cache
+     * @var InstallationCache
      */
     private $cache;
 
     /**
-     * @var ManagerClient $client
+     * @var ManagerClient
      */
     private $client;
 
     /**
-     * @var Installation[] $installations
+     * @var Installation[]
      */
     private $installations;
 
     /**
-     * map properties to client methods
+     * map properties to client methods.
      *
-     * @var array $responses
+     * @var array
      */
     private $responses = [
         'setContao' => 'serverContao',
@@ -57,13 +59,14 @@ class ConfigManager
         'setPhpCli' => 'serverPhpCli',
         'setManager' => 'configManager',
         'setPackages' => 'packagesRoot',
-        'setLock' => 'composerLock' // has to be after packagesRoot
+        'setLock' => 'composerLock', // has to be after packagesRoot
     ];
 
     /**
      * ConfigManager constructor.
+     *
      * @param EntityManagerInterface $entityManager
-     * @param ManagerClient $client
+     * @param ManagerClient          $client
      */
     public function __construct(EntityManagerInterface $entityManager, ManagerClient $client, InstallationCache $cache)
     {
@@ -74,13 +77,14 @@ class ConfigManager
 
     /**
      * @param Installation[]|Installation $installations
+     *
      * @return ConfigManager
      */
-    public function setInstallations($installations): ConfigManager
+    public function setInstallations($installations): self
     {
-        if (is_array($installations)) {
+        if (\is_array($installations)) {
             $this->installations = $installations;
-        } else if($installations instanceof Installation) {
+        } elseif ($installations instanceof Installation) {
             $this->installations = [$installations];
         }
 
@@ -96,19 +100,19 @@ class ConfigManager
         /** @var Installation $installation */
         foreach ($this->installations as $installation) {
             if ($output) {
-                echo 'updating ' . $installation->getCleanUrl() . PHP_EOL;
+                echo 'updating '.$installation->getCleanUrl().PHP_EOL;
             }
 
             if (!$this->updateConfig($installation)) {
                 return false;
             }
 
+            $this->entityManager->flush();
+
             if ($output) {
-                echo 'updated ' . $installation->getCleanUrl() . PHP_EOL;
+                echo 'updated '.$installation->getCleanUrl().PHP_EOL;
             }
         }
-
-        $this->entityManager->flush();
 
         return true;
     }
@@ -161,6 +165,7 @@ class ConfigManager
     /**
      * @param array $json
      * @param array $packages (composer.json contents)
+     *
      * @return array
      */
     private function buildLockData(array $json, array $packages)
@@ -168,11 +173,11 @@ class ConfigManager
         $filtered = [];
 
         // root repository should include a "/" to filter php and ext versions
-        $rootRepositories = array_filter(array_keys($packages['require']), function($name) {
+        $rootRepositories = array_filter(array_keys($packages['require']), function ($name) {
             return stripos($name, '/');
         });
 
-        $privateRepositories = array_map(function($repo) {
+        $privateRepositories = array_map(function ($repo) {
             return $repo['url'];
         }, $packages['repositories']);
 
@@ -193,7 +198,7 @@ class ConfigManager
             ];
         }
 
-        usort($filtered, function($a, $b) {
+        usort($filtered, function ($a, $b) {
             return ($a['name'] < $b['name']) ? -1 : 1;
         });
 
@@ -201,10 +206,11 @@ class ConfigManager
     }
 
     /**
-     * searches $repositories for occurrences of $name
+     * searches $repositories for occurrences of $name.
      *
      * @param $name
      * @param array $repositories
+     *
      * @return bool
      */
     private function packageFoundInArray($name, array $repositories = [])
@@ -217,5 +223,4 @@ class ConfigManager
 
         return false;
     }
-
 }

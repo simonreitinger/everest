@@ -1,48 +1,50 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: simonreitinger
- * Date: 2019-02-11
- * Time: 15:59
+
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
  */
 
 namespace App\Controller;
 
 use App\Client\ManagerClient;
-use App\Entity\Task;
 use App\Entity\Installation;
+use App\Entity\Task;
 use App\HttpKernel\ApiProblemResponse;
-use App\Manager\ConfigManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class TaskController
- * @package App\Controller
+ * Class TaskController.
  *
  * @Route("/task")
  */
 class TaskController extends ApiController
 {
     /**
-     * @var EntityManagerInterface $entityManager
+     * @var EntityManagerInterface
      */
     private $entityManager;
 
     /**
-     * @var ManagerClient $client
+     * @var ManagerClient
      */
     private $client;
 
-
     /**
      * TaskController constructor.
+     *
      * @param EntityManagerInterface $entityManager
-     * @param ManagerClient $client
+     * @param ManagerClient          $client
      */
     public function __construct(EntityManagerInterface $entityManager, ManagerClient $client)
     {
@@ -57,8 +59,10 @@ class TaskController extends ApiController
      * 201 for new tasks
      *
      * @param Request $request
-     * @return JsonResponse
+     *
      * @throws \Exception
+     *
+     * @return JsonResponse
      */
     public function postTask(Request $request)
     {
@@ -70,7 +74,8 @@ class TaskController extends ApiController
         $task
             ->setName($json['name'])
             ->setConfig($json['config'])
-            ->setCreatedAt(new \DateTime());
+            ->setCreatedAt(new \DateTime())
+        ;
 
         try {
             // active tasks should not be put again, this causes a 401
@@ -81,7 +86,6 @@ class TaskController extends ApiController
             $response = $this->client->putTask($installation, $task);
 
             if ($response) {
-
                 switch ($response->getStatusCode()) {
                     case Response::HTTP_OK:
                         $json = $this->client->getJsonContent($response);
@@ -102,6 +106,7 @@ class TaskController extends ApiController
      * @Route("/{hash}", methods={"GET"})
      *
      * @param $hash
+     *
      * @return ApiProblemResponse|JsonResponse|Response
      */
     public function getTaskStatus($hash)
@@ -117,7 +122,7 @@ class TaskController extends ApiController
             if ($json['status'] === 'complete') {
                 $response = $this->client->removeTask($installation);
 
-                $process = new Process(['php bin/console everest:update-config ' . $installation->getCleanUrl()], __DIR__ . '/../..');
+                $process = new Process(['php bin/console everest:update-config '.$installation->getCleanUrl()], __DIR__.'/../..');
                 $process->start();
                 while ($process->isRunning()) {
                     sleep(1);

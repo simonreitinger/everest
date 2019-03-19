@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
+ */
+
 namespace App\Repository;
 
 use App\Entity\Task;
@@ -21,6 +31,7 @@ class TaskRepository extends ServiceEntityRepository
 
     /**
      * @param $installation
+     *
      * @return mixed
      */
     public function findOneByInstallation($installation)

@@ -1,9 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: simonreitinger
- * Date: 2019-02-27
- * Time: 15:31
+
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
  */
 
 namespace App\Cache;
@@ -15,12 +19,13 @@ use Psr\SimpleCache\InvalidArgumentException;
 class InstallationCache
 {
     /**
-     * @var CacheInterface $cache
+     * @var CacheInterface
      */
     private $cache;
 
     /**
      * InstallationCache constructor.
+     *
      * @param CacheInterface $cache
      */
     public function __construct(CacheInterface $cache)
@@ -28,16 +33,18 @@ class InstallationCache
         $this->cache = $cache;
     }
 
-    public function saveInCache(Installation $installation, InstallationData $data)
+    public function saveInCache(Installation $installation, InstallationData $data): bool
     {
         try {
             $this->cache->set($installation->getCleanUrl(), json_encode($data), 3600);
         } catch (InvalidArgumentException $e) {
-            echo $e->getMessage();
+            return false;
         }
+
+        return true;
     }
 
-    public function findByInstallation(Installation $installation)
+    public function findByInstallation(Installation $installation): string
     {
         try {
             return $this->cache->get($installation->getCleanUrl());

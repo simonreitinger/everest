@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
+ */
+
 namespace App\Command;
 
 use App\Entity\User;
@@ -16,8 +26,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class EverestUserCommand extends Command
 {
+    protected static $defaultName = 'everest:user';
     /**
-     * @var EntityManagerInterface $entityManager
+     * @var EntityManagerInterface
      */
     private $entityManager;
 
@@ -27,23 +38,22 @@ class EverestUserCommand extends Command
     private $passwordEncoder;
 
     /**
-     * @var ValidatorInterface $validator
+     * @var ValidatorInterface
      */
     private $validator;
 
     /**
-     * @var bool $changed
-     * defines if at least one property was changed or updated
+     * @var bool
+     *           defines if at least one property was changed or updated
      */
     private $changed = false;
 
-    protected static $defaultName = 'everest:user';
-
     /**
      * EverestUserCommand constructor.
-     * @param EntityManagerInterface $entityManager
+     *
+     * @param EntityManagerInterface       $entityManager
      * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param ValidatorInterface $validator
+     * @param ValidatorInterface           $validator
      */
     public function __construct(EntityManagerInterface $entityManager,
                                 UserPasswordEncoderInterface $passwordEncoder,
@@ -55,7 +65,7 @@ class EverestUserCommand extends Command
         $this->validator = $validator;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Create a User')
@@ -65,7 +75,7 @@ class EverestUserCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $io = new SymfonyStyle($input, $output);
         $username = $input->getArgument('username');
@@ -74,7 +84,6 @@ class EverestUserCommand extends Command
         $choice = '';
 
         if ($username) {
-
             // try to get an existing user
             $user = $this->entityManager->getRepository(User::class)->findOneByUsername($username);
 
@@ -86,6 +95,7 @@ class EverestUserCommand extends Command
                         $this->entityManager->remove($user);
                         $this->entityManager->flush();
                         $io->success('User deleted.');
+
                         return;
                     }
                 }
@@ -102,6 +112,7 @@ class EverestUserCommand extends Command
 
             $io->text(sprintf('Creating a new user with name %s', $username));
             $user = $this->createUser($io, $username);
+
             return;
         }
 
@@ -110,7 +121,8 @@ class EverestUserCommand extends Command
 
     /**
      * @param SymfonyStyle $io
-     * @param string $username
+     * @param string       $username
+     *
      * @return User
      */
     private function createUser(SymfonyStyle $io, $username = '')
@@ -137,9 +149,9 @@ class EverestUserCommand extends Command
     }
 
     /**
-     * @param User $user
+     * @param User         $user
      * @param SymfonyStyle $io
-     * @return void
+     *
      * @throws \ReflectionException
      */
     private function updateUser(User $user, SymfonyStyle $io): void
@@ -150,7 +162,6 @@ class EverestUserCommand extends Command
             $choice = $io->choice('Select the field to be updated. Press enter to save & exit', $choices, 'save');
 
             $this->performChoiceOnUser($choice, $user, $io);
-
         } while ($choice !== '');
 
         if ($this->changed) {
@@ -159,7 +170,7 @@ class EverestUserCommand extends Command
         }
     }
 
-    private function performChoiceOnUser($choice, User $user, SymfonyStyle $io)
+    private function performChoiceOnUser($choice, User $user, SymfonyStyle $io): void
     {
         switch ($choice) {
             case 'save':
@@ -195,14 +206,16 @@ class EverestUserCommand extends Command
                 break;
             default:
                 $value = $io->ask(sprintf('Enter the %s', $choice));
-                $user->{'set' . ucfirst($choice)}($value);
+                $user->{'set'.ucfirst($choice)}($value);
                 $this->changed = true;
                 break;
         }
     }
 
     /**
-     * @param bool $saveAndExit
+     * @param bool  $saveAndExit
+     * @param mixed $username
+     *
      * @return array
      */
     private function getChoices($saveAndExit = false, $username = true): array

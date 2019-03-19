@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
+ */
+
 namespace App\Repository;
 
 use App\Entity\Installation;
@@ -15,7 +25,6 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class InstallationRepository extends ServiceEntityRepository
 {
-
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Installation::class);
@@ -23,6 +32,7 @@ class InstallationRepository extends ServiceEntityRepository
 
     /**
      * @param $hash
+     *
      * @return Installation|null
      */
     public function findOneByHash($hash): ?Installation
@@ -32,7 +42,8 @@ class InstallationRepository extends ServiceEntityRepository
                 ->where('w.hash= :hash')
                 ->setParameter('hash', $hash)
                 ->getQuery()
-                ->getOneOrNullResult();
+                ->getOneOrNullResult()
+            ;
         } catch (NonUniqueResultException $e) {
             return null;
         }
@@ -40,6 +51,7 @@ class InstallationRepository extends ServiceEntityRepository
 
     /**
      * @param string $url
+     *
      * @return Installation|null
      */
     public function findOneByUrl(string $url): ?Installation
@@ -51,7 +63,8 @@ class InstallationRepository extends ServiceEntityRepository
                 ->orWhere('w.managerUrl LIKE :url')
                 ->setParameter('url', $url)
                 ->getQuery()
-                ->getOneOrNullResult();
+                ->getOneOrNullResult()
+            ;
         } catch (NonUniqueResultException $e) {
             return null;
         }

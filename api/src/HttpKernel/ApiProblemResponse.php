@@ -1,9 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: simonreitinger
- * Date: 2019-01-17
- * Time: 11:44
+
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
  */
 
 namespace App\HttpKernel;
@@ -13,12 +17,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ApiProblemResponse extends Response
 {
-
     /**
      * ApiProblemResponse constructor.
      *
      * @param ApiProblem $apiProblem
-     * @param array $headers
+     * @param array      $headers
      */
     public function __construct(ApiProblem $problem, array $headers = [])
     {

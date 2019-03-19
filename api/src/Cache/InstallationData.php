@@ -1,9 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: simonreitinger
- * Date: 2019-02-27
- * Time: 16:11
+
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
  */
 
 namespace App\Cache;
@@ -11,47 +15,47 @@ namespace App\Cache;
 class InstallationData implements \JsonSerializable
 {
     /**
-     * from /api/server/contao
+     * from /api/server/contao.
      */
     private $contao;
 
     /**
-     * from /api/server/composer
+     * from /api/server/composer.
      */
     private $composer;
 
     /**
-     * from /api/config/manager
+     * from /api/config/manager.
      */
     private $manager;
 
     /**
-     * from /api/server/php-cli
+     * from /api/server/php-cli.
      */
     private $phpCli;
 
     /**
-     * from /api/server/php-web
+     * from /api/server/php-web.
      */
     private $phpWeb;
 
     /**
-     * from /api/server/config
+     * from /api/server/config.
      */
     private $config;
 
     /**
-     * from /api/packages/local
+     * from /api/packages/local.
      */
     private $composerLock;
 
     /**
-     * from /api/server/self-update
+     * from /api/server/self-update.
      */
     private $selfUpdate;
 
     /**
-     * from /api/packages/root
+     * from /api/packages/root.
      */
     private $packages;
 
@@ -65,6 +69,7 @@ class InstallationData implements \JsonSerializable
 
     /**
      * @param $contao
+     *
      * @return InstallationCache
      */
     public function setContao($contao): self
@@ -84,6 +89,7 @@ class InstallationData implements \JsonSerializable
 
     /**
      * @param $composer
+     *
      * @return InstallationCache
      */
     public function setComposer($composer): self
@@ -103,6 +109,7 @@ class InstallationData implements \JsonSerializable
 
     /**
      * @param $manager
+     *
      * @return InstallationCache
      */
     public function setManager($manager): self
@@ -122,6 +129,7 @@ class InstallationData implements \JsonSerializable
 
     /**
      * @param $phpCli
+     *
      * @return InstallationCache
      */
     public function setPhpCli($phpCli): self
@@ -141,6 +149,7 @@ class InstallationData implements \JsonSerializable
 
     /**
      * @param $phpWeb
+     *
      * @return InstallationCache
      */
     public function setPhpWeb($phpWeb): self
@@ -160,6 +169,7 @@ class InstallationData implements \JsonSerializable
 
     /**
      * @param $config
+     *
      * @return InstallationCache
      */
     public function setConfig($config): self
@@ -179,6 +189,7 @@ class InstallationData implements \JsonSerializable
 
     /**
      * @param string $lock
+     *
      * @return InstallationCache
      */
     public function setLock($lock): self
@@ -198,6 +209,7 @@ class InstallationData implements \JsonSerializable
 
     /**
      * @param mixed $selfUpdate
+     *
      * @return InstallationCache
      */
     public function setSelfUpdate($selfUpdate): self
@@ -217,6 +229,7 @@ class InstallationData implements \JsonSerializable
 
     /**
      * @param mixed $packages
+     *
      * @return InstallationCache
      */
     public function setPackages($packages): self
@@ -227,10 +240,13 @@ class InstallationData implements \JsonSerializable
     }
 
     /**
-     * Specify data which should be serialized to JSON
-     * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+     * Specify data which should be serialized to JSON.
+     *
+     * @see https://php.net/manual/en/jsonserializable.jsonserialize.php
+     *
      * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
+     *               which is a value of any type other than a resource
+     *
      * @since 5.4.0
      */
     public function jsonSerialize()

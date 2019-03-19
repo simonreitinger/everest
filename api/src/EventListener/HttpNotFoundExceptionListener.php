@@ -1,9 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: simonreitinger
- * Date: 2019-01-22
- * Time: 13:12
+
+declare(strict_types=1);
+
+/*
+ * This file is part of Everest Monitoring.
+ *
+ * (c) Simon Reitinger
+ *
+ * @license LGPL-3.0-or-later
  */
 
 namespace App\EventListener;
@@ -17,14 +21,14 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 
 class HttpNotFoundExceptionListener implements EventSubscriberInterface
 {
-
     /**
-     * @var LoggerInterface $logger
+     * @var LoggerInterface
      */
     private $logger;
 
     /**
      * HttpNotFoundExceptionListener constructor.
+     *
      * @param LoggerInterface $logger
      */
     public function __construct(LoggerInterface $logger)
@@ -32,7 +36,7 @@ class HttpNotFoundExceptionListener implements EventSubscriberInterface
         $this->logger = $logger;
     }
 
-    public function onKernelException(GetResponseForExceptionEvent $event)
+    public function onKernelException(GetResponseForExceptionEvent $event): void
     {
         $this->logger->alert($event->getException()->getMessage());
 
@@ -51,13 +55,13 @@ class HttpNotFoundExceptionListener implements EventSubscriberInterface
         $event->setResponse($response);
     }
 
-    /*
+    /**
      * @return array The event names to listen to
      */
     public static function getSubscribedEvents()
     {
         return [
-            'kernel.exception' => 'onKernelException'
+            'kernel.exception' => 'onKernelException',
         ];
     }
 }
