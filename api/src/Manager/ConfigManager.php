@@ -149,8 +149,6 @@ class ConfigManager
 
                     // use the keys from $responses for setting the received json
                     $data->{$set}($json);
-
-                    continue;
                 }
             } catch (\Exception $e) {
                 return false;
@@ -159,7 +157,9 @@ class ConfigManager
 
         // metadata
         $metadataResponse = $this->client->homepageRequest($installation);
-        (new InstallationCrawler($metadataResponse->getBody()->getContents(), $installation))->analyzeMetadata();
+        if ($metadataResponse) {
+            (new InstallationCrawler($metadataResponse->getBody()->getContents() ?? '<html><body></body></html>', $installation))->analyzeMetadata();
+        }
 
         $this->cache->saveInCache($installation, $data);
 
@@ -186,7 +186,7 @@ class ConfigManager
         });
 
         $privateRepositories = array_map(function ($repo) {
-            return $repo['url'];
+            return $repo['url'] ?? $repo['path'];
         }, $packages['repositories']);
 
         // sort packages in alphabetical order

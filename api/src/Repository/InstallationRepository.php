@@ -38,8 +38,8 @@ class InstallationRepository extends ServiceEntityRepository
     public function findOneByHash($hash): ?Installation
     {
         try {
-            return $this->createQueryBuilder('w')
-                ->where('w.hash= :hash')
+            return $this->createQueryBuilder('i')
+                ->where('i.hash= :hash')
                 ->setParameter('hash', $hash)
                 ->getQuery()
                 ->getOneOrNullResult()
@@ -57,16 +57,42 @@ class InstallationRepository extends ServiceEntityRepository
     public function findOneByUrl(string $url): ?Installation
     {
         try {
-            return $this->createQueryBuilder('w')
-                ->orWhere('w.url = :url')
-                ->orWhere('w.cleanUrl LIKE :url')
-                ->orWhere('w.managerUrl LIKE :url')
+            return $this->createQueryBuilder('i')
+                ->orWhere('i.url = :url')
+                ->orWhere('i.cleanUrl LIKE :url')
+                ->orWhere('i.managerUrl LIKE :url')
                 ->setParameter('url', $url)
                 ->getQuery()
                 ->getOneOrNullResult()
             ;
         } catch (NonUniqueResultException $e) {
             return null;
+        }
+    }
+
+    public function countAll()
+    {
+        try {
+            return $this->createQueryBuilder('i')
+                ->select('count(i.id)')
+                ->getQuery()
+                ->getSingleScalarResult()
+            ;
+        } catch (NonUniqueResultException $e) {
+            return 0;
+        }
+    }
+
+    public function findByLimitAndOffset($limit = 10, $offset = 0)
+    {
+        try {
+            return $this->createQueryBuilder('i')
+                ->setMaxResults($limit)
+                ->setFirstResult($offset)
+                ->getQuery()
+                ->getResult()
+            ;
+        } catch (\Exception $e) {
         }
     }
 }

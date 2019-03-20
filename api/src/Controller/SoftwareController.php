@@ -43,8 +43,8 @@ class SoftwareController extends ApiController
      */
     public function __construct(
         SoftwareManager $softwareManager,
-        EntityManagerInterface $entityManager)
-    {
+        EntityManagerInterface $entityManager
+    ) {
         $this->softwareManager = $softwareManager;
         $this->entityManager = $entityManager;
     }

@@ -8,13 +8,14 @@ import { InstallationListComponent } from './installation-list/installation-list
 import { InstallationAddComponent } from './installation-add/installation-add.component';
 import { InstallationDetailComponent } from './installation-detail/installation-detail.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { InstallationRegisterComponent } from './installation-register/installation-register.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LogoutComponent },
   { path: 'installations', component: InstallationListComponent, canActivate: [AuthGuard] },
-  { path: 'installations/add', component: InstallationAddComponent, canActivate: [AuthGuard] },
+  { path: 'installations/register', component: InstallationRegisterComponent, canActivate: [AuthGuard] },
   { path: 'installation/:hash', component: InstallationDetailComponent, canActivate: [AuthGuard] },
   { path: 'account', component: AccountComponent, canActivate: [AuthGuard] }
 ];

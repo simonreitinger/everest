@@ -15,6 +15,10 @@ export class InstallationService {
     return this.http.get<InstallationModel[]>(environment.apiUrl + '/installation/all');
   }
 
+  getAllByLimitAndOffset(limit = 10, offset = 0) {
+    return this.http.get<InstallationModel[]>(environment.apiUrl + '/installation/all', {params: {limit: limit.toString(), offset: offset.toString()}});
+  }
+
   getOne(hash: string) {
     return this.http.get<InstallationModel>(environment.apiUrl + '/installation/' + hash);
   }
@@ -25,5 +29,9 @@ export class InstallationService {
 
   remove(hash: string) {
     return this.http.delete(environment.apiUrl + '/installation/delete/' + hash);
+  }
+
+  getCount() {
+    return this.http.get(environment.apiUrl + '/installation/count');
   }
 }

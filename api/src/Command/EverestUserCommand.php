@@ -55,10 +55,11 @@ class EverestUserCommand extends Command
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param ValidatorInterface           $validator
      */
-    public function __construct(EntityManagerInterface $entityManager,
+    public function __construct(
+        EntityManagerInterface $entityManager,
                                 UserPasswordEncoderInterface $passwordEncoder,
-                                ValidatorInterface $validator)
-    {
+                                ValidatorInterface $validator
+    ) {
         parent::__construct();
         $this->entityManager = $entityManager;
         $this->passwordEncoder = $passwordEncoder;

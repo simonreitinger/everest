@@ -32,7 +32,7 @@ export class RequestInterceptor implements HttpInterceptor {
     req = req.clone({ headers: req.headers.set('Accept', 'application/json') });
 
     if (environment.production === false) {
-      req.params.set('XDEBUG_SESSION_START', 'PHPSTORM');
+      req = req.clone({ setParams: { 'XDEBUG_SESSION_START': 'PHPSTORM' } });
     }
 
     return next.handle(req).pipe(
@@ -42,7 +42,7 @@ export class RequestInterceptor implements HttpInterceptor {
           status: error.status
         };
 
-        return throwError(error);
+        return throwError(data);
       })
     );
   }

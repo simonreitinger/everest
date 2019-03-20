@@ -90,4 +90,5 @@
     <mat-header-row *matHeaderRowDef="tableOptions.displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let installation; columns: tableOptions.displayedColumns;"></mat-row>
   </mat-table>
+  <mat-paginator [pageSize]="perPage"></mat-paginator>
 </div>

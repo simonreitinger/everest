@@ -37,7 +37,11 @@ class InstallationCrawler extends Crawler
     public function analyzeMetadata(): void
     {
         // fetch favicon path when different
-        $favicon = $this->filter('link[rel="icon"]')->first()->attr('href') ?? '';
+        try {
+            $favicon = $this->filter('link[rel="icon"]')->first()->attr('href');
+        } catch (\InvalidArgumentException $e) {
+            $favicon = '';
+        }
         $this->installation->setFavicon($this->getBaseHref().$favicon);
 
         // fetch title when different
@@ -45,7 +49,11 @@ class InstallationCrawler extends Crawler
         $this->installation->setTitle($title);
 
         // fetch theme color
-        $themeColor = $this->filter('meta[name="theme-color"]')->attr('content') ?? '';
+        try {
+            $themeColor = $this->filter('meta[name="theme-color"]')->attr('content') ?? '';
+        } catch (\InvalidArgumentException $e) {
+            $themeColor = '';
+        }
         $this->installation->setThemeColor($themeColor);
     }
 }

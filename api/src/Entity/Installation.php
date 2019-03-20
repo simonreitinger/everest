@@ -239,6 +239,7 @@ class Installation implements \JsonSerializable
 
     /**
      * @param mixed $softwareVersion
+     *
      * @return Installation
      */
     public function setSoftwareVersion($softwareVersion)
@@ -258,6 +259,7 @@ class Installation implements \JsonSerializable
 
     /**
      * @param mixed $platformVersion
+     *
      * @return Installation
      */
     public function setPlatformVersion($platformVersion)

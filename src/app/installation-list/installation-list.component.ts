@@ -4,10 +4,11 @@ import { InstallationModel } from '../models/installation.model';
 import { ContaoManagerService } from '../services/contao-manager.service';
 import { SoftwareService } from '../services/software.service';
 import { SoftwareModel } from '../models/software.model';
-import { MatDialog, MatSort, MatTableDataSource } from '@angular/material';
+import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { MonitoringDialogComponent } from '../monitoring-dialog/monitoring-dialog.component';
 import { InstallationAddComponent } from '../installation-add/installation-add.component';
 import { ConfigService } from '../services/config.service';
+import { $e } from 'codelyzer/angular/styles/chars';
 
 const TABLE_OPTIONS = {
   displayedColumns: ['cleanUrl', 'software', 'softwareVersion', 'platform', 'platformVersion', 'status', 'detail']
@@ -29,6 +30,10 @@ export class InstallationListComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   dataSource: MatTableDataSource<InstallationModel>;
 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  total = 0;
+  perPage = 10;
+
   constructor(
     private dialog: MatDialog,
     private is: InstallationService,
@@ -39,11 +44,17 @@ export class InstallationListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.is.getCount().subscribe((res: any) => {
+      this.total = res.total;
+      this.paginator.length = this.total;
+    });
+
     this.is.getAll().subscribe((res: InstallationModel[]) => {
       this.installations = res;
-      console.log(res);
       this.dataSource = new MatTableDataSource(this.installations);
+      this.dataSource.paginator = this.paginator;
     });
+
     this.ss.getAll().subscribe((res: SoftwareModel[]) => {
       this.softwares = res;
       for (const software of this.softwares) {
