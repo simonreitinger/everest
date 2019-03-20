@@ -25,7 +25,7 @@ export class ContaoManagerService {
   getRegisterUrl(url: string) {
     const host = window.location.origin;
     return url
-      + '/#/oauth?scope=admin&client_id=everest&return_url=' + host + '/installations/add%3Forigin=' + this.stripManagerUrl(url);
+      + '/#/oauth?scope=admin&client_id=everest&return_url=' + host + '/installations/register%3Forigin=' + this.stripManagerUrl(url);
   }
 
   stripManagerUrl(url: string) {
@@ -56,6 +56,6 @@ export class ContaoManagerService {
   }
 
   saveUrlAndToken(url: string, token: string) {
-    return this.http.post(environment.apiUrl + '/installation/add?XDEBUG_SESSION_START=PHPSTORM', { url, token });
+    return this.http.post(environment.apiUrl + '/installation/add', { url, token });
   }
 }

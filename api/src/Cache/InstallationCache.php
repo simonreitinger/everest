@@ -36,7 +36,7 @@ class InstallationCache
     public function saveInCache(Installation $installation, InstallationData $data): bool
     {
         try {
-            $this->cache->set($installation->getCleanUrl(), json_encode($data), 3600);
+            $this->cache->set($installation->getCleanUrl(), json_encode($data));
         } catch (InvalidArgumentException $e) {
             return false;
         }
@@ -44,12 +44,8 @@ class InstallationCache
         return true;
     }
 
-    public function findByInstallation(Installation $installation): string
+    public function findByInstallation(Installation $installation): ?string
     {
-        try {
-            return $this->cache->get($installation->getCleanUrl());
-        } catch (InvalidArgumentException $e) {
-            echo $e->getMessage();
-        }
+        return $this->cache->get($installation->getCleanUrl());
     }
 }

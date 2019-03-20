@@ -66,6 +66,16 @@ class Installation implements \JsonSerializable
     private $managerUrl;
 
     /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $softwareVersion;
+
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $platformVersion;
+
+    /**
      * @ORM\Column(type="string", length=191)
      */
     private $token;
@@ -222,6 +232,46 @@ class Installation implements \JsonSerializable
     /**
      * @return mixed
      */
+    public function getSoftwareVersion()
+    {
+        return $this->softwareVersion;
+    }
+
+    /**
+     * @param mixed $softwareVersion
+     *
+     * @return Installation
+     */
+    public function setSoftwareVersion($softwareVersion)
+    {
+        $this->softwareVersion = $softwareVersion;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlatformVersion()
+    {
+        return $this->platformVersion;
+    }
+
+    /**
+     * @param mixed $platformVersion
+     *
+     * @return Installation
+     */
+    public function setPlatformVersion($platformVersion)
+    {
+        $this->platformVersion = $platformVersion;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getToken()
     {
         return $this->token;
@@ -300,19 +350,19 @@ class Installation implements \JsonSerializable
      */
     public function jsonSerialize()
     {
-        return array_merge(
-            [
-                'hash' => $this->hash,
-                'url' => $this->url,
-                'cleanUrl' => $this->cleanUrl,
-                'managerUrl' => $this->managerUrl,
-                'lastUpdate' => $this->lastUpdate ? $this->lastUpdate->format(DATE_ATOM) : null, // formatted for json
-                'added' => $this->added ? $this->added->format(DATE_ATOM) : null,
-                'favicon' => $this->favicon,
-                'title' => $this->title,
-                'themeColor' => $this->themeColor,
-            ]
-        );
+        return [
+            'hash' => $this->hash,
+            'url' => $this->url,
+            'cleanUrl' => $this->cleanUrl,
+            'managerUrl' => $this->managerUrl,
+            'lastUpdate' => $this->lastUpdate ? $this->lastUpdate->format(DATE_ATOM) : null, // formatted for json
+            'added' => $this->added ? $this->added->format(DATE_ATOM) : null,
+            'softwareVersion' => $this->softwareVersion,
+            'platformVersion' => $this->platformVersion,
+            'favicon' => $this->favicon,
+            'title' => $this->title,
+            'themeColor' => $this->themeColor,
+        ];
     }
 
     public function removeChildren(EntityManagerInterface $entityManager): void
@@ -322,11 +372,6 @@ class Installation implements \JsonSerializable
             foreach ($monitorings as $monitoring) {
                 $entityManager->remove($monitoring);
             }
-        }
-
-        $task = $entityManager->getRepository(Task::class)->findOneByInstallation($this);
-        if ($task) {
-            $entityManager->remove($task);
         }
     }
 }

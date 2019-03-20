@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { TaskOutputModel } from '../models/task-output.model';
 import { InstallationModel } from '../models/installation.model';
+import { TaskModel } from '../models/task.model';
 
 @Injectable({
   providedIn: 'root'

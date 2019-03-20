@@ -63,7 +63,7 @@ class ConfigController extends ApiController
 
         if ($installation) {
             $this->configManager
-                ->setInstallations([$installation])
+                ->setInstallations($installation)
                 ->fetchConfig()
             ;
 

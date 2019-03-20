@@ -48,7 +48,7 @@ class Software implements \JsonSerializable
      */
     public function getVersions(): ?array
     {
-        return json_decode($this->versions, true);
+        return json_decode($this->versions ?? '', true);
     }
 
     /**

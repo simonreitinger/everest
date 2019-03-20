@@ -49,8 +49,8 @@
       <mat-header-cell *matHeaderCellDef>Plattform Version</mat-header-cell>
       <mat-cell *matCellDef="let installation" [routerLink]="['/installation', installation.hash]">
         <span *ngIf="phpVersions" [ngClass]="{
-          'color-green': phpVersions.includes(installation.phpWeb.version) === true,
-          'color-red': phpVersions.includes(installation.phpWeb.version) === false
+          'color-green': phpVersions.includes(installation.platformVersion) === true,
+          'color-red': phpVersions.includes(installation.platformVersion) === false
         }">{{ installation.phpWeb.version }}</span>
       </mat-cell>
     </ng-container>
@@ -75,7 +75,11 @@
             <mat-icon>zoom_in</mat-icon>
             <span>Details</span>
           </button>
-          <button mat-menu-item color="primary" (click)="delete(installation.hash)">
+          <button mat-menu-item color="primary" (click)="update(installation)">
+            <mat-icon>update</mat-icon>
+            <span>Update</span>
+          </button>
+          <button mat-menu-item color="primary" (click)="delete(installation)">
             <mat-icon>delete</mat-icon>
             <span>Löschen</span>
           </button>
@@ -86,4 +90,5 @@
     <mat-header-row *matHeaderRowDef="tableOptions.displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let installation; columns: tableOptions.displayedColumns;"></mat-row>
   </mat-table>
+  <mat-paginator [pageSize]="perPage"></mat-paginator>
 </div>

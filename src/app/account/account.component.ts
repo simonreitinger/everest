@@ -4,7 +4,7 @@ import { UserModel } from '../models/user.model';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatFormField } from '@angular/material';
 
 @Component({
   selector: 'app-account',

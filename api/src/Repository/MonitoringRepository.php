@@ -29,12 +29,13 @@ class MonitoringRepository extends ServiceEntityRepository
         parent::__construct($registry, Monitoring::class);
     }
 
-    public function findByInstallationId($id)
+    public function findByInstallationId($id, $limit = 100)
     {
         return $this->createQueryBuilder('m')
             ->where('m.installation = :id')
             ->setParameter('id', $id)
             ->orderBy('m.createdAt', 'desc')
+            ->setMaxResults($limit)
             ->getQuery()
             ->getResult()
         ;

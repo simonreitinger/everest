@@ -55,10 +55,11 @@ class EverestUserCommand extends Command
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param ValidatorInterface           $validator
      */
-    public function __construct(EntityManagerInterface $entityManager,
+    public function __construct(
+        EntityManagerInterface $entityManager,
                                 UserPasswordEncoderInterface $passwordEncoder,
-                                ValidatorInterface $validator)
-    {
+                                ValidatorInterface $validator
+    ) {
         parent::__construct();
         $this->entityManager = $entityManager;
         $this->passwordEncoder = $passwordEncoder;
@@ -160,6 +161,10 @@ class EverestUserCommand extends Command
 
         do {
             $choice = $io->choice('Select the field to be updated. Press enter to save & exit', $choices, 'save');
+
+            if ($choice === 'save') {
+                break;
+            }
 
             $this->performChoiceOnUser($choice, $user, $io);
         } while ($choice !== '');

@@ -17,6 +17,7 @@ use App\Client\ManagerClient;
 use App\Entity\Installation;
 use App\HttpKernel\ApiProblemResponse;
 use App\Manager\ConfigManager;
+use App\Repository\InstallationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,8 +61,8 @@ class InstallationController extends ApiController
         EntityManagerInterface $entityManager,
         ManagerClient $client,
         ConfigManager $configManager,
-        InstallationCache $cache)
-    {
+        InstallationCache $cache
+    ) {
         $this->entityManager = $entityManager;
         $this->client = $client;
         $this->configManager = $configManager;
@@ -71,20 +72,34 @@ class InstallationController extends ApiController
     /**
      * @Route("/all", methods={"GET"})
      *
+     * @param Request $request
+     *
      * @return JsonResponse
      */
-    public function getAll()
+    public function getAll(Request $request)
     {
-        $installations = $this->entityManager->getRepository(Installation::class)->findAll();
+        /** @var InstallationRepository $repo */
+        $repo = $this->entityManager->getRepository(Installation::class);
 
-        if (!empty($installations) && !$this->cache->findByInstallation($installations[0])) {
-            $this->configManager
-                ->setInstallations($installations)
-                ->fetchConfig()
-            ;
+        if ($limit = (int) $request->get('limit')) {
+            $installations = $repo->findByLimitAndOffset($limit, (int) $request->get('offset') ?: 0);
+        } else {
+            $installations = $repo->findAll();
         }
 
         return new JsonResponse($this->mergeWithCache($installations));
+    }
+
+    /**
+     * @Route("/count", methods={"GET"})
+     *
+     * @return JsonResponse
+     */
+    public function getCount()
+    {
+        $installations = $this->entityManager->getRepository(Installation::class)->countAll();
+
+        return new JsonResponse(['total' => $installations]);
     }
 
     /**
@@ -128,7 +143,7 @@ class InstallationController extends ApiController
             $this->entityManager->persist($installation);
             $this->entityManager->flush();
 
-            return new JsonResponse($this->mergeWithCache($installation), Response::HTTP_CREATED);
+            return new JsonResponse(['success' => true]);
         }
 
         $this->createApiProblemResponse('Invalid data', Response::HTTP_BAD_REQUEST);

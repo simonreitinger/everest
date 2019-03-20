@@ -545,12 +545,6 @@ MIT
 
 @angular/material/table
 
-@angular/material/expansion
-
-@angular/material/checkbox
-
-@angular/material/slide-toggle
-
 @angular/material/tooltip
 
 @angular/material/core
@@ -558,6 +552,12 @@ MIT
 @angular/material/select
 
 @angular/material/paginator
+
+@angular/material/expansion
+
+@angular/material/checkbox
+
+@angular/material/slide-toggle
 
 @angular/material/bottom-sheet
 

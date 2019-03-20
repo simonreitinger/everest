@@ -12,6 +12,11 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+/**
+ * this is technically not a real entity; only used for easier access to data.
+ *
+ * Class Task
+ */
 class Task implements \JsonSerializable
 {
     private $id;

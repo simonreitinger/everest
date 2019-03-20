@@ -17,8 +17,6 @@ use App\Factory\VersionManagerFactory;
 use App\Repository\SoftwareRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -78,12 +76,10 @@ class SoftwareManager
                     $software = (new Software())->setName($name);
                 }
 
-                $versions = $software->getVersions() ?? [];
-
                 foreach ($endpoints as $url) {
                     try {
                         $response = $this->client->request('GET', $url);
-                        $versions = array_merge($versions, $manager->extractVersions($response));
+                        $versions = $manager->extractVersions($response);
                     } catch (GuzzleException $e) {
                     }
                 }
@@ -95,8 +91,6 @@ class SoftwareManager
 
             // save all
             $this->entityManager->flush();
-        } catch (OptimisticLockException $e) {
-        } catch (ORMException $e) {
         } catch (\Exception $e) {
         }
 

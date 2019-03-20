@@ -135,14 +135,20 @@ class ConfigManager
                         unset($json['configs']);
                     }
 
+                    if ($set === 'setContao') {
+                        $installation->setSoftwareVersion($json['version']);
+                    }
+
+                    if ($set === 'setPhpWeb') {
+                        $installation->setPlatformVersion($json['version']);
+                    }
+
                     if ($set === 'setLock') {
                         $json = $this->buildLockData($json, $data->getPackages());
                     }
 
                     // use the keys from $responses for setting the received json
                     $data->{$set}($json);
-
-                    continue;
                 }
             } catch (\Exception $e) {
                 return false;
@@ -151,7 +157,9 @@ class ConfigManager
 
         // metadata
         $metadataResponse = $this->client->homepageRequest($installation);
-        (new InstallationCrawler($metadataResponse->getBody()->getContents(), $installation))->analyzeMetadata();
+        if ($metadataResponse) {
+            (new InstallationCrawler($metadataResponse->getBody()->getContents() ?? '<html><body></body></html>', $installation))->analyzeMetadata();
+        }
 
         $this->cache->saveInCache($installation, $data);
 
@@ -172,13 +180,13 @@ class ConfigManager
     {
         $filtered = [];
 
-        // root repository should include a "/" to filter php and ext versions
+        // root repository should include a "/" to filter php and ext from repos
         $rootRepositories = array_filter(array_keys($packages['require']), function ($name) {
-            return stripos($name, '/');
+            return strpos($name, '/');
         });
 
         $privateRepositories = array_map(function ($repo) {
-            return $repo['url'];
+            return $repo['url'] ?? $repo['path'];
         }, $packages['repositories']);
 
         // sort packages in alphabetical order
