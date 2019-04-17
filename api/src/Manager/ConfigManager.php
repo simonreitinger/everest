@@ -104,14 +104,10 @@ class ConfigManager
             }
 
             if (!$this->updateConfig($installation)) {
-                return false;
+                continue;
             }
 
             $this->entityManager->flush();
-
-            if ($output) {
-                echo 'updated '.$installation->getCleanUrl().PHP_EOL;
-            }
         }
 
         return true;
