@@ -122,7 +122,7 @@ class ConfigManager
                 /** @var Psr7Response $response */
                 $response = $this->client->{$method}($installation);
 
-                if ($response->getStatusCode() === Response::HTTP_OK) {
+                if ($response && $response->getStatusCode() === Response::HTTP_OK) {
                     // decode into array for database
                     $json = $this->client->getJsonContent($response);
 
