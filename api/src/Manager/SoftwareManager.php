@@ -76,10 +76,13 @@ class SoftwareManager
                     $software = (new Software())->setName($name);
                 }
 
+                $versions = [];
                 foreach ($endpoints as $url) {
                     try {
                         $response = $this->client->request('GET', $url);
-                        $versions = $manager->extractVersions($response);
+                        foreach ($manager->extractVersions($response) as $version) {
+                            $versions[] = $version;
+                        }
                     } catch (GuzzleException $e) {
                     }
                 }

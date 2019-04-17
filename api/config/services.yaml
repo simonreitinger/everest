@@ -6,7 +6,7 @@
 parameters:
     softwares:
         php:
-            - 'https://secure.php.net/releases/index.php?json&version=7&max=3'
+            - 'https://secure.php.net/releases/index.php?json&version=7&max=10'
             - 'https://secure.php.net/releases/index.php?json&version=5&max=1'
 
 services:
