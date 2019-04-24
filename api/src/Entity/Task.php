@@ -100,7 +100,7 @@ class Task implements \JsonSerializable
     {
         return [
             'name' => $this->name,
-            'output' => json_decode($this->output, true),
+            'output' => json_decode($this->output ?? '', true),
         ];
     }
 }
