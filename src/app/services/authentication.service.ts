@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import * as jwt_decode from 'jwt-decode';
 
-const LOCAL_STORAGE_TOKEN_KEY = 'token';
+const TOKEN_COOKIE = 'TOKEN';
 
 @Injectable({
   providedIn: 'root'
@@ -77,7 +77,7 @@ export class AuthenticationService {
   }
 
   getToken() {
-    return localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY) ? localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY) : null;
+    return document.cookie.replace(/(?:(?:^|.*;\s*)TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1') || null;
   }
 
   getDecodedToken() {
@@ -85,11 +85,11 @@ export class AuthenticationService {
   }
 
   setToken(token) {
-    localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, token);
+    document.cookie = TOKEN_COOKIE + '=' + token;
   }
 
   logout() {
-    localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
+    document.cookie = TOKEN_COOKIE + '=; expires=0';
   }
 
   // checks the exp property of the token for a valid date

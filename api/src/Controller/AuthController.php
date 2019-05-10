@@ -79,7 +79,7 @@ class AuthController extends ApiController
         $user = $this->entityManager->getRepository(User::class)->findOneByUsername($credentials['username']);
 
         if (!$user) {
-            $this->createApiProblemResponse('Invalid credentials', Response::HTTP_BAD_REQUEST);
+            return $this->createApiProblemResponse('Invalid credentials', Response::HTTP_BAD_REQUEST);
         }
 
         $passwordValid = $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
