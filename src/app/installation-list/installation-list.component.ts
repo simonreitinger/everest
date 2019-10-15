@@ -27,10 +27,10 @@ export class InstallationListComponent implements OnInit {
   softwares: SoftwareModel[];
   phpVersions: string[];
 
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
   dataSource: MatTableDataSource<InstallationModel>;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   total = 0;
   perPage = 10;
 

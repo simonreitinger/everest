@@ -18,7 +18,7 @@ export class ConsoleOutputComponent implements OnInit {
 
   interval: Subscription;
 
-  @ViewChild('console') console;
+  @ViewChild('console', { static: true }) console;
 
   constructor(private dialogRef: MatDialogRef<ConsoleOutputComponent>,
               private composerService: ComposerService,
@@ -30,7 +30,6 @@ export class ConsoleOutputComponent implements OnInit {
   ngOnInit() {
     this.interval = interval(5000).pipe(startWith(0)).subscribe(() => {
       this.composerService.getTaskStatus(this.installation).subscribe(res => {
-        console.log(res.body);
         this.output = res.body;
         if (this.output.status !== 'active') {
           this.interval.unsubscribe();

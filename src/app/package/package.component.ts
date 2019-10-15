@@ -24,7 +24,7 @@ export class PackageComponent implements OnInit {
 
   packageOptions = PACKAGE_OPTIONS;
   dataSource: MatTableDataSource<PackageLockModel>;
-  @ViewChild(MatSort) packageSort: MatSort;
+  @ViewChild(MatSort, { static: false }) packageSort: MatSort;
 
   showAll: boolean;
 
