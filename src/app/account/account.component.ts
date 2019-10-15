@@ -19,7 +19,7 @@ export class AccountComponent implements OnInit {
   initialUsername: string;
   usernames: string[];
 
-  @ViewChild('container') container;
+  @ViewChild('container', {static: false}) container;
 
   constructor(private auth: AuthenticationService, private us: UserService, private router: Router, private dialog: MatDialog) {
   }
