@@ -23,7 +23,6 @@ use Psr\Http\Message\ResponseInterface;
  */
 class ManagerClient
 {
-
     /**
      * @var ClientInterface
      */
@@ -51,7 +50,7 @@ class ManagerClient
 
     /**
      * @param Installation $website
-     * @param bool $logTime
+     * @param bool         $logTime
      *
      * @return ResponseInterface|null
      */
@@ -174,7 +173,7 @@ class ManagerClient
 
     /**
      * @param Installation $website
-     * @param Task $task
+     * @param Task         $task
      *
      * @return ResponseInterface|null
      */
@@ -215,9 +214,9 @@ class ManagerClient
 
     /**
      * @param Installation $website
-     * @param string $endpoint
-     * @param string $method
-     * @param mixed|null $data
+     * @param string       $endpoint
+     * @param string       $method
+     * @param mixed|null   $data
      *
      * @return ResponseInterface|null
      */
@@ -225,7 +224,8 @@ class ManagerClient
     {
         try {
             return $this->guzzle
-                ->request($method, $website->getManagerUrl() . $endpoint, $this->buildOptions($website, $data));
+                ->request($method, $website->getManagerUrl().$endpoint, $this->buildOptions($website, $data))
+            ;
         } catch (GuzzleException $e) {
             echo $e->getMessage();
 
@@ -235,7 +235,7 @@ class ManagerClient
 
     /**
      * @param Installation $website
-     * @param null $data
+     * @param null         $data
      *
      * @return array
      */

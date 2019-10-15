@@ -52,7 +52,7 @@ class InstallationCrawler extends Crawler
         try {
             $themeColor = trim($this->filter('meta[name="theme-color"]')->attr('content')) ?? '';
 
-            # white is not visible on white background, fallback is defined in frontend
+            // white is not visible on white background, fallback is defined in frontend
             if ($themeColor === '#ffffff') {
                 $themeColor = '';
             }

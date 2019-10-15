@@ -55,8 +55,8 @@ class AuthController extends ApiController
      */
     public function __construct(
         JWTEncoderInterface $jwtEncoder,
-                                UserPasswordEncoderInterface $passwordEncoder,
-                                EntityManagerInterface $entityManager
+        UserPasswordEncoderInterface $passwordEncoder,
+        EntityManagerInterface $entityManager
     ) {
         $this->jwtEncoder = $jwtEncoder;
         $this->passwordEncoder = $passwordEncoder;

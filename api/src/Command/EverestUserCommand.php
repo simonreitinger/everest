@@ -57,8 +57,8 @@ class EverestUserCommand extends Command
      */
     public function __construct(
         EntityManagerInterface $entityManager,
-                                UserPasswordEncoderInterface $passwordEncoder,
-                                ValidatorInterface $validator
+        UserPasswordEncoderInterface $passwordEncoder,
+        ValidatorInterface $validator
     ) {
         parent::__construct();
         $this->entityManager = $entityManager;

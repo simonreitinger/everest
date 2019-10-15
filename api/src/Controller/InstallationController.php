@@ -209,8 +209,8 @@ class InstallationController extends ApiController
             $result = [];
             foreach ($installation as $i) {
                 $result[] = array_merge(
-                   json_decode(json_encode($i), true),
-                   json_decode($this->cache->findByInstallation($i) ?? json_encode([]), true)
+                    json_decode(json_encode($i), true),
+                    json_decode($this->cache->findByInstallation($i) ?? json_encode([]), true)
                );
             }
 
