@@ -27,7 +27,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class InstallationController.
  *
- * @Route("/installation")
+ * @Route("/installations")
  */
 class InstallationController extends ApiController
 {
@@ -70,7 +70,7 @@ class InstallationController extends ApiController
     }
 
     /**
-     * @Route("/all", methods={"GET"})
+     * @Route("/", methods={"GET"})
      *
      * @param Request $request
      *
@@ -210,7 +210,7 @@ class InstallationController extends ApiController
             foreach ($installation as $i) {
                 $result[] = array_merge(
                    json_decode(json_encode($i), true),
-                   json_decode($this->cache->findByInstallation($i), true)
+                   json_decode($this->cache->findByInstallation($i) ?? json_encode([]), true)
                );
             }
 

@@ -4,7 +4,6 @@ import { MatBottomSheet, MatDialog, MatSort, MatTableDataSource } from '@angular
 import { PackageOverviewSheetComponent } from './package-overview-sheet.component';
 import { InstallationModel } from '../models/installation.model';
 import { TaskOutputModel } from '../models/task-output.model';
-import { ConsoleOutputComponent } from '../console-output/console-output.component';
 
 const PACKAGE_OPTIONS = {
   displayedColumns: ['checked', 'vendor', 'repository', 'version', 'rootVersion', 'isPrivate', 'packagist']
@@ -28,11 +27,11 @@ export class PackageComponent implements OnInit {
 
   showAll: boolean;
 
-  constructor(private bottomSheet: MatBottomSheet, private dialog: MatDialog) {
-  }
-
   ngOnInit() {
     this.packages = this.buildPackages();
+
+    console.log(this.packages);
+
     this.dataSource = new MatTableDataSource(this.filterRootPackages());
   }
 
@@ -70,40 +69,10 @@ export class PackageComponent implements OnInit {
     return this.packages.filter(pkg => pkg.rootVersion);
   }
 
-  openSheet() {
-    const bottomSheetRef = this.bottomSheet.open(PackageOverviewSheetComponent, {
-      data:
-        {
-          installation: this.installation,
-          packages: this.packages.filter(pkg => pkg.checked).map(p => p.name)
-        }
-    });
-
-    bottomSheetRef.afterDismissed().subscribe(output => {
-      if (output) {
-        this.output = output;
-        this.openConsoleDialog();
-      }
-    });
-  }
-
-  openConsoleDialog() {
-    const dialogRef = this.dialog.open(ConsoleOutputComponent, {
-      height: '500px',
-      width: '800px',
-      data: {
-        output: this.output,
-        installation: this.installation
-      },
-      disableClose: !this.output.autoclose
-    });
-  }
-
   // add vendor and repo
   private buildPackages() {
     const packages = [];
-    console.log(this.installation);
-    for (const pkg of this.installation.composerLock) {
+    for (const pkg of this.installation.composerLock || []) {
       const splitted = pkg.name.split('/');
       packages.push({ ...pkg, vendor: splitted[0], repository: splitted[1], checked: false });
     }

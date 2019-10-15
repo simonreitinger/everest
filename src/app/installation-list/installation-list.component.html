@@ -29,7 +29,7 @@
     <ng-container matColumnDef="softwareVersion">
       <mat-header-cell *matHeaderCellDef mat-sort-header="softwareVersion">Software Version</mat-header-cell>
       <mat-cell *matCellDef="let installation" [routerLink]="['/installation', installation.hash]">
-        <span [ngClass]="{
+        <span *ngIf="installation.contao" [ngClass]="{
           'color-green': installation.contao.supported === true,
           'color-red': installation.contao.supported === false
         }">{{ installation.contao.version }}</span>
@@ -48,7 +48,7 @@
     <ng-container matColumnDef="platformVersion">
       <mat-header-cell *matHeaderCellDef>Plattform Version</mat-header-cell>
       <mat-cell *matCellDef="let installation" [routerLink]="['/installation', installation.hash]">
-        <span *ngIf="phpVersions" [ngClass]="{
+        <span *ngIf="phpVersions && installation.phpWeb" [ngClass]="{
           'color-green': phpVersions.includes(installation.platformVersion) === true,
           'color-red': phpVersions.includes(installation.platformVersion) === false
         }">{{ installation.phpWeb.version }}</span>

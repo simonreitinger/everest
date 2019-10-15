@@ -12,26 +12,26 @@ export class InstallationService {
   }
 
   getAll() {
-    return this.http.get<InstallationModel[]>(environment.apiUrl + '/installation/all');
+    return this.http.get<InstallationModel[]>(environment.apiUrl + '/installations');
   }
 
-  getAllByLimitAndOffset(limit = 10, offset = 0) {
-    return this.http.get<InstallationModel[]>(environment.apiUrl + '/installation/all', {params: {limit: limit.toString(), offset: offset.toString()}});
+  getByLimitAndOffset(limit = 10, offset = 0) {
+    return this.http.get<InstallationModel[]>(environment.apiUrl + '/installations', {params: {limit: limit.toString(), offset: offset.toString()}});
   }
 
   getOne(hash: string) {
-    return this.http.get<InstallationModel>(environment.apiUrl + '/installation/' + hash);
+    return this.http.get<InstallationModel>(environment.apiUrl + '/installations/' + hash);
   }
 
   add(data: { url: string, token: string }) {
-    return this.http.post(environment.apiUrl + '/installation/add', data);
+    return this.http.post(environment.apiUrl + '/installations/add', data);
   }
 
   remove(hash: string) {
-    return this.http.delete(environment.apiUrl + '/installation/delete/' + hash);
+    return this.http.delete(environment.apiUrl + '/installations/delete/' + hash);
   }
 
   getCount() {
-    return this.http.get(environment.apiUrl + '/installation/count');
+    return this.http.get(environment.apiUrl + '/installations/count');
   }
 }

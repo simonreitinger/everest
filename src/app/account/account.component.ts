@@ -30,7 +30,7 @@ export class AccountComponent implements OnInit {
       this.initialUsername = res.username;
     });
 
-    this.us.getUsers().subscribe(res => {src/app/console-output/console-output.component.ts
+    this.us.getUsers().subscribe(res => {
       this.usernames = res;
     });
   }

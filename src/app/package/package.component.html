@@ -3,9 +3,6 @@
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>
   <mat-slide-toggle (change)="showDependencies()" [(ngModel)]="showAll">Anzeige: {{ showAll ? 'alle' : 'nur Root' }}</mat-slide-toggle>
-  <div class="actions">
-    <button mat-raised-button color="accent" (click)="openSheet()">Aktion auswählen</button>
-  </div>
 </div>
 
 
